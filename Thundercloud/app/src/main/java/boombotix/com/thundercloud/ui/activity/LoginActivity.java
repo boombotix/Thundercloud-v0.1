@@ -20,19 +20,27 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.json.jackson.JacksonFactory;
 
+import com.google.gson.Gson;
+
+import com.spotify.sdk.android.player.Player;
 import com.wuman.android.auth.AuthorizationFlow;
 import com.wuman.android.auth.AuthorizationUIController;
 import com.wuman.android.auth.DialogFragmentController;
 import com.wuman.android.auth.OAuthManager;
-
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import boombotix.com.thundercloud.R;
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.PlaylistSimple;
+import kaaes.spotify.webapi.android.models.UserPrivate;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 
 public class LoginActivity extends AppCompatActivity {
     private final String TOKEN_URL = "https://accounts.spotify.com/api/token";
@@ -40,11 +48,25 @@ public class LoginActivity extends AppCompatActivity {
     private final String CLIENT_ID = "b8a7abf8f6db49bf8a45c4b3ebb8eaaa";
     private final String CLIENT_SECRET = "5c5a84ee8b3c462cabbfba7b33ea813e";
 
+    private Player player;
+    private SpotifyApi api;
+    private SpotifyService spotify;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        api = new SpotifyApi();
+        spotify = api.getService();
+
+
+
+        authorizeUser();
+
+    }
+
+    private void authorizeUser() {
         AuthorizationFlow.Builder builder = new AuthorizationFlow.Builder(
                 BearerToken.authorizationHeaderAccessMethod(),
                 AndroidHttp.newCompatibleTransport(),
@@ -94,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         };
 
         thread.start();
+
     }
 
     /*
@@ -107,7 +130,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 ((TextView) findViewById(R.id.refresh_resp)).setText(response);
+                // TODO replace with actual model
+                Map<String, String> resp = new Gson().fromJson(response, Map.class);
 
+                api.setAccessToken(resp.get("access_token"));
+                getUser();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -129,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 //apparently this breaks everything
-//                params.put("Content-Type", "application/x-www-form-urlencoded");
+//              params.put("Content-Type", "application/x-www-form-urlencoded");
                 StringBuilder sb = new StringBuilder();
                 sb.append(CLIENT_ID);
                 sb.append(":");
@@ -141,5 +168,42 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         queue.add(sr);
+    }
+
+    private void getUser() {
+
+
+        spotify.getMe(new Callback<UserPrivate>() {
+            @Override
+            public void success(UserPrivate userPrivate, retrofit.client.Response response) {
+                getPlaylist(userPrivate.id);
+                Log.e("user", userPrivate.display_name+"");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("err", error.getMessage());
+                error.printStackTrace();
+            }
+        });
+    }
+
+    private void getPlaylist(String id) {
+        spotify.getPlaylists(id, new Callback<Pager<PlaylistSimple>>() {
+            @Override
+            public void success(Pager<PlaylistSimple> playlistSimplePager, retrofit.client.Response response) {
+                String contents = "";
+                for(PlaylistSimple playlistSimple : playlistSimplePager.items){
+                    contents += playlistSimple.name +"\n";
+                }
+                ((TextView) findViewById(R.id.playlist)).setText(contents);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("err", error.getMessage());
+                error.printStackTrace();
+            }
+        });
     }
 }
