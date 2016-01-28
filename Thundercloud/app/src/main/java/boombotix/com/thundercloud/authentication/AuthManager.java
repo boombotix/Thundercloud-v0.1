@@ -20,7 +20,6 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class AuthManager {
 
-    private static AuthManager authInstance;
     private static String authToken;
     private static String refreshToken;
     private static Application application;
