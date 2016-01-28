@@ -18,7 +18,6 @@ public class ThundercloudApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         JodaTimeAndroid.init(this);
         buildComponent();
     }

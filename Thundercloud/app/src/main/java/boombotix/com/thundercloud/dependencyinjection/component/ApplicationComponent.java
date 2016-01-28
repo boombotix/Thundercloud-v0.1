@@ -1,10 +1,13 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
+import android.content.SharedPreferences;
+
 import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
@@ -48,5 +51,7 @@ public interface ApplicationComponent {
 
     Gson gson();
     SpotifyApi spotifyApi();
+    SharedPreferences sharedPreferences();
+    AuthManager authManager();
 
 }

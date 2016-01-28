@@ -2,6 +2,7 @@ package boombotix.com.thundercloud.dependencyinjection.module;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
@@ -14,7 +15,7 @@ import dagger.Provides;
  */
 @Module
 public class ApplicationModule {
-
+    private static final String PREFNAME = "boombotix.com.thundercloud";
     private Application application;
 
     public ApplicationModule(ThundercloudApplication application) {
@@ -23,8 +24,12 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    Context provideApplicationContext() {
+    Application provideApplicationContext() {
         return this.application;
     }
+
+    @Provides
+    @Singleton
+    SharedPreferences provideSharedPreferences(){ return application.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE); }
 
 }
