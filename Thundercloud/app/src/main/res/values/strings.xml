@@ -3,4 +3,5 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="auth_token">auth_token</string>
     <string name="refresh_token">refresh_token</string>
+    <string name="title_activity_drawer">DrawerActivity</string>
 </resources>
