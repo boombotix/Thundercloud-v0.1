@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -65,9 +66,6 @@ public class LoginActivity extends BaseActivity {
         getActivityComponent().inject(this);
 
         spotify = api.getService();
-
-
-
         authorizeUser();
 
     }
@@ -137,9 +135,9 @@ public class LoginActivity extends BaseActivity {
             public void onResponse(String response) {
                 ((TextView) findViewById(R.id.refresh_resp)).setText(response);
                 // TODO replace with actual model
-                Map<String, String> resp = gson.fromJson(response, Map.class);
+                AuthRefreshResponse resp = gson.fromJson(response, AuthRefreshResponse.class);
 
-                api.setAccessToken(resp.get("access_token"));
+                api.setAccessToken(resp.getAccessToken());
                 getUser();
             }
         }, new Response.ErrorListener() {
@@ -168,7 +166,6 @@ public class LoginActivity extends BaseActivity {
                 sb.append(":");
                 sb.append(CLIENT_SECRET);
                 byte[] encoded = com.google.api.client.util.Base64.encodeBase64((sb.toString()).getBytes());
-                Log.v("encoded", new String(encoded));
                 params.put("Authorization", "Basic " + new String(encoded));
                 return params;
             }
@@ -177,13 +174,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void getUser() {
-
-
         spotify.getMe(new Callback<UserPrivate>() {
             @Override
             public void success(UserPrivate userPrivate, retrofit.client.Response response) {
                 getPlaylist(userPrivate.id);
-                Log.e("user", userPrivate.display_name+"");
             }
 
             @Override
