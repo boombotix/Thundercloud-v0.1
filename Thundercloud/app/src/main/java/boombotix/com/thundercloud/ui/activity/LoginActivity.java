@@ -35,6 +35,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -46,10 +47,10 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 
 public class LoginActivity extends BaseActivity {
-    private final String TOKEN_URL = "https://accounts.spotify.com/api/token";
-    private final String AUTH_URL = "https://accounts.spotify.com/authorize/";
-    private final String CLIENT_ID = "b8a7abf8f6db49bf8a45c4b3ebb8eaaa";
-    private final String CLIENT_SECRET = "5c5a84ee8b3c462cabbfba7b33ea813e";
+    private final String TOKEN_URL = BuildConfig.SPOTIFY_TOKEN_URL;
+    private final String AUTH_URL = BuildConfig.SPOTIFY_AUTH_URL;
+    private final String CLIENT_ID = BuildConfig.SPOTIFY_CLIENT_ID;
+    private final String CLIENT_SECRET = BuildConfig.SPOTIFY_CLIENT_SECRET;
 
     @Inject
     SpotifyApi api;
