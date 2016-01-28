@@ -126,10 +126,6 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
 
     }
 
-    /*
-    * Tried using OkHTTP here but apparently the content-type is overwritten when you make a post
-    * request to something that spotify doesn't support.
-    */
     private void useRefreshToken() {
         authManager.RefreshAuthToken(this);
     }
