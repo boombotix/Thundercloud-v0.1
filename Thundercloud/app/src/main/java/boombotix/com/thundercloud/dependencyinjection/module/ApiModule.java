@@ -1,12 +1,30 @@
 package boombotix.com.thundercloud.dependencyinjection.module;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.BuildConfig;
+import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.api.SpotifyEndpoint;
+import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import dagger.Module;
 import dagger.Provides;
 import kaaes.spotify.webapi.android.SpotifyApi;

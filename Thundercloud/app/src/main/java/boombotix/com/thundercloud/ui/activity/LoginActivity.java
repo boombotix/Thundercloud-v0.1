@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.api.Auth;
 import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -128,49 +129,22 @@ public class LoginActivity extends BaseActivity {
     * request to something that spotify doesn't support.
     */
     private void useRefreshToken(String refreshToken) {
+        Auth auth = Auth.getAuthInstance();
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest sr = new StringRequest(Request.Method.POST, TOKEN_URL, new Response.Listener<String>() {
+        auth.RefreshAuthToken(this, refreshToken, new Auth.AuthRefreshRespCallback() {
             @Override
-            public void onResponse(String response) {
-                ((TextView) findViewById(R.id.refresh_resp)).setText(response);
-                // TODO replace with actual model
-                AuthRefreshResponse resp = gson.fromJson(response, AuthRefreshResponse.class);
-
-                api.setAccessToken(resp.getAccessToken());
+            public void onSuccess(AuthRefreshResponse authRefreshResponse) {
+                ((TextView) findViewById(R.id.refresh_resp)).setText(authRefreshResponse.getAccessToken());
+                api.setAccessToken(authRefreshResponse.getAccessToken());
                 getUser();
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(VolleyError error) {
                 ((TextView) findViewById(R.id.refresh_resp)).setText(error.getMessage());
-                error.printStackTrace();
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("grant_type", "refresh_token");
-                params.put("refresh_token", refreshToken);
+        });
 
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                //apparently this breaks everything
-//              params.put("Content-Type", "application/x-www-form-urlencoded");
-                StringBuilder sb = new StringBuilder();
-                sb.append(CLIENT_ID);
-                sb.append(":");
-                sb.append(CLIENT_SECRET);
-                byte[] encoded = com.google.api.client.util.Base64.encodeBase64((sb.toString()).getBytes());
-                params.put("Authorization", "Basic " + new String(encoded));
-                return params;
-            }
-        };
-        queue.add(sr);
     }
 
     private void getUser() {

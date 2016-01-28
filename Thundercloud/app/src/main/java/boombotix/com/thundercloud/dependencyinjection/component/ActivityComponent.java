@@ -1,5 +1,6 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
+import boombotix.com.thundercloud.api.Auth;
 import boombotix.com.thundercloud.dependencyinjection.module.ActivityModule;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.activity.MainActivity;
