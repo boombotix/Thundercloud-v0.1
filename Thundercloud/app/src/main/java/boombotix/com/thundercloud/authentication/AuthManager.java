@@ -3,12 +3,11 @@ package boombotix.com.thundercloud.authentication;
 import android.app.Application;
 import android.content.SharedPreferences;
 
-import com.android.volley.VolleyError;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.BuildConfig;
+import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
 import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import rx.android.schedulers.AndroidSchedulers;
@@ -41,19 +40,32 @@ public class AuthManager {
     }
 
     public String getAuthToken() {
+        if(sharedPreferences.contains(application.getString(R.string.auth_token))) {
+            authToken = sharedPreferences.getString(application.getString(R.string.auth_token), null);
+        }
         return authToken;
     }
 
     public void setAuthToken(String authToken) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(application.getString(R.string.auth_token), authToken);
+        editor.commit();
         AuthManager.authToken = authToken;
     }
 
 
     public String getRefreshToken() {
+        if(sharedPreferences.contains(application.getString(R.string.refresh_token))) {
+            refreshToken = sharedPreferences.getString(application.getString(R.string.refresh_token), null);
+        }
         return refreshToken;
     }
 
     public void setRefreshToken(String refreshToken) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(application.getString(R.string.refresh_token), refreshToken);
+        editor.commit();
+
         AuthManager.refreshToken = refreshToken;
     }
 
@@ -71,51 +83,5 @@ public class AuthManager {
                 }, throwable -> {
                     authRefreshRespCallback.onError(throwable);
                 });
-//        RequestQueue queue = Volley.newRequestQueue(application);
-//        StringRequest sr = new StringRequest(Request.Method.POST, BuildConfig.SPOTIFY_TOKEN_URL, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                AuthRefreshResponse resp = new Gson().fromJson(response, AuthRefreshResponse.class);
-//                authToken = resp.getAccessToken();
-//
-//                // put into shared preferences
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putString(application.getString(R.string.auth_token), authToken);
-//                editor.commit();
-//
-//                authRefreshRespCallback.onSuccess(resp);
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                authRefreshRespCallback.onError(error);
-//                error.printStackTrace();
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("grant_type", "refresh_token");
-//                params.put("refresh_token", refreshToken);
-//
-//                return params;
-//            }
-//
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                //apparently this breaks everything
-////              params.put("Content-Type", "application/x-www-form-urlencoded");
-//                StringBuilder sb = new StringBuilder();
-//                sb.append(BuildConfig.SPOTIFY_CLIENT_ID);
-//                sb.append(":");
-//                sb.append(BuildConfig.SPOTIFY_CLIENT_SECRET);
-//                byte[] encoded = com.google.api.client.util.Base64.encodeBase64((sb.toString()).getBytes());
-//                params.put("Authorization", "Basic " + new String(encoded));
-//                return params;
-//            }
-//        };
-//        queue.add(sr);
     }
 }

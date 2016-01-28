@@ -69,7 +69,6 @@ dependencies {
     compile('com.wu-man:android-oauth-client:0.0.3') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
-    compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.kaaes:spotify-web-api-android:0.2.0'
 
 

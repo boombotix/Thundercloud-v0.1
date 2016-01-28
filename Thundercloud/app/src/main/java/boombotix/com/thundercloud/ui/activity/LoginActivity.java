@@ -1,14 +1,10 @@
 package boombotix.com.thundercloud.ui.activity;
 
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.widget.TextView;
 
 
-import com.android.volley.VolleyError;
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
 import com.google.api.client.auth.oauth2.Credential;
@@ -35,11 +31,9 @@ import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.UserPrivate;
-import retrofit.Callback;
-import retrofit.RetrofitError;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -97,7 +91,6 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                 };
 
         final OAuthManager oauth = new OAuthManager(flow, controller);
-        Activity activity = this;
         Thread thread = new Thread() {
             @Override
             public void run() {
