@@ -1,13 +1,15 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
+import com.google.gson.Gson;
+
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
-import boombotix.com.thundercloud.dependencyinjection.graph.ApplicationGraph;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
 import dagger.Component;
+import kaaes.spotify.webapi.android.SpotifyApi;
 
 /**
  * Application level injection class (Component). The lifetime of this component
@@ -27,7 +29,7 @@ import dagger.Component;
                 ApiModule.class
         }
 )
-public interface ApplicationComponent extends ApplicationGraph {
+public interface ApplicationComponent {
 
 
     final class Initializer {
@@ -43,5 +45,8 @@ public interface ApplicationComponent extends ApplicationGraph {
             // Block instantiation
         }
     }
+
+    Gson gson();
+    SpotifyApi spotifyApi();
 
 }

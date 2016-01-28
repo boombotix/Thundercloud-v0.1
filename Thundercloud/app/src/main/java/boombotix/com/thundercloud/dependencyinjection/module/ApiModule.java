@@ -9,6 +9,7 @@ import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.api.SpotifyEndpoint;
 import dagger.Module;
 import dagger.Provides;
+import kaaes.spotify.webapi.android.SpotifyApi;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
 import retrofit.client.OkClient;
@@ -52,5 +53,11 @@ public class ApiModule {
     @Singleton
     SpotifyEndpoint provideSpotifyEndpoint(RestAdapter restAdapter) {
         return restAdapter.create(SpotifyEndpoint.class);
+    }
+
+    @Provides
+    @Singleton
+    SpotifyApi provideSpotifyApi() {
+        return new SpotifyApi();
     }
 }

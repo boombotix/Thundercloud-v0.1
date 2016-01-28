@@ -33,7 +33,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ui.base.BaseActivity;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
@@ -42,22 +45,24 @@ import kaaes.spotify.webapi.android.models.UserPrivate;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private final String TOKEN_URL = "https://accounts.spotify.com/api/token";
     private final String AUTH_URL = "https://accounts.spotify.com/authorize/";
     private final String CLIENT_ID = "b8a7abf8f6db49bf8a45c4b3ebb8eaaa";
     private final String CLIENT_SECRET = "5c5a84ee8b3c462cabbfba7b33ea813e";
 
-    private Player player;
-    private SpotifyApi api;
+    @Inject
+    SpotifyApi api;
+    @Inject
+    Gson gson;
     private SpotifyService spotify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getActivityComponent().inject(this);
 
-        api = new SpotifyApi();
         spotify = api.getService();
 
 
@@ -131,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 ((TextView) findViewById(R.id.refresh_resp)).setText(response);
                 // TODO replace with actual model
-                Map<String, String> resp = new Gson().fromJson(response, Map.class);
+                Map<String, String> resp = gson.fromJson(response, Map.class);
 
                 api.setAccessToken(resp.get("access_token"));
                 getUser();
