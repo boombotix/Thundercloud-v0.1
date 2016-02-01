@@ -1,7 +1,11 @@
 package boombotix.com.thundercloud.ui.activity;
 
 
+import android.content.Intent;
+import android.media.audiofx.AutomaticGainControl;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -29,6 +33,8 @@ import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
@@ -50,17 +56,25 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
     Gson gson;
     @Inject
     AuthManager authManager;
+    @Bind(R.id.btn_yourmusic)
+    Button urmsc;
     private SpotifyService spotify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
         getActivityComponent().inject(this);
 
         spotify = api.getService();
         authorizeUser();
-
+        urmsc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MusicPagerActivity.class));
+            }
+        });
     }
 
     private void authorizeUser() {
@@ -128,6 +142,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userPrivate -> {
+                    AuthManager.setUserId(userPrivate.id);
                     getPlaylistFromResponse(userPrivate);
                 });
     }

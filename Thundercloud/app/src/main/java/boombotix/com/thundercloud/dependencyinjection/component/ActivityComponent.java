@@ -3,7 +3,9 @@ package boombotix.com.thundercloud.dependencyinjection.component;
 import boombotix.com.thundercloud.dependencyinjection.module.ActivityModule;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.activity.MainActivity;
+import boombotix.com.thundercloud.ui.activity.MusicPagerActivity;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
+import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import dagger.Component;
 
 /**
@@ -18,6 +20,7 @@ import dagger.Component;
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
+
 
     final class Initializer {
         public static ActivityComponent init(BaseActivity activity) {
@@ -34,4 +37,6 @@ public interface ActivityComponent {
 
     void inject(MainActivity mainActivity);
     void inject(LoginActivity loginActivity);
+    void inject(MusicListFragment musicListFragment);
+
 }

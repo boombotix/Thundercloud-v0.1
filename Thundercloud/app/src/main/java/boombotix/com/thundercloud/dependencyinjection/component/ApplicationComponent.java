@@ -13,6 +13,7 @@ import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
 
 /**
  * Application level injection class (Component). The lifetime of this component
@@ -53,5 +54,6 @@ public interface ApplicationComponent {
     SpotifyApi spotifyApi();
     SharedPreferences sharedPreferences();
     AuthManager authManager();
+    SpotifyService spotifyService();
 
 }

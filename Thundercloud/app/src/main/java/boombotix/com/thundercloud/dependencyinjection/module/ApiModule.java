@@ -1,15 +1,18 @@
 package boombotix.com.thundercloud.dependencyinjection.module;
 
 import com.google.gson.Gson;
+import com.spotify.sdk.android.player.Spotify;
 import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
+import boombotix.com.thundercloud.authentication.AuthManager;
 import dagger.Module;
 import dagger.Provides;
 import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
 import retrofit.client.OkClient;
@@ -59,5 +62,10 @@ public class ApiModule {
     @Singleton
     SpotifyApi provideSpotifyApi() {
         return new SpotifyApi();
+    }
+    @Provides
+    @Singleton
+    SpotifyService provideSpotifyService(SpotifyApi spotifyApi) {
+        return spotifyApi.getService();
     }
 }

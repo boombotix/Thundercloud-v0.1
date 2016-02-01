@@ -22,6 +22,7 @@ public class AuthManager {
 
     private static String authToken;
     private static String refreshToken;
+    private static String userId;
     private static Application application;
     private static SharedPreferences sharedPreferences;
     private static SpotifyAuthenticationEndpoint spotifyAuthenticationEndpoint;
@@ -66,6 +67,20 @@ public class AuthManager {
         editor.commit();
 
         AuthManager.refreshToken = refreshToken;
+    }
+
+    public static String getUserId() {
+//        if(sharedPreferences.contains(application.getString(R.string.refresh_token))) {
+//            userId = sharedPreferences.getString(application.getString(R.string.user_id), null);
+//        }
+        return userId;
+    }
+
+    public static void setUserId(String userId) {
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(application.getString(R.string.user_id), userId);
+//        editor.commit();
+        AuthManager.userId = userId;
     }
 
     public void RefreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback){

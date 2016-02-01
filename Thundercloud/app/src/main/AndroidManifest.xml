@@ -15,18 +15,23 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.activity.LoginActivity">
 
         </activity>
         <activity
-            android:name=".ui.activity.DrawerActivity"
-            android:label="@string/title_activity_drawer"
-            android:theme="@style/AppTheme.NoActionBar">            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+            android:name=".ui.activity.PlayerActivity"
+            android:label="@string/title_activity_player"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.activity.MusicPagerActivity"
+            android:label="@string/title_activity_music_pager"
+            android:theme="@style/AppTheme.NoActionBar">
+                <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
