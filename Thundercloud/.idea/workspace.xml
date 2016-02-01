@@ -10,29 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82c91486-c6fb-4a61-ad13-56c4645e70f0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/base/BaseFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/fragment/MusicListFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/activity/MusicPagerActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/adapter/YourMusicAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/viewholder/YourMusicViewHolder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/menu/drawer_view.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_music_pager.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/music_list_item.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/activity/DrawerActivity.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_drawer.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_music_pager.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_drawer.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_music_pager.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/dependencyinjection/component/ActivityComponent.java" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/dependencyinjection/component/ActivityComponent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/dependencyinjection/module/ApiModule.java" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/dependencyinjection/module/ApiModule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/dependencyinjection/component/ApplicationComponent.java" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/dependencyinjection/component/ApplicationComponent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/authentication/AuthManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/authentication/AuthManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/base/BaseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/base/BaseActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/activity/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/drawer_list_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/drawer_list_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/adapter/YourMusicAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/adapter/YourMusicAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/viewholder/YourMusicViewHolder.java" afterPath="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/viewholder/YourMusicViewHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Thundercloud.iws" />
@@ -61,10 +40,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MusicListFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MusicListFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/fragment/MusicListFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5635135">
+            <state vertical-scroll-proportion="0.0">
               <caret line="80" column="18" selection-start-line="80" selection-start-column="18" selection-end-line="80" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -77,22 +56,22 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/viewholder/YourMusicViewHolder.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="18" column="64" selection-start-line="18" selection-start-column="54" selection-end-line="18" selection-end-column="64" />
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#632#633#0" expanded="true" />
+                <element signature="e#676#677#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="YourMusicAdapter.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="YourMusicAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/adapter/YourMusicAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.045945946">
+              <caret line="11" column="68" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -1873,9 +1852,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/dependencyinjection/component/ActivityComponent.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/dependencyinjection/component/ApplicationComponent.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/music_list_item.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/fragment/MusicListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/viewholder/YourMusicViewHolder.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/adapter/YourMusicAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/fragment/MusicListFragment.java" />
       </list>
     </option>
   </component>
@@ -2580,13 +2559,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/adapter/YourMusicAdapter.java</url>
-          <line>36</line>
+          <line>33</line>
           <properties />
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/adapter/YourMusicAdapter.java</url>
-          <line>29</line>
+          <line>26</line>
           <properties />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
@@ -3047,33 +3026,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/fragment/MusicListFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="80" column="18" selection-start-line="80" selection-start-column="18" selection-end-line="80" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/viewholder/YourMusicViewHolder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="64" selection-start-line="18" selection-start-column="54" selection-end-line="18" selection-end-column="64" />
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#632#633#0" expanded="true" />
+            <element signature="e#676#677#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/adapter/YourMusicAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/boombotix/com/thundercloud/ui/fragment/MusicListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5635135">
-          <caret line="80" column="18" selection-start-line="80" selection-start-column="18" selection-end-line="80" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.045945946">
+          <caret line="11" column="68" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
+          <folding />
         </state>
       </provider>
     </entry>

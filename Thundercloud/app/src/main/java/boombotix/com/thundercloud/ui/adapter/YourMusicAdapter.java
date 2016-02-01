@@ -10,9 +10,6 @@ import java.util.ArrayList;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.viewholder.YourMusicViewHolder;
-import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.PlaylistSimple;
 
 /**
  * Created by jsaucedo on 2/1/16.
@@ -35,7 +32,7 @@ public class YourMusicAdapter extends RecyclerView.Adapter<YourMusicViewHolder> 
     @Override
     public void onBindViewHolder(YourMusicViewHolder holder, int position) {
         String item = (String) items.get(position);
-        holder.itemTitle.setText(item);
+        holder.bindData(item);
     }
 
     @Override
