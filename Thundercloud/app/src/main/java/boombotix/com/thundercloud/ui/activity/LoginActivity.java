@@ -2,7 +2,6 @@ package boombotix.com.thundercloud.ui.activity;
 
 
 import android.content.Intent;
-import android.media.audiofx.AutomaticGainControl;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -134,7 +133,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
     }
 
     private void useRefreshToken() {
-        authManager.RefreshAuthToken(this);
+        authManager.refreshAuthToken(this);
     }
 
     private void getUser() {
@@ -163,7 +162,6 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
     @Override
     public void onSuccess(AuthRefreshResponse authRefreshResponse) {
         ((TextView) findViewById(R.id.refresh_resp)).setText(authRefreshResponse.getAccessToken());
-        api.setAccessToken(authRefreshResponse.getAccessToken());
         getUser();
     }
 

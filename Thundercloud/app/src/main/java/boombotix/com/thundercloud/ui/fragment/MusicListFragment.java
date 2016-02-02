@@ -2,17 +2,12 @@ package boombotix.com.thundercloud.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-
-import com.spotify.sdk.android.player.Spotify;
 
 import java.util.ArrayList;
 
@@ -20,23 +15,25 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
+import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.adapter.YourMusicAdapter;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by jsaucedo on 2/1/16.
  */
-public class MusicListFragment extends BaseFragment {
-
+public class MusicListFragment extends BaseFragment implements AuthManager.AuthRefreshRespCallback {
+    private final String TAG = "MusicListFragment";
     private static final String ARG_SECTION = "section";
     @Bind(R.id.recycler)
     RecyclerView recyclerView;
@@ -61,7 +58,17 @@ public class MusicListFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getSupportActivity().getActivityComponent().inject(this);
-        initView();
+        if(authManager.getUserId() != null) {
+            if (authManager.isExpired()) {
+                authManager.refreshAuthToken(this);
+            }
+            else{
+                initView();
+            }
+        }
+        else{
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
     }
 
     private void initView() {
@@ -105,24 +112,39 @@ public class MusicListFragment extends BaseFragment {
     }
 
     private void displayPlaylistContent() {
-        if(authManager.getUserId() != null) {
-            Observable.defer(() -> Observable.just(spotifyService.getPlaylists(authManager.getUserId())))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(playlistSimplePager -> {
+        Observable.defer(() -> Observable.just(spotifyService.getPlaylists(authManager.getUserId())))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Pager<PlaylistSimple>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("error", e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Pager<PlaylistSimple> playlistSimplePager) {
                         ArrayList<Object> items = new ArrayList<>();
                         for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
                             items.add(playlistSimple.name);
                         }
 
-                        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                            recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                        }
+                });
+    }
 
+    @Override
+    public void onSuccess(AuthRefreshResponse authRefreshResponse) {
+        initView();
+    }
 
-                    });
-        }
-        else{
-            startActivity(new Intent(getContext(), LoginActivity.class));
-        }
-
+    @Override
+    public void onError(Throwable error) {
+        Log.e(TAG, error.getMessage());
     }
 }
