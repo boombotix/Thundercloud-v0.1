@@ -24,6 +24,7 @@ import com.wuman.android.auth.OAuthManager;
 import java.io.IOException;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -50,14 +51,15 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
     private final String CLIENT_SECRET = BuildConfig.SPOTIFY_CLIENT_SECRET;
 
     @Inject
-    SpotifyApi api;
+    SpotifyApi spotifyApi;
     @Inject
     Gson gson;
     @Inject
     AuthManager authManager;
     @Bind(R.id.btn_yourmusic)
     Button urmsc;
-    private SpotifyService spotify;
+    @Inject
+    SpotifyService spotify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +67,6 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         getActivityComponent().inject(this);
-
-        spotify = api.getService();
         authorizeUser();
         urmsc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +85,8 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                 new ClientParametersAuthentication(CLIENT_ID, CLIENT_SECRET),
                 CLIENT_ID,
                 AUTH_URL);
-        builder.setScopes(Arrays.asList("user-read-private"));
+        // TODO refactor access list into resource file
+        builder.setScopes(Arrays.asList("user-read-private", "user-library-read", "user-follow-read"));
         AuthorizationFlow flow = builder.build();
 
         AuthorizationUIController controller =
@@ -109,14 +110,14 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
             public void run() {
                 try {
                     final Credential credential = oauth.authorizeExplicitly("userId", null, null).getResult();
-                    authManager.setAuthToken(credential.getAccessToken());
+                    authManager.setAccessToken(credential.getAccessToken());
                     authManager.setRefreshToken(credential.getRefreshToken());
-
-                    useRefreshToken();
-
+                    authManager.setExpires(new Date((new Date()).getTime() / 1000 + credential.getExpiresInSeconds()));
+                    spotifyApi.setAccessToken(credential.getAccessToken());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            getUser();
                             ((TextView) findViewById(R.id.auth)).setText(credential.getAccessToken());
                             ((TextView) findViewById(R.id.refresh)).setText(credential.getRefreshToken());
                             ((TextView) findViewById(R.id.expir)).setText(String.valueOf(credential.getExpiresInSeconds()));

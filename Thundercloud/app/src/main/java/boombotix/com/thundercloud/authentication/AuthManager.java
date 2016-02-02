@@ -14,7 +14,6 @@ import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
 import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -23,7 +22,7 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class AuthManager {
 
-    private static String authToken;
+    private static String accessToken;
     private static String refreshToken;
     private static String userId;
     private static Date expires;
@@ -45,18 +44,18 @@ public class AuthManager {
         void onError(Throwable error);
     }
 
-    public String getAuthToken() {
-        if(sharedPreferences.contains(application.getString(R.string.auth_token))) {
-            authToken = sharedPreferences.getString(application.getString(R.string.auth_token), null);
+    public String getAccessToken() {
+        if(sharedPreferences.contains(application.getString(R.string.access_token))) {
+            accessToken = sharedPreferences.getString(application.getString(R.string.access_token), null);
         }
-        return authToken;
+        return accessToken;
     }
 
-    public void setAuthToken(String authToken) {
+    public void setAccessToken(String accessToken) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(application.getString(R.string.auth_token), authToken);
+        editor.putString(application.getString(R.string.access_token), accessToken);
         editor.commit();
-        AuthManager.authToken = authToken;
+        AuthManager.accessToken = accessToken;
     }
 
 
@@ -104,7 +103,7 @@ public class AuthManager {
     }
 
     public boolean isExpired(){
-        if(expires == null) return true;
+        if(getExpires() == null) return true;
         return ((new Date()).getTime()/1000 - expires.getTime() >= 3600);
     }
 
@@ -119,7 +118,7 @@ public class AuthManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(authRefreshResponse -> {
                     spotifyApi.setAccessToken(authRefreshResponse.getAccessToken());
-                    setAuthToken(authRefreshResponse.getAccessToken());
+                    setAccessToken(authRefreshResponse.getAccessToken());
                     setExpires(new Date((new Date()).getTime()/1000 + authRefreshResponse.getExpiresIn()));
                     authRefreshRespCallback.onSuccess(authRefreshResponse);
                 }, throwable -> {
