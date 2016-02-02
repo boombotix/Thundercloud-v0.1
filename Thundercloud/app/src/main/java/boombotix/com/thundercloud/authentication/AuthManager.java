@@ -104,7 +104,7 @@ public class AuthManager {
 
     public boolean isExpired(){
         if(getExpires() == null) return true;
-        return ((new Date()).getTime()/1000 - expires.getTime() >= 3600);
+        return ((new Date()).getTime()/1000 - expires.getTime() >= 0);
     }
 
     public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback){

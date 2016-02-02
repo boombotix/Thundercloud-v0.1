@@ -128,13 +128,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                 }
             }
         };
-
         thread.start();
-
-    }
-
-    private void useRefreshToken() {
-        authManager.refreshAuthToken(this);
     }
 
     private void getUser() {
@@ -143,20 +137,6 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userPrivate -> {
                     AuthManager.setUserId(userPrivate.id);
-                    getPlaylistFromResponse(userPrivate);
-                });
-    }
-
-    private void getPlaylistFromResponse(UserPrivate userPrivate) {
-        Observable.defer(() -> Observable.just(spotify.getPlaylists(userPrivate.id)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(playlistSimplePager -> {
-                    String contents = "";
-                    for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
-                        contents += playlistSimple.name + "\n";
-                    }
-                    ((TextView) findViewById(R.id.playlist)).setText(contents);
                 });
     }
 
