@@ -1,22 +1,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/player_bar_outer_height">
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@android:drawable/sym_def_app_icon"
-        android:layout_centerHorizontal="true"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/player_bar_inner_height"
         android:background="@color/playerBarColor"
         android:layout_alignParentBottom="true">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/basicText"
-            android:textSize="@dimen/player_currently_playing"
-            android:text="@string/hello_blank_fragment" />
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/linearLayout">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/basicText"
+                android:textSize="@dimen/player_currently_playing"
+                android:text="Sleeping Fox" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/basicText"
+                android:textSize="@dimen/player_currently_playing"
+                android:text="Pyramid" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:background="@android:drawable/ic_media_play"
+            android:contentDescription="expand"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentEnd="true" />
 
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@android:drawable/sym_def_app_icon"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>
