@@ -14,15 +14,17 @@ import butterknife.ButterKnife;
 public class YourMusicViewHolder extends RecyclerView.ViewHolder{
     @Bind(R.id.item_title)
     TextView itemTitle;
+    @Bind(R.id.item_duration)
+    TextView itemDuration;
     public YourMusicViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
-//        itemTitle = (TextView) view.findViewById(R.id.item_title);
     }
 
-    public void bindData(String item)
+    public void bindData(String name, String duration)
     {
-        this.itemTitle.setText(item);
+        this.itemTitle.setText(name);
+        this.itemDuration.setText(duration);
     }
 
 }

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +81,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     private void initView() {
         spotifyApi.setAccessToken(authManager.getAccessToken());
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<Object>()));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<>()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         switch(getArguments().getInt(ARG_SECTION)){
             case 0:
@@ -111,9 +113,9 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(artistsCursorPager -> {
-                    ArrayList<Object> items = new ArrayList<>();
+                    ArrayList<Pair<String, String>> items = new ArrayList<>();
                     for (Artist artist : artistsCursorPager.artists.items) {
-                        items.add(artist.name);
+                            items.add(new Pair<>(artist.name, TextUtils.join(", ", artist.genres)));
                     }
 
                     recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -125,9 +127,11 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(savedAlbumPager -> {
-                    ArrayList<Object> items = new ArrayList<>();
+                    ArrayList<Pair<String, String>> items = new ArrayList<>();
                     for (SavedAlbum savedAlbum : savedAlbumPager.items) {
-                        items.add(savedAlbum.album.name);
+                        items.add(new Pair<>(savedAlbum.album.name,
+                                pluralize(getSupportActivity().getString(R.string.song),
+                                        savedAlbum.album.tracks.items.size())));
                     }
 
                     recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -151,9 +155,10 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
                     @Override
                     public void onNext(Pager<SavedTrack> savedTrackPager) {
-                            ArrayList<Object> items = new ArrayList<>();
+                            ArrayList<Pair<String, String>> items = new ArrayList<>();
                             for (SavedTrack savedTrack : savedTrackPager.items) {
-                                items.add(savedTrack.track.name);
+                                items.add(new Pair<>(savedTrack.track.name,
+                                        String.valueOf(savedTrack.track.duration_ms/1000)));
                             }
 
                             recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -166,9 +171,11 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(playlistSimplePager -> {
-                    ArrayList<Object> items = new ArrayList<>();
+                    ArrayList<Pair<String, String>> items = new ArrayList<>();
                     for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
-                        items.add(playlistSimple.name);
+                        items.add(new Pair<>(playlistSimple.name,
+                                        pluralize(getSupportActivity().getString(R.string.song),
+                                                playlistSimple.tracks.total)));
                     }
 
                     recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -184,5 +191,10 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     public void onError(Throwable error) {
         Log.e(TAG, error.getMessage());
         error.printStackTrace();
+    }
+
+    private String pluralize(String s, int c){
+        if(c < 2) return String.valueOf(c) + " " + s;
+        return String.valueOf(c) + " " + s + "s";
     }
 }

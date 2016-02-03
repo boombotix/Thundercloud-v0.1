@@ -2,6 +2,7 @@ package boombotix.com.thundercloud.ui.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,8 @@ import boombotix.com.thundercloud.ui.viewholder.YourMusicViewHolder;
  */
 public class YourMusicAdapter extends RecyclerView.Adapter<YourMusicViewHolder> {
     Activity activity;
-    ArrayList<Object> items;
-    public YourMusicAdapter(Activity activity, ArrayList<Object> items) {
+    ArrayList<Pair<String, String>> items;
+    public YourMusicAdapter(Activity activity, ArrayList<Pair<String, String>> items) {
         this.activity = activity;
         this.items = items;
     }
@@ -31,8 +32,8 @@ public class YourMusicAdapter extends RecyclerView.Adapter<YourMusicViewHolder> 
 
     @Override
     public void onBindViewHolder(YourMusicViewHolder holder, int position) {
-        String item = (String) items.get(position);
-        holder.bindData(item);
+        Pair<String, String> item = items.get(position);
+        holder.bindData(item.first, item.second);
     }
 
     @Override
