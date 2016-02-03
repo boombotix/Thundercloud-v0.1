@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.MusicPager;
+import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,11 +28,19 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.main_fragment);
-        if (fragment == null) {
-            fragment = new MusicPager();
+        Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
+        if (mainFragment == null) {
+            mainFragment = new MusicPager();
             fm.beginTransaction()
-                    .add(R.id.main_fragment, fragment)
+                    .add(R.id.main_fragment, mainFragment)
+                    .commit();
+        }
+
+        Fragment playerFragment = fm.findFragmentById(R.id.player_fragment);
+        if (playerFragment == null) {
+            playerFragment = new PlayerFragment();
+            fm.beginTransaction()
+                    .add(R.id.player_fragment, playerFragment)
                     .commit();
         }
 

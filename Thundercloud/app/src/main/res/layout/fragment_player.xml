@@ -1,13 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="boombotix.com.thundercloud.ui.fragment.PlayerFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:layout_height="@dimen/player_bar_outer_height">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@android:drawable/sym_def_app_icon"
+        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="@dimen/player_bar_inner_height"
+        android:background="@color/playerBarColor"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/basicText"
+            android:textSize="@dimen/player_currently_playing"
+            android:text="@string/hello_blank_fragment" />
+    </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

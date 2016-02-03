@@ -5,4 +5,5 @@
     <color name="primaryBg">#666666</color>
     <color name="basicText">#ffffff</color>
     <color name="colorAccent">#40b3ff</color>
+    <color name="playerBarColor">#80000000</color>
 </resources>

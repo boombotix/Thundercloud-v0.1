@@ -14,10 +14,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.LoginActivity"></activity>
         <activity
-            android:name=".ui.activity.PlayerActivity"
-            android:label="@string/title_activity_player"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
