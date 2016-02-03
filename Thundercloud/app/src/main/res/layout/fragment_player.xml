@@ -35,14 +35,27 @@
             android:contentDescription="expand"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:id="@+id/imageView2" />
 
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/seekBar"
             android:layout_below="@+id/linearLayout"
-            android:layout_centerHorizontal="true" />
+            android:max="100"
+            android:progress="50"
+            android:layout_toRightOf="@+id/imageView3"
+            android:layout_alignRight="@+id/imageView2"
+            android:layout_alignEnd="@+id/imageView2" />
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:drawable/ic_lock_silent_mode_off"
+            android:layout_below="@+id/imageView2"
+            android:layout_alignLeft="@+id/linearLayout"
+            android:layout_alignStart="@+id/linearLayout"
+            android:id="@+id/imageView3" />
     </RelativeLayout>
     <ImageView
         android:layout_width="50dp"
