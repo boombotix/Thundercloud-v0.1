@@ -3,7 +3,6 @@ package boombotix.com.thundercloud.dependencyinjection.component;
 import boombotix.com.thundercloud.dependencyinjection.module.ActivityModule;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.activity.MainActivity;
-import boombotix.com.thundercloud.ui.activity.MusicPagerActivity;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import dagger.Component;

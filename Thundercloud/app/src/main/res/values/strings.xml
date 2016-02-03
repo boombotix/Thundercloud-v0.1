@@ -20,4 +20,7 @@
     <string name="user_id">userId</string>
     <string name="expires">expires</string>
     <string name="items">items</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

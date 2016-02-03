@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
         urmsc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MusicPagerActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }
