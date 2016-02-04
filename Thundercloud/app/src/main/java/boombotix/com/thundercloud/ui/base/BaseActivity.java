@@ -29,8 +29,6 @@ public class BaseActivity extends AppCompatActivity {
         return ((ThundercloudApplication) getApplication()).getApplicationComponent();
     }
 
-
-
     /**
      * Prepares activity and application level object graphs
      */

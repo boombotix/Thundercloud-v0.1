@@ -21,6 +21,10 @@
     <string name="expires">expires</string>
     <string name="items">items</string>
 
+    <!-- Setup -->
+    <string name="connect_bluetooth_fragment_title">Connect Bluetooth</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_speaker_pairing">SpeakerPairingActivity</string>
 </resources>

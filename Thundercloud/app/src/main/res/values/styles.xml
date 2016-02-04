@@ -21,4 +21,6 @@
         <!-- title text color -->
         <item name="android:textColorPrimary">@color/colorAccent</item>
     </style>
+
+
 </resources>
