@@ -1,18 +1,20 @@
 package boombotix.com.thundercloud.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ui.base.BaseActivity;
+import boombotix.com.thundercloud.ui.fragment.pairing.ConnectBluetoothFragment;
 
 /**
- * Enables bluetooth, then shows the user a list of available Boombots. Finishes with selected UUID
- * as a result.
+ * Shows fragment asking user to start bluetooth search, then shows  a list of available Boombots.
+ * Finishes with selected UUID as a result.
  *
  * @author Theo Kanning
  */
-public class SpeakerPairingActivity extends AppCompatActivity {
+public class SpeakerPairingActivity extends BaseActivity implements
+        ConnectBluetoothFragment.OnBluetoothSearchStartedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,4 +26,8 @@ public class SpeakerPairingActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBluetoothSearchStarted() {
+
+    }
 }

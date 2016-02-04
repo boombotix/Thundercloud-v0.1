@@ -21,10 +21,17 @@
     <string name="expires">expires</string>
     <string name="items">items</string>
 
-    <!-- Setup -->
-    <string name="connect_bluetooth_fragment_title">Connect Bluetooth</string>
+    <!-- Speaker Pairing -->
+    <string name="title_activity_speaker_pairing">Select a speaker</string>
+
+    <string name="connect_bluetooth_title">Connect Bluetooth</string>
+    <string name="connect_bluetooth_instructions">Tap the Bluetooth icon below to begin the speaker setup process.</string>
+
+    <!-- Content Descriptions -->
+    <string name="connect_bluetooth_button_description">Connect bluetooth</string>
+    <string name="boombotix_logo_description">Boombotix logo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_speaker_pairing">SpeakerPairingActivity</string>
+
 </resources>
