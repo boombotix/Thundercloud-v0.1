@@ -22,5 +22,31 @@
         <item name="android:textColorPrimary">@color/colorAccent</item>
     </style>
 
+    <!-- Text Appearance Styles -->
+    <style name="TextAppearance" parent="TextAppearance.AppCompat" />
+
+    <style name="TextAppearance.Thundercloud" parent="TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    
+    <style name="TextAppearance.Thundercloud.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Title.Gray">
+        <item name="android:alpha">0.7</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Body">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Body.Accent">
+        <item name="android:color">@color/colorAccent</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Body.Gray">
+        <item name="android:alpha">0.7</item>
+    </style>
 
 </resources>
