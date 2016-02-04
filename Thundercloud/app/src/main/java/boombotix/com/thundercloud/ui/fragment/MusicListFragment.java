@@ -185,12 +185,26 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                             ArrayList<Pair<String, String>> items = new ArrayList<>();
                             for (SavedTrack savedTrack : savedTrackPager.items) {
                                 items.add(new Pair<>(savedTrack.track.name,
-                                        String.valueOf(savedTrack.track.duration_ms/1000)));
+                                        prettyTime(savedTrack.track.duration_ms / 1000)));
                             }
 
                             recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
                         }
                 });
+    }
+
+    private String prettyTime(long l) {
+        String time = "";
+        long seconds = l % 60;
+        long minutes = l/60 % 60;
+        long hours = l/3600 % 60;
+
+        if(hours > 0){
+            time += ((hours < 10) ? "0" : "") + hours + ":";
+        }
+        time += ((minutes < 10 && hours > 0) ? "0" : "") + minutes + ":";
+        time += ((seconds < 10) ? "0" : "") + seconds;
+        return time;
     }
 
     private void displayPlaylistContent() {
