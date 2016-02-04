@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
+import kaaes.spotify.webapi.android.models.ArtistsCursorPager;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.SavedAlbum;
@@ -112,13 +113,26 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         Observable.defer(() -> Observable.just(spotifyService.getFollowedArtists()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(artistsCursorPager -> {
-                    ArrayList<Pair<String, String>> items = new ArrayList<>();
-                    for (Artist artist : artistsCursorPager.artists.items) {
-                            items.add(new Pair<>(artist.name, TextUtils.join(", ", artist.genres)));
+                .subscribe(new Subscriber<ArtistsCursorPager>() {
+                    @Override
+                    public void onCompleted() {
+
                     }
 
-                    recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ArtistsCursorPager artistsCursorPager) {
+                        ArrayList<Pair<String, String>> items = new ArrayList<>();
+                        for (Artist artist : artistsCursorPager.artists.items) {
+                            items.add(new Pair<>(artist.name, TextUtils.join(", ", artist.genres)));
+                        }
+
+                        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                    }
                 });
     }
 
@@ -126,15 +140,28 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         Observable.defer(() -> Observable.just(spotifyService.getMySavedAlbums()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(savedAlbumPager -> {
-                    ArrayList<Pair<String, String>> items = new ArrayList<>();
-                    for (SavedAlbum savedAlbum : savedAlbumPager.items) {
-                        items.add(new Pair<>(savedAlbum.album.name,
-                                pluralize(getSupportActivity().getString(R.string.song),
-                                        savedAlbum.album.tracks.items.size())));
+                .subscribe(new Subscriber<Pager<SavedAlbum>>() {
+                    @Override
+                    public void onCompleted() {
+
                     }
 
-                    recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Pager<SavedAlbum> savedAlbumPager) {
+                        ArrayList<Pair<String, String>> items = new ArrayList<>();
+                        for (SavedAlbum savedAlbum : savedAlbumPager.items) {
+                            items.add(new Pair<>(savedAlbum.album.name,
+                                    pluralize(getSupportActivity().getString(R.string.song),
+                                            savedAlbum.album.tracks.items.size())));
+                        }
+
+                        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                    }
                 });
     }
 
@@ -170,15 +197,28 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         Observable.defer(() -> Observable.just(spotifyService.getPlaylists(authManager.getUserId())))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(playlistSimplePager -> {
-                    ArrayList<Pair<String, String>> items = new ArrayList<>();
-                    for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
-                        items.add(new Pair<>(playlistSimple.name,
-                                        pluralize(getSupportActivity().getString(R.string.song),
-                                                playlistSimple.tracks.total)));
+                .subscribe(new Subscriber<Pager<PlaylistSimple>>() {
+                    @Override
+                    public void onCompleted() {
+
                     }
 
-                    recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Pager<PlaylistSimple> playlistSimplePager) {
+                        ArrayList<Pair<String, String>> items = new ArrayList<>();
+                        for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
+                            items.add(new Pair<>(playlistSimple.name,
+                                    pluralize(getSupportActivity().getString(R.string.song),
+                                            playlistSimple.tracks.total)));
+                        }
+
+                        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                    }
                 });
     }
 
