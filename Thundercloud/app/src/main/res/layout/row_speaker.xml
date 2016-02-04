@@ -4,9 +4,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        style="@style/TextAppearance.Thundercloud.Title"
+        style="@style/TextAppearance.Thundercloud.Speaker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
         android:text="Speaker Name"
         android:id="@+id/text1" />
 </LinearLayout>

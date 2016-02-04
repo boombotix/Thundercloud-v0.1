@@ -27,8 +27,13 @@
     <string name="connect_bluetooth_title">Connect Bluetooth</string>
     <string name="connect_bluetooth_instructions">Tap the Bluetooth icon below to begin the speaker setup process.</string>
 
+    <string name="speaker_list_instructions">Select the speaker you would like to connect with your phone</string>
+    <string name="speaker_List_no_speakers_found">Hmm… no speakers were found nearby. Be sure the speaker is on and near your phone. You should see a blue light on the speaker.</string>
+
+
     <!-- Content Descriptions -->
     <string name="connect_bluetooth_button_description">Connect bluetooth</string>
+    <string name="no_speakers_found_description">No speakers found</string>
     <string name="boombotix_logo_description">Boombotix logo</string>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -53,5 +53,4 @@ public class ConnectBluetoothFragment extends Fragment {
     public void showSpeakerListFragment(){
         onBluetoothSearchStartedListener.onBluetoothSearchStarted();
     }
-
 }

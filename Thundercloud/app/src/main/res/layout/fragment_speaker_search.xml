@@ -1,0 +1,53 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="@dimen/default_margin"
+    android:layout_marginLeft="@dimen/default_margin"
+    android:layout_marginRight="@dimen/default_margin"
+    android:layout_marginStart="@dimen/default_margin"
+    tools:context=".ui.fragment.pairing.SpeakerSearchFragment">
+
+    <LinearLayout
+        android:id="@+id/search_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextAppearance.Thundercloud.Title.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_2x"
+            android:layout_marginTop="@dimen/default_margin_2x"
+            android:text="@string/speaker_list_instructions" />
+
+        <ListView
+            android:id="@+id/speaker_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listItem="@layout/row_speaker" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/no_results_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/TextAppearance.Thundercloud.Title.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_2x"
+            android:layout_marginTop="@dimen/default_margin_2x"
+            android:text="@string/speaker_List_no_speakers_found" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/no_speakers_found_description"
+            android:src="@mipmap/ic_launcher" />
+    </RelativeLayout>
+</FrameLayout>
