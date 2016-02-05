@@ -21,6 +21,23 @@
     <string name="expires">expires</string>
     <string name="items">items</string>
 
+    <!-- Speaker Pairing -->
+    <string name="title_activity_speaker_pairing">Select a speaker</string>
+
+    <string name="connect_bluetooth_title">Connect Bluetooth</string>
+    <string name="connect_bluetooth_instructions">Tap the Bluetooth icon below to begin the speaker setup process.</string>
+
+    <string name="speaker_search_title">Select a Speaker</string>
+    <string name="speaker_search_instructions">Select the speaker you would like to connect with your phone</string>
+    <string name="speaker_search_no_speakers_found">Hmm… no speakers were found nearby. Be sure the speaker is on and near your phone. You should see a blue light on the speaker.</string>
+
+
+    <!-- Content Descriptions -->
+    <string name="connect_bluetooth_button_description">Connect bluetooth</string>
+    <string name="no_speakers_found_description">No speakers found</string>
+    <string name="boombotix_logo_description">Boombotix logo</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

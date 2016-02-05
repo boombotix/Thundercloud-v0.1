@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,12 +23,17 @@
         <item name="android:textColorPrimary">@color/colorAccent</item>
     </style>
 
-    
     <!-- Text Appearance Styles -->
     <style name="TextAppearance" parent="TextAppearance.AppCompat" />
 
     <style name="TextAppearance.Thundercloud" parent="TextAppearance">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Speaker">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
     
     <style name="TextAppearance.Thundercloud.Title">
@@ -49,7 +55,5 @@
     <style name="TextAppearance.Thundercloud.Body.Gray">
         <item name="android:alpha">0.7</item>
     </style>
-
-
 
 </resources>

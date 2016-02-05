@@ -17,7 +17,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment that shows a tabbed view with the user's playlists, songs, albums, and artists
+ *
+ * @author Jayd Saucedo
  */
 public class MusicPager extends BaseFragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
