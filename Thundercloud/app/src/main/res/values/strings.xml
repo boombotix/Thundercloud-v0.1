@@ -27,8 +27,9 @@
     <string name="connect_bluetooth_title">Connect Bluetooth</string>
     <string name="connect_bluetooth_instructions">Tap the Bluetooth icon below to begin the speaker setup process.</string>
 
-    <string name="speaker_list_instructions">Select the speaker you would like to connect with your phone</string>
-    <string name="speaker_List_no_speakers_found">Hmm… no speakers were found nearby. Be sure the speaker is on and near your phone. You should see a blue light on the speaker.</string>
+    <string name="speaker_search_title">Select a Speaker</string>
+    <string name="speaker_search_instructions">Select the speaker you would like to connect with your phone</string>
+    <string name="speaker_search_no_speakers_found">Hmm… no speakers were found nearby. Be sure the speaker is on and near your phone. You should see a blue light on the speaker.</string>
 
 
     <!-- Content Descriptions -->

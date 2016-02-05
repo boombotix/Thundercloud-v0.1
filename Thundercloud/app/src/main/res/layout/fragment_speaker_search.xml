@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_margin_2x"
             android:layout_marginTop="@dimen/default_margin_2x"
-            android:text="@string/speaker_list_instructions" />
+            android:text="@string/speaker_search_instructions" />
 
         <ListView
             android:id="@+id/speaker_list"
@@ -41,13 +41,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_margin_2x"
             android:layout_marginTop="@dimen/default_margin_2x"
-            android:text="@string/speaker_List_no_speakers_found" />
+            android:text="@string/speaker_search_no_speakers_found" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:contentDescription="@string/no_speakers_found_description"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            android:background="#00000000" />
     </RelativeLayout>
 </FrameLayout>

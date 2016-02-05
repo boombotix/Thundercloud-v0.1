@@ -53,4 +53,10 @@ public class ConnectBluetoothFragment extends Fragment {
     public void showSpeakerListFragment(){
         onBluetoothSearchStartedListener.onBluetoothSearchStarted();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }

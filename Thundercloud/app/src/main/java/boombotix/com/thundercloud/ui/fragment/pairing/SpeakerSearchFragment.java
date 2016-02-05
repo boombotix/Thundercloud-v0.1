@@ -54,18 +54,9 @@ public class SpeakerSearchFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_speaker_search, container, false);
         ButterKnife.bind(this, view);
 
-        return view;
-    }
+        getActivity().setTitle(R.string.speaker_search_title);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            onSpeakerSelectedListener = (OnSpeakerSelectedListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnSpeakerSelectedListener");
-        }
+        return view;
     }
 
     /**
@@ -86,6 +77,7 @@ public class SpeakerSearchFragment extends BaseFragment {
         showScanView();
         //todo start ble scan
         //todo subscribe to ble results
+        //todo on each ble result, add to adapter and speakers
     }
 
     /**
@@ -94,6 +86,7 @@ public class SpeakerSearchFragment extends BaseFragment {
     private void showScanView() {
         searchContainer.setVisibility(View.VISIBLE);
         noResultsContainer.setVisibility(View.GONE);
+        //todo determine if we are showing a progress indicator or changing text before a speaker has been found
     }
 
     /**
@@ -120,4 +113,21 @@ public class SpeakerSearchFragment extends BaseFragment {
         BluetoothDevice selectedDevice = speakers.get(position);
         onSpeakerSelectedListener.onSpeakerSelected(selectedDevice);
     };
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            onSpeakerSelectedListener = (OnSpeakerSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnSpeakerSelectedListener");
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }
