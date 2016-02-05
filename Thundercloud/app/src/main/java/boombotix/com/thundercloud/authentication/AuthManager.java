@@ -3,6 +3,8 @@ package boombotix.com.thundercloud.authentication;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -25,7 +27,7 @@ public class AuthManager {
     private static String accessToken;
     private static String refreshToken;
     private static String userId;
-    private static Date expires;
+    private static DateTime expires;
     private static Application application;
     private static SharedPreferences sharedPreferences;
     private static SpotifyAuthenticationEndpoint spotifyAuthenticationEndpoint;
@@ -88,23 +90,24 @@ public class AuthManager {
         AuthManager.userId = userId;
     }
 
-    public static Date getExpires() {
+    public static DateTime getExpires() {
         if(sharedPreferences.contains(application.getString(R.string.expires))) {
-            expires = new Date(sharedPreferences.getLong(application.getString(R.string.expires), 0));
+            expires = new DateTime(sharedPreferences.getLong(application.getString(R.string.expires), 0));
         }
         return expires;
     }
 
-    public static void setExpires(Date expires) {
+    public static void setExpires(DateTime expires) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(application.getString(R.string.expires), expires.getTime());
+        editor.putLong(application.getString(R.string.expires), expires.getMillis());
         editor.commit();
         AuthManager.expires = expires;
     }
 
     public boolean isExpired(){
         if(getExpires() == null) return true;
-        return ((new Date()).getTime()/1000 - expires.getTime() >= 0);
+        DateTime dateTime = new DateTime(expires);
+        return dateTime.isBeforeNow();
     }
 
     public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback){
@@ -119,7 +122,8 @@ public class AuthManager {
                 .subscribe(authRefreshResponse -> {
                     spotifyApi.setAccessToken(authRefreshResponse.getAccessToken());
                     setAccessToken(authRefreshResponse.getAccessToken());
-                    setExpires(new Date((new Date()).getTime()/1000 + authRefreshResponse.getExpiresIn()));
+                    DateTime expires = DateTime.now().plusSeconds(authRefreshResponse.getExpiresIn());
+                    setExpires(expires);
                     authRefreshRespCallback.onSuccess(authRefreshResponse);
                 }, throwable -> {
                     authRefreshRespCallback.onError(throwable);

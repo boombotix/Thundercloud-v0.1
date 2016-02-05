@@ -21,6 +21,9 @@ import com.wuman.android.auth.AuthorizationFlow;
 import com.wuman.android.auth.AuthorizationUIController;
 import com.wuman.android.auth.DialogFragmentController;
 import com.wuman.android.auth.OAuthManager;
+
+import org.joda.time.DateTime;
+
 import java.io.IOException;
 
 import java.util.Arrays;
@@ -68,12 +71,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
         ButterKnife.bind(this);
         getActivityComponent().inject(this);
         authorizeUser();
-        urmsc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });
+        urmsc.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
     }
 
     private void authorizeUser() {
@@ -112,16 +110,13 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                     final Credential credential = oauth.authorizeExplicitly("userId", null, null).getResult();
                     authManager.setAccessToken(credential.getAccessToken());
                     authManager.setRefreshToken(credential.getRefreshToken());
-                    authManager.setExpires(new Date((new Date()).getTime() / 1000 + credential.getExpiresInSeconds()));
+                    authManager.setExpires((new DateTime()).plus(credential.getExpirationTimeMilliseconds()));
                     spotifyApi.setAccessToken(credential.getAccessToken());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            getUser();
-                            ((TextView) findViewById(R.id.auth)).setText(credential.getAccessToken());
-                            ((TextView) findViewById(R.id.refresh)).setText(credential.getRefreshToken());
-                            ((TextView) findViewById(R.id.expir)).setText(String.valueOf(credential.getExpiresInSeconds()));
-                        }
+                    runOnUiThread(() -> {
+                        getUser();
+                        ((TextView) findViewById(R.id.auth)).setText(credential.getAccessToken());
+                        ((TextView) findViewById(R.id.refresh)).setText(credential.getRefreshToken());
+                        ((TextView) findViewById(R.id.expir)).setText(String.valueOf(credential.getExpiresInSeconds()));
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
