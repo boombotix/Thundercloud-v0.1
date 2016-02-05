@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                     final Credential credential = oauth.authorizeExplicitly("userId", null, null).getResult();
                     authManager.setAccessToken(credential.getAccessToken());
                     authManager.setRefreshToken(credential.getRefreshToken());
-                    authManager.setExpires((new DateTime()).plus(credential.getExpirationTimeMilliseconds()));
+                    authManager.setExpires((new DateTime()).plusSeconds(credential.getExpiresInSeconds().intValue()));
                     spotifyApi.setAccessToken(credential.getAccessToken());
                     runOnUiThread(() -> {
                         getUser();
