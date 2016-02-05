@@ -36,10 +36,13 @@
     <string name="wifi_list_title">Connect to Wi-Fi</string>
     <string name="wifi_list_instructions">Add %1$s to a Wi-Fi network.</string>
     <string name="wifi_list_instructions_first_time">Great! Now add %1$s to a Wi-Fi network.</string>
-    <string name="wifi_list_searching">Searching for available networks...</string>
+    <string name="wifi_list_searching">Searching for available networks&#8230;</string>
     <string name="wifi_list_no_networks_found">Hmm…no Wi-Fi networks were found nearby. You can still listen to your music using Bluetooth for now.</string>
     <string name="wifi_list_skip">Skip Wi-Fi setup for now</string>
     <string name="wifi_list_skip_reminder">You can add a wireless network later in Settings.</string>
+
+    <string name="wifi_connect_title">Set up %1$s</string>
+    <string name="wifi_connect_connecting">Connecting to "%1$s"&#8230;</string>
 
     <!-- Content Descriptions -->
     <string name="connect_bluetooth_button_description">Connect bluetooth</string>

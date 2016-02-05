@@ -1,33 +1,34 @@
 package boombotix.com.thundercloud.ui.fragment.wifi;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link WifiConnectFragmentCallbacks} interface to handle interaction events.
- * Use the {@link WifiConnectFragment#newInstance} factory method to create an instance of this
- * fragment.
+ * {@link WifiConnectFragmentCallbacks} interface to handle interaction events. Use the {@link
+ * WifiConnectFragment#newInstance} factory method to create an instance of this fragment.
  */
 public class WifiConnectFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_NETWORK_NAME = "networkName";
 
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_SPEAKER_NAME = "speakerName";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
+    @Bind(R.id.connecting_message)
+    TextView message;
 
-    private String mParam2;
+    private String networkName;
+
+    private String speakerName;
 
     private WifiConnectFragmentCallbacks mListener;
 
@@ -36,19 +37,15 @@ public class WifiConnectFragment extends Fragment {
     }
 
     /**
-     * Use this factory method to create a new instance of this fragment using the provided
-     * parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param networkName name of network that speaker should connect to
+     * @param speakerName name of connected speaker, for display purposes
      * @return A new instance of fragment WifiConnectFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static WifiConnectFragment newInstance(String networkName, String speakerName) {
         WifiConnectFragment fragment = new WifiConnectFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, networkName);
-        args.putString(ARG_PARAM2, speakerName);
+        args.putString(ARG_NETWORK_NAME, networkName);
+        args.putString(ARG_SPEAKER_NAME, speakerName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,16 +54,42 @@ public class WifiConnectFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            networkName = getArguments().getString(ARG_NETWORK_NAME);
+            speakerName = getArguments().getString(ARG_SPEAKER_NAME);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wifi_connect, container, false);
+        View view = inflater.inflate(R.layout.fragment_wifi_connect, container, false);
+        ButterKnife.bind(this, view);
+
+        setConnectingMessage();
+        setTitle();
+
+        return view;
+    }
+
+    private void setTitle() {
+        String title = getString(R.string.wifi_connect_title, speakerName);
+        getActivity().setTitle(title);
+    }
+
+    /**
+     * Show the network name in the connecting message text
+     */
+    private void setConnectingMessage() {
+        String text = getString(R.string.wifi_connect_connecting, networkName);
+        message.setText(text);
+    }
+
+    /**
+     * Attempts to connect the current speaker to the specific wifi network, sends message to {@link
+     * WifiConnectFragmentCallbacks} after completion.
+     */
+    private void connectSpeakerToNetwork() {
+        //todo connect speaker to wifi network
     }
 
     @Override
@@ -86,16 +109,16 @@ public class WifiConnectFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this fragment to allow an
-     * interaction in this fragment to be communicated to the activity and potentially other
-     * fragments contained in that activity. <p> See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating
-     * with Other Fragments</a> for more information.
-     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     public interface WifiConnectFragmentCallbacks {
 
         void onWifiConnectSuccess();
+
         void onWifiConnectFailure();
     }
 }

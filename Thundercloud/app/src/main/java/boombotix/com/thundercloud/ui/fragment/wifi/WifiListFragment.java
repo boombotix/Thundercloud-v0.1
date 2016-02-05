@@ -85,6 +85,7 @@ public class WifiListFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wifi_list, container, false);
         ButterKnife.bind(this,view);
+        getActivity().setResult(R.string.wifi_list_title);
 
         initNetworkList();
         startSearch();
@@ -96,7 +97,7 @@ public class WifiListFragment extends Fragment {
      */
     private void initNetworkList(){
         //todo adapter
-
+        //todo handle clicks and prompt for password
     }
 
     /**
@@ -177,6 +178,7 @@ public class WifiListFragment extends Fragment {
 
     public interface WifiListFragmentCallbacks {
 
+        //todo change once we know what data are required for joining a network, password, id etc
         void onWifiNetworkChosen(String networkName);
 
         void onWifiSetupSkipped();
