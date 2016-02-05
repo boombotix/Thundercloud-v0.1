@@ -108,6 +108,12 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
     private void displayArtistsContent() {
         Observable.defer(() -> Observable.just(spotifyService.getFollowedArtists()))
                 .subscribeOn(Schedulers.io())
