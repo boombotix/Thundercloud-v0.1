@@ -44,20 +44,13 @@ public class MusicPager extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_music_pager, container, false);
         ButterKnife.bind(this, view);
 
-        // Create the adapter that will return a fragment for each of the
-        // primary sections of the activity.
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        // Inflate the layout for this fragment
         return view;
     }
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -66,8 +59,6 @@ public class MusicPager extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             return MusicListFragment.newInstance(position);
         }
 
