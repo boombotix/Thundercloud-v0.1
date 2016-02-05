@@ -35,7 +35,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
-    
+
     <style name="TextAppearance.Thundercloud.Title">
         <item name="android:textSize">20sp</item>
     </style>
