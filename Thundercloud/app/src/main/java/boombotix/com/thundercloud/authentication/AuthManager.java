@@ -122,7 +122,7 @@ public class AuthManager {
                 .subscribe(authRefreshResponse -> {
                     spotifyApi.setAccessToken(authRefreshResponse.getAccessToken());
                     setAccessToken(authRefreshResponse.getAccessToken());
-                    DateTime expires = DateTime.now().plusSeconds(authRefreshResponse.getExpiresIn());
+                    DateTime expires = (new DateTime()).now().plusSeconds(authRefreshResponse.getExpiresIn());
                     setExpires(expires);
                     authRefreshRespCallback.onSuccess(authRefreshResponse);
                 }, throwable -> {
