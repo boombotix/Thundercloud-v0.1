@@ -1,13 +1,120 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginEnd="@dimen/default_margin"
+    android:layout_marginLeft="@dimen/default_margin"
+    android:layout_marginRight="@dimen/default_margin"
+    android:layout_marginStart="@dimen/default_margin"
+    android:layout_marginTop="@dimen/default_margin_2x"
     tools:context="boombotix.com.thundercloud.ui.fragment.wifi.WifiListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/search_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_above="@+id/skip_container"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/instructions"
+            style="@style/TextAppearance.Thundercloud.Title.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi_list_instructions_first_time" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/network_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/default_margin"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/progress_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/wifi_search_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/default_margin_2x"
+                android:indeterminate="true" />
+
+            <TextView
+                style="@style/TextAppearance.Thundercloud.Body.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/wifi_search_progress"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/wifi_list_searching" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/no_results_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/skip_container">
+
+        <TextView
+            style="@style/TextAppearance.Thundercloud.Title.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi_list_no_networks_found" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/default_margin"
+            android:contentDescription="@string/wifi_list_no_networks_found"
+            android:src="@mipmap/ic_launcher" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/skip_container"
+        android:layout_above="@+id/logo">
+        <TextView
+            android:id="@+id/skip"
+            android:layout_gravity="center_horizontal"
+            style="@style/TextAppearance.Thundercloud.Body.Accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/wifi_list_skip" />
+        <TextView
+            android:layout_gravity="center_horizontal"
+            style="@style/TextAppearance.Thundercloud.Body.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_3x"
+            android:text="@string/wifi_list_skip_reminder" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/boombotix_logo_description"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginTop="@dimen/default_margin" />
+
+</RelativeLayout>

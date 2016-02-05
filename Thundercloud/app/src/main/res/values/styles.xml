@@ -49,7 +49,7 @@
     </style>
 
     <style name="TextAppearance.Thundercloud.Body.Accent">
-        <item name="android:color">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="TextAppearance.Thundercloud.Body.Gray">

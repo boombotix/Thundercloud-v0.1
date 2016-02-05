@@ -1,35 +1,54 @@
 package boombotix.com.thundercloud.ui.fragment.wifi;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
- * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link WifiListFragmentCallbacks} interface to handle interaction events.
- * Use the {@link WifiListFragment#newInstance} factory method to create an instance of this
- * fragment.
+ * Fragment that presents the user with a list of available wifi networks. If doing a first-time
+ * setup, the user can choose to skip wifi connection entirely.
+ *
+ * @author Theo Kanning
  */
 public class WifiListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_SPEAKER_NAME = "speakerName";
 
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_FIRST_TIME = "firstTime";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
+    @Bind(R.id.no_results_container)
+    View noResultsContainer;
 
-    private String mParam2;
+    @Bind(R.id.search_container)
+    View searchContainer;
 
-    private WifiListFragmentCallbacks mListener;
+    @Bind(R.id.progress_container)
+    View progressContainer;
+
+    @Bind(R.id.skip_container)
+    View skipContainer;
+
+    @Bind(R.id.network_list)
+    RecyclerView networkList;
+
+    @Bind(R.id.instructions)
+    TextView instructions;
+
+    private String speakerName;
+
+    private boolean firstTime;
+
+    private WifiListFragmentCallbacks listener;
 
     public WifiListFragment() {
         // Required empty public constructor
@@ -39,16 +58,15 @@ public class WifiListFragment extends Fragment {
      * Use this factory method to create a new instance of this fragment using the provided
      * parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param speakerName the name of the connected speaker, used for display purposes
+     * @param firstTime   whether or not this is part of first-time setup
      * @return A new instance of fragment WifiListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static WifiListFragment newInstance(String speakerName, boolean firstTime) {
         WifiListFragment fragment = new WifiListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, speakerName);
-        args.putBoolean(ARG_PARAM2, firstTime);
+        args.putString(ARG_SPEAKER_NAME, speakerName);
+        args.putBoolean(ARG_FIRST_TIME, firstTime);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,23 +75,88 @@ public class WifiListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            speakerName = getArguments().getString(ARG_SPEAKER_NAME);
+            firstTime = getArguments().getBoolean(ARG_FIRST_TIME);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wifi_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_wifi_list, container, false);
+        ButterKnife.bind(this,view);
+
+        initNetworkList();
+        startSearch();
+        return view;
+    }
+
+    /**
+     * Initializes network recyclerview and data
+     */
+    private void initNetworkList(){
+        //todo adapter
+
+    }
+
+    /**
+     * Searches for available wifi networks
+     */
+    private void startSearch(){
+        showSearchView();
+        //todo start search
+    }
+
+    /**
+     * Shows a progress bar and message, hides list
+     */
+    private void showSearchView(){
+        searchContainer.setVisibility(View.VISIBLE);
+        noResultsContainer.setVisibility(View.GONE);
+        networkList.setVisibility(View.GONE);
+        progressContainer.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Shows the list of network results
+     */
+    private void showResultsView(){
+        searchContainer.setVisibility(View.VISIBLE);
+        noResultsContainer.setVisibility(View.GONE);
+        networkList.setVisibility(View.VISIBLE);
+        progressContainer.setVisibility(View.GONE);
+    }
+
+    /**
+     * Shows message saying that no networks were found
+     */
+    private void showNoResultsView(){
+        searchContainer.setVisibility(View.GONE);
+        noResultsContainer.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Hide skip text and reminder unless this is first-time setup
+     */
+    private void initSkipping(){
+        if(firstTime){
+            skipContainer.setVisibility(View.VISIBLE);
+        } else {
+            skipContainer.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.skip)
+    public void skipWifiSetup(){
+        //todo stop search
+        listener.onWifiSetupSkipped();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof WifiListFragmentCallbacks) {
-            mListener = (WifiListFragmentCallbacks) context;
+            listener = (WifiListFragmentCallbacks) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement WifiListFragmentCallbacks");
@@ -83,11 +166,19 @@ public class WifiListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     public interface WifiListFragmentCallbacks {
+
         void onWifiNetworkChosen(String networkName);
+
         void onWifiSetupSkipped();
     }
 }
