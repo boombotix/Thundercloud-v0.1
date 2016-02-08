@@ -70,13 +70,13 @@ public class MusicPager extends BaseFragment {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
+                case MusicListFragment.PLAYLIST_SECTION:
                     return getString(R.string.playlist);
-                case 1:
+                case MusicListFragment.SONGS_SECTION:
                     return getString(R.string.songs);
-                case 2:
+                case MusicListFragment.ALBUMS_SECTION:
                     return getString(R.string.albums);
-                case 3:
+                case MusicListFragment.ARTISTS_SECTION:
                     return getString(R.string.artists);
             }
             return null;

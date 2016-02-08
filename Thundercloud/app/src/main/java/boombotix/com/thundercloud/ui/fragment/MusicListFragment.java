@@ -27,7 +27,8 @@ import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsCursorPager;
-import kaaes.spotify.webapi.android.models.Pager; import kaaes.spotify.webapi.android.models.PlaylistSimple;
+import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.SavedAlbum;
 import kaaes.spotify.webapi.android.models.SavedTrack;
 import rx.Observable;
@@ -41,6 +42,10 @@ import rx.schedulers.Schedulers;
 public class MusicListFragment extends BaseFragment implements AuthManager.AuthRefreshRespCallback {
     private final String TAG = "MusicListFragment";
     private static final String ARG_SECTION = "section";
+    public static final int PLAYLIST_SECTION = 0;
+    public static final int SONGS_SECTION = 1;
+    public static final int ALBUMS_SECTION = 2;
+    public static final int ARTISTS_SECTION = 3;
     @Bind(R.id.recycler)
     RecyclerView recyclerView;
     @Inject
@@ -84,16 +89,16 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<>()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         switch(getArguments().getInt(ARG_SECTION)){
-            case 0:
+            case PLAYLIST_SECTION:
                 displayPlaylistContent();
                 break;
-            case 1:
+            case SONGS_SECTION:
                 displaySongsContent();
                 break;
-            case 2:
+            case ALBUMS_SECTION:
                 displayAlbumsContent();
                 break;
-            case 3:
+            case ARTISTS_SECTION:
                 displayArtistsContent();
                 break;
         }
