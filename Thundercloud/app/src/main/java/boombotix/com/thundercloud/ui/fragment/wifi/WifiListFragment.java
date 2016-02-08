@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ui.adapter.WifiListAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -43,6 +44,8 @@ public class WifiListFragment extends Fragment {
 
     @Bind(R.id.instructions)
     TextView instructions;
+
+    private WifiListAdapter adapter;
 
     private String speakerName;
 
@@ -84,26 +87,41 @@ public class WifiListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wifi_list, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         getActivity().setResult(R.string.wifi_list_title);
 
+        setInstructions();
         initNetworkList();
         startSearch();
         return view;
     }
 
     /**
+     * Shows a different instruction message based on the speaker name wand whether or not this is
+     * the first-time setup.
+     */
+    private void setInstructions() {
+        String message;
+        if(firstTime){
+            message = getString(R.string.wifi_list_instructions_first_time, speakerName);
+        } else {
+            message = getString(R.string.wifi_list_instructions, speakerName);
+        }
+        instructions.setText(message);
+    }
+
+    /**
      * Initializes network recyclerview and data
      */
-    private void initNetworkList(){
-        //todo adapter
+    private void initNetworkList() {
+
         //todo handle clicks and prompt for password
     }
 
     /**
      * Searches for available wifi networks
      */
-    private void startSearch(){
+    private void startSearch() {
         showSearchView();
         //todo start search
     }
@@ -111,7 +129,7 @@ public class WifiListFragment extends Fragment {
     /**
      * Shows a progress bar and message, hides list
      */
-    private void showSearchView(){
+    private void showSearchView() {
         searchContainer.setVisibility(View.VISIBLE);
         noResultsContainer.setVisibility(View.GONE);
         networkList.setVisibility(View.GONE);
@@ -121,7 +139,7 @@ public class WifiListFragment extends Fragment {
     /**
      * Shows the list of network results
      */
-    private void showResultsView(){
+    private void showResultsView() {
         searchContainer.setVisibility(View.VISIBLE);
         noResultsContainer.setVisibility(View.GONE);
         networkList.setVisibility(View.VISIBLE);
@@ -131,7 +149,7 @@ public class WifiListFragment extends Fragment {
     /**
      * Shows message saying that no networks were found
      */
-    private void showNoResultsView(){
+    private void showNoResultsView() {
         searchContainer.setVisibility(View.GONE);
         noResultsContainer.setVisibility(View.VISIBLE);
     }
@@ -139,8 +157,8 @@ public class WifiListFragment extends Fragment {
     /**
      * Hide skip text and reminder unless this is first-time setup
      */
-    private void initSkipping(){
-        if(firstTime){
+    private void initSkipping() {
+        if (firstTime) {
             skipContainer.setVisibility(View.VISIBLE);
         } else {
             skipContainer.setVisibility(View.GONE);
@@ -148,7 +166,7 @@ public class WifiListFragment extends Fragment {
     }
 
     @OnClick(R.id.skip)
-    public void skipWifiSetup(){
+    public void skipWifiSetup() {
         //todo stop search
         listener.onWifiSetupSkipped();
     }

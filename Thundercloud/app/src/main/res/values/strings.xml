@@ -48,6 +48,8 @@
     <string name="connect_bluetooth_button_description">Connect bluetooth</string>
     <string name="no_speakers_found_description">No speakers found</string>
     <string name="no_wifi_found_description">No networks found</string>
+    <string name="wifi_strength_description">Wifi strength</string>
+    <string name="wifi_info_description">Wifi info</string>
     <string name="boombotix_logo_description">Boombotix logo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
