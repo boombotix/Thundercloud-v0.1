@@ -10,5 +10,5 @@
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"
         android:text="Speaker Name"
-        android:id="@+id/text1" />
+        android:id="@+id/speaker_name" />
 </LinearLayout>

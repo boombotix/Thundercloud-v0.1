@@ -30,6 +30,8 @@ public class FirstTimeSetupActivity extends BaseActivity {
         setContentView(R.layout.activity_first_time_setup);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        startSpeakerPairingActivity();
     }
 
     private void startSpeakerPairingActivity() {
@@ -39,6 +41,7 @@ public class FirstTimeSetupActivity extends BaseActivity {
 
     private void startSpeakerWifiActivity() {
         Intent intent = new Intent(this, SpeakerWifiActivity.class);
+        intent.putExtra(SpeakerWifiActivity.FIRST_TIME_SETUP_KEY, true);
         startActivityForResult(intent, REQUEST_CODE_SPEAKER_WIFI);
     }
 
@@ -60,6 +63,7 @@ public class FirstTimeSetupActivity extends BaseActivity {
             case SpeakerWifiActivity.SUCCESS:
             case SpeakerWifiActivity.SKIPPED:
                 //todo show music service activity
+                finish();
                 break;
             case SpeakerWifiActivity.SUCCESS_SKIP_MUSIC:
                 finish();
@@ -77,7 +81,7 @@ public class FirstTimeSetupActivity extends BaseActivity {
                 handleSpeakerPairingResult(resultCode);
                 break;
             case REQUEST_CODE_SPEAKER_WIFI:
-
+                handleSpeakerWifiResult(resultCode);
                 break;
             default:
                 Log.e(TAG, "Unrecognized request code: " + requestCode);

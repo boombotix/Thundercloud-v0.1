@@ -46,6 +46,7 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
 
         getFirstTimeExtra();
         getSpeakerName();
+        showWifiListFragment();
     }
 
     /**
@@ -57,7 +58,7 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
 
     private String getSpeakerName() {
         //todo get speaker name
-        return null;
+        return "Boombot";
     }
 
     /**
@@ -65,7 +66,7 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
      * is first-time setup
      */
     private void showWifiListFragment() {
-        WifiListFragment fragment = WifiListFragment.newInstance("Boombot", true);
+        WifiListFragment fragment = WifiListFragment.newInstance(getSpeakerName(), true);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -78,7 +79,7 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
      * @param networkName the wifi network that the speaker should use
      */
     private void showWifiConnectFragment(String networkName) {
-        WifiConnectFragment fragment = WifiConnectFragment.newInstance(networkName, "Boombot");
+        WifiConnectFragment fragment = WifiConnectFragment.newInstance(networkName, getSpeakerName());
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -90,7 +91,7 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
      * music services. Only used during first time setup.
      */
     private void showWifiSuccessFragment() {
-        WifiSuccessFragment fragment = WifiSuccessFragment.newInstance("Boombot");
+        WifiSuccessFragment fragment = WifiSuccessFragment.newInstance(getSpeakerName());
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)

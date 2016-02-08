@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
- * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link WifiSuccessFragmentCallbacks} interface to handle interaction events.
- * Use the {@link WifiSuccessFragment#newInstance} factory method to create an instance of this
- * fragment.
+ * Fragment that presents the user with the option to add or skip music services. Only shown during
+ * fist-time setup.
+ *
+ * @author Theo Kanning
  */
 public class WifiSuccessFragment extends Fragment {
 
@@ -46,13 +48,15 @@ public class WifiSuccessFragment extends Fragment {
         if (getArguments() != null) {
             speakerName = getArguments().getString(SPEAKER_NAME_KEY);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wifi_success, container, false);
+        View view = inflater.inflate(R.layout.fragment_wifi_success, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -72,9 +76,20 @@ public class WifiSuccessFragment extends Fragment {
         listener = null;
     }
 
+    @OnClick(R.id.add_music)
+    public void addMusic() {
+        listener.onAddMusicSelected();
+    }
+
+    @OnClick(R.id.skip_music)
+    public void skipMusic() {
+        listener.onSkipMusicSelected();
+    }
 
     public interface WifiSuccessFragmentCallbacks {
+
         void onAddMusicSelected();
+
         void onSkipMusicSelected();
     }
 }

@@ -44,6 +44,11 @@
     <string name="wifi_connect_title">Set up %1$s</string>
     <string name="wifi_connect_connecting">Connecting to "%1$s"&#8230;</string>
 
+    <string name="wifi_success_title">Set up %1$s</string>
+    <string name="wifi_success_instructions">We\'re in! Let\'s get those tunes going!</string>
+    <string name="wifi_success_add_music">Add your music</string>
+    <string name="wifi_success_skip_music">Skip for now</string>
+
     <!-- Content Descriptions -->
     <string name="connect_bluetooth_button_description">Connect bluetooth</string>
     <string name="no_speakers_found_description">No speakers found</string>

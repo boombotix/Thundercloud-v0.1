@@ -2,6 +2,7 @@ package boombotix.com.thundercloud.ui.fragment.wifi;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,7 @@ public class WifiConnectFragment extends Fragment {
 
     private String speakerName;
 
-    private WifiConnectFragmentCallbacks mListener;
+    private WifiConnectFragmentCallbacks listener;
 
     public WifiConnectFragment() {
         // Required empty public constructor
@@ -67,7 +68,7 @@ public class WifiConnectFragment extends Fragment {
 
         setConnectingMessage();
         setTitle();
-
+        connectSpeakerToNetwork();
         return view;
     }
 
@@ -90,13 +91,22 @@ public class WifiConnectFragment extends Fragment {
      */
     private void connectSpeakerToNetwork() {
         //todo connect speaker to wifi network
+        Handler handler = new Handler();
+        Runnable runnable = () -> {
+            if(Math.random() > 0.5) {
+                listener.onWifiConnectSuccess();
+            } else {
+                listener.onWifiConnectFailure();
+            }
+        };
+        handler.postDelayed(runnable, 1000);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof WifiConnectFragmentCallbacks) {
-            mListener = (WifiConnectFragmentCallbacks) context;
+            listener = (WifiConnectFragmentCallbacks) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement WifiConnectFragmentCallbacks");
@@ -106,7 +116,7 @@ public class WifiConnectFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
     }
 
     @Override

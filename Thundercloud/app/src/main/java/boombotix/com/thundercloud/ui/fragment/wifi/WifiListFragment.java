@@ -158,8 +158,9 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
             adapter.addNetwork(new WifiNetwork("Network 2", 100, ""));
             adapter.addNetwork(new WifiNetwork("Network 3", 100, ""));
             adapter.addNetwork(new WifiNetwork("Network 4", 100, ""));
+            showResultsView();
         };
-        handler.postDelayed(runnable, 5000);
+        handler.postDelayed(runnable, 1000);
     }
 
     /**

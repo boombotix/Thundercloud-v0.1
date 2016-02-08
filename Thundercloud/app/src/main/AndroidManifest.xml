@@ -34,7 +34,7 @@
         <activity
             android:name=".ui.activity.FirstTimeSetupActivity"
             android:label="@string/title_activity_first_time_setup"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
