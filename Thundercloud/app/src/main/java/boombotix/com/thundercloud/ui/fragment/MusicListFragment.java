@@ -23,7 +23,7 @@ import boombotix.com.thundercloud.ui.adapter.YourMusicAdapter;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.fragment.yourmusic.subscriber.AlbumsSubscriber;
 import boombotix.com.thundercloud.ui.fragment.yourmusic.subscriber.ArtistsSubscriber;
-import boombotix.com.thundercloud.ui.fragment.yourmusic.subscriber.PlaylistSubscriber;
+import boombotix.com.thundercloud.ui.fragment.yourmusic.subscriber.PlaylistsSubscriber;
 import boombotix.com.thundercloud.ui.fragment.yourmusic.subscriber.SongsSubscriber;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +36,6 @@ import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.SavedAlbum;
 import kaaes.spotify.webapi.android.models.SavedTrack;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -44,7 +43,7 @@ import rx.schedulers.Schedulers;
  * Created by jsaucedo on 2/1/16.
  */
 public class MusicListFragment extends BaseFragment implements AuthManager.AuthRefreshRespCallback,
-        PlaylistSubscriber.PlaylistSubscriberCallback, SongsSubscriber.SongsSubscriberCallback, AlbumsSubscriber.AlbumsSubscriberCallback, ArtistsSubscriber.ArtistsSubscriberCallback {
+        PlaylistsSubscriber.PlaylistsSubscriberCallback, SongsSubscriber.SongsSubscriberCallback, AlbumsSubscriber.AlbumsSubscriberCallback, ArtistsSubscriber.ArtistsSubscriberCallback {
     private final String TAG = "MusicListFragment";
     private static final String ARG_SECTION = "section";
     public static final int PLAYLIST_SECTION = 0;
@@ -167,7 +166,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         Observable.defer(() -> Observable.just(spotifyService.getPlaylists(authManager.getUserId())))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new PlaylistSubscriber(this));
+                .subscribe(new PlaylistsSubscriber(this));
     }
 
     @Override
@@ -182,7 +181,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     }
 
     @Override
-    public void playlistResponse(Pager<PlaylistSimple> playlistSimplePager) {
+    public void playlistsResponse(Pager<PlaylistSimple> playlistSimplePager) {
         ArrayList < Pair < String, String >> items = new ArrayList<>();
         for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
             items.add(new Pair<>(playlistSimple.name,
