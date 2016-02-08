@@ -27,8 +27,7 @@ import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsCursorPager;
-import kaaes.spotify.webapi.android.models.Pager;
-import kaaes.spotify.webapi.android.models.PlaylistSimple;
+import kaaes.spotify.webapi.android.models.Pager; import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.SavedAlbum;
 import kaaes.spotify.webapi.android.models.SavedTrack;
 import rx.Observable;
@@ -109,6 +108,12 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
     private void displayArtistsContent() {
         Observable.defer(() -> Observable.just(spotifyService.getFollowedArtists()))
                 .subscribeOn(Schedulers.io())
@@ -156,7 +161,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                         ArrayList<Pair<String, String>> items = new ArrayList<>();
                         for (SavedAlbum savedAlbum : savedAlbumPager.items) {
                             items.add(new Pair<>(savedAlbum.album.name,
-                                    pluralize(getSupportActivity().getString(R.string.song),
+                                    getResources().getQuantityString(R.plurals.songs,
+                                            savedAlbum.album.tracks.items.size(),
                                             savedAlbum.album.tracks.items.size())));
                         }
 
@@ -227,8 +233,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                         ArrayList<Pair<String, String>> items = new ArrayList<>();
                         for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
                             items.add(new Pair<>(playlistSimple.name,
-                                    pluralize(getSupportActivity().getString(R.string.song),
-                                            playlistSimple.tracks.total)));
+                                    getResources().getQuantityString(R.plurals.songs,
+                                            playlistSimple.tracks.total, playlistSimple.tracks.total)));
                         }
 
                         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -245,10 +251,5 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     public void onError(Throwable error) {
         Log.e(TAG, error.getMessage());
         error.printStackTrace();
-    }
-
-    private String pluralize(String s, int c){
-        if(c < 2) return String.valueOf(c) + " " + s;
-        return String.valueOf(c) + " " + s + "s";
     }
 }
