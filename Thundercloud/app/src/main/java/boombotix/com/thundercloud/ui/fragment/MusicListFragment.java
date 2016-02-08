@@ -204,6 +204,10 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                 });
     }
 
+    /*
+    * Formats duration of song time hh:mm:ss
+    * prettytime plugin cannot be used here because it only offers relative time formatting
+    */
     private String prettyTime(long l) {
         String time = "";
         long seconds = l % 60;
