@@ -58,6 +58,8 @@ public class MusicPagerFragment extends BaseFragment {
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
+        viewPager.setCurrentItem(getArguments().getInt(ARG_PAGE));
+
         return view;
     }
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
