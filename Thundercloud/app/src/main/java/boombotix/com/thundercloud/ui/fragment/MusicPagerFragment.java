@@ -21,21 +21,30 @@ import butterknife.ButterKnife;
  *
  * @author Jayd Saucedo
  */
-public class MusicPager extends BaseFragment {
+public class MusicPagerFragment extends BaseFragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
-
+    private static final String ARG_PAGE = "page";
+    private int page = 0;
     @Bind(R.id.container)
     ViewPager viewPager;
     @Bind(R.id.tabs)
     TabLayout tabLayout;
 
-    public MusicPager() {
+    public MusicPagerFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+    }
+
+    public static MusicPagerFragment newInstance(int page) {
+        MusicPagerFragment musicPager = new MusicPagerFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, page);
+        musicPager.setArguments(args);
+        return musicPager;
     }
 
     @Override
