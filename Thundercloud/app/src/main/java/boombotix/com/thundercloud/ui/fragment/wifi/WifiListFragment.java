@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.model.WifiNetwork;
 import boombotix.com.thundercloud.ui.adapter.WifiListAdapter;
+import boombotix.com.thundercloud.ui.base.WifiCredentialsDialog;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,7 +27,8 @@ import butterknife.OnClick;
  *
  * @author Theo Kanning
  */
-public class WifiListFragment extends Fragment implements WifiListAdapter.WifiListClickListener {
+public class WifiListFragment extends Fragment implements WifiListAdapter.WifiListClickListener,
+        WifiCredentialsDialog.WifiCredentialsDialogListener {
 
     private static final String ARG_SPEAKER_NAME = "speakerName";
 
@@ -96,6 +98,7 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
         getActivity().setResult(R.string.wifi_list_title);
 
         setInstructions();
+        initSkipping();
         initNetworkList();
         startSearch();
         return view;
@@ -163,6 +166,12 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
         handler.postDelayed(runnable, 1000);
     }
 
+    private void showCredentialsDialog(WifiNetwork network) {
+        WifiCredentialsDialog dialog = new WifiCredentialsDialog(network, getContext());
+        dialog.setListener(this);
+        dialog.show();
+    }
+
     /**
      * Shows a progress bar and message, hides list
      */
@@ -211,12 +220,17 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
 
     @Override
     public void onWifiNetworkSelected(WifiNetwork network) {
-        listener.onWifiNetworkChosen(network);
+        showCredentialsDialog(network);
     }
 
     @Override
     public void showWifiNetworkInfo(WifiNetwork network) {
         //todo show network info
+    }
+
+    @Override
+    public void onCredentialsConfirmed(WifiNetwork network, String password) {
+        listener.onWifiNetworkChosen(network);
     }
 
     public interface WifiListFragmentCallbacks {

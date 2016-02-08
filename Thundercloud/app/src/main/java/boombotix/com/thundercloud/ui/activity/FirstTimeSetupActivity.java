@@ -45,7 +45,6 @@ public class FirstTimeSetupActivity extends BaseActivity {
         startActivityForResult(intent, REQUEST_CODE_SPEAKER_WIFI);
     }
 
-
     /**
      * Handles all result codes returned from {@link SpeakerPairingActivity}
      *

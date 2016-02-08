@@ -48,7 +48,6 @@ public class WifiSuccessFragment extends Fragment {
         if (getArguments() != null) {
             speakerName = getArguments().getString(SPEAKER_NAME_KEY);
         }
-
     }
 
     @Override
