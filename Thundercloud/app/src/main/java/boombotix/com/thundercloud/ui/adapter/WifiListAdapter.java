@@ -4,15 +4,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.List;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.model.WifiNetwork;
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Adapter for a list of wifi networks. Each row contains the name, signal strength, and info
@@ -21,7 +17,7 @@ import butterknife.ButterKnife;
  *
  * @author Theo Kanning
  */
-public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.WifiViewHolder> {
+public class WifiListAdapter extends RecyclerView.Adapter<WifiViewHolder> {
 
     private List<WifiNetwork> networks;
 
@@ -30,6 +26,11 @@ public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.WifiVi
     public WifiListAdapter(List<WifiNetwork> networks, WifiListClickListener listener) {
         this.networks = networks;
         this.listener = listener;
+    }
+
+    public void addNetwork(WifiNetwork network){
+        networks.add(network);
+        notifyItemInserted(networks.size() - 1);
     }
 
     @Override
@@ -42,9 +43,9 @@ public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.WifiVi
     @Override
     public void onBindViewHolder(WifiViewHolder holder, int position) {
         WifiNetwork network = networks.get(position);
-        holder.network = network;
-        holder.listener = listener;
-        holder.ssid.setText(network.getSsid());
+        holder.setNetwork(network);
+        holder.setListener(listener);
+        holder.setSsid(network.getSsid());
         holder.setStrength(network.getStrength());
     }
 
@@ -58,32 +59,5 @@ public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.WifiVi
         void onWifiNetworkSelected(WifiNetwork network);
 
         void showWifiNetworkInfo(WifiNetwork network);
-    }
-
-    public static class WifiViewHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.wifi_network_ssid)
-        public TextView ssid;
-
-        @Bind(R.id.wifi_network_strength)
-        public ImageView strength;
-
-        @Bind(R.id.wifi_network_info)
-        public ImageView info;
-
-        private WifiNetwork network;
-
-        private WifiListClickListener listener;
-
-        public WifiViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(v -> listener.onWifiNetworkSelected(this.network));
-            info.setOnClickListener(v -> listener.showWifiNetworkInfo(this.network));
-        }
-
-        public void setStrength(Integer strength) {
-            //todo show different icon for strength ranges
-        }
     }
 }

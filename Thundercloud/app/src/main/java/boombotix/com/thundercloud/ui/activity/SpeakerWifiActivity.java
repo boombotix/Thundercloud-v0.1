@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.model.WifiNetwork;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.wifi.WifiConnectFragment;
 import boombotix.com.thundercloud.ui.fragment.wifi.WifiConnectFragment.WifiConnectFragmentCallbacks;
@@ -31,7 +32,7 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
 
     public static final int SKIPPED = 1;
 
-    public static final int SUCCESS_ADD_MUSIC = 2;
+    public static final int SUCCESS_SKIP_MUSIC = 2;
 
     private boolean firstTime;
 
@@ -64,8 +65,11 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
      * is first-time setup
      */
     private void showWifiListFragment() {
-        WifiListFragment fragment;
-        //todo show wifi list fragment
+        WifiListFragment fragment = WifiListFragment.newInstance("Boombot", true);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     /**
@@ -74,8 +78,11 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
      * @param networkName the wifi network that the speaker should use
      */
     private void showWifiConnectFragment(String networkName) {
-        WifiConnectFragment fragment;
-        //todo show wifi connect fragment
+        WifiConnectFragment fragment = WifiConnectFragment.newInstance(networkName, "Boombot");
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     /**
@@ -83,13 +90,17 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
      * music services. Only used during first time setup.
      */
     private void showWifiSuccessFragment() {
-        WifiSuccessFragment fragment;
-        //todo show wifi success fragment
+        WifiSuccessFragment fragment = WifiSuccessFragment.newInstance("Boombot");
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     @Override
-    public void onWifiNetworkChosen(String networkName) {
-        showWifiConnectFragment(networkName);
+    public void onWifiNetworkChosen(WifiNetwork network) {
+        //todo send credentials to fragment
+        showWifiConnectFragment(network.getSsid());
     }
 
     @Override
@@ -99,7 +110,8 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
     }
 
     /**
-     * If this is not first time set up, we're done. If it is, then show {@link WifiConnectFragment}
+     * If this is not first time set up, we're done. If it is, then show {@link
+     * WifiConnectFragment}
      */
     @Override
     public void onWifiConnectSuccess() {
@@ -120,13 +132,13 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
     @Override
     public void onAddMusicSelected() {
         //finish and tell calling activity to proceed to adding music
-        setResult(SUCCESS_ADD_MUSIC);
+        setResult(SUCCESS);
         finish();
     }
 
     @Override
     public void onSkipMusicSelected() {
-        setResult(SUCCESS);
+        setResult(SUCCESS_SKIP_MUSIC);
         finish();
     }
 }

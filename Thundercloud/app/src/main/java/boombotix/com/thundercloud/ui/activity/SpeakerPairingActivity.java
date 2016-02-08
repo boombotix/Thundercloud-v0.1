@@ -22,6 +22,8 @@ public class SpeakerPairingActivity extends BaseActivity implements
         ConnectBluetoothFragment.OnBluetoothSearchStartedListener,
         SpeakerSearchFragment.OnSpeakerSelectedListener {
 
+    public static final int SUCCESS = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +32,6 @@ public class SpeakerPairingActivity extends BaseActivity implements
         setSupportActionBar(toolbar);
 
         showConnectBluetoothFragment();
-
     }
 
     @Override
@@ -41,7 +42,8 @@ public class SpeakerPairingActivity extends BaseActivity implements
     @Override
     public void onSpeakerSelected(BluetoothDevice device) {
         //todo connect/store
-        //todo exit with result
+        setResult(SUCCESS);
+        finish();
     }
 
     private void showConnectBluetoothFragment() {

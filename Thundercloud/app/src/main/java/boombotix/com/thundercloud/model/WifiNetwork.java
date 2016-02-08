@@ -11,6 +11,12 @@ public class WifiNetwork {
     private Integer strength;
     private String securityType; //todo replace with security type enum
 
+    public WifiNetwork(String ssid, Integer strength, String securityType) {
+        this.ssid = ssid;
+        this.strength = strength;
+        this.securityType = securityType;
+    }
+
     public String getSsid() {
         return ssid;
     }
@@ -20,7 +26,7 @@ public class WifiNetwork {
     }
 
     public Integer getStrength() {
-        return strength;
+        return strength; //todo return strength enum
     }
 
     public void setStrength(Integer strength) {

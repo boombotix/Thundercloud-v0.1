@@ -2,14 +2,19 @@ package boombotix.com.thundercloud.ui.fragment.wifi;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.model.WifiNetwork;
 import boombotix.com.thundercloud.ui.adapter.WifiListAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,7 +26,7 @@ import butterknife.OnClick;
  *
  * @author Theo Kanning
  */
-public class WifiListFragment extends Fragment {
+public class WifiListFragment extends Fragment implements WifiListAdapter.WifiListClickListener {
 
     private static final String ARG_SPEAKER_NAME = "speakerName";
 
@@ -96,13 +101,36 @@ public class WifiListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof WifiListFragmentCallbacks) {
+            listener = (WifiListFragmentCallbacks) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement WifiListFragmentCallbacks");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     /**
      * Shows a different instruction message based on the speaker name wand whether or not this is
      * the first-time setup.
      */
     private void setInstructions() {
         String message;
-        if(firstTime){
+        if (firstTime) {
             message = getString(R.string.wifi_list_instructions_first_time, speakerName);
         } else {
             message = getString(R.string.wifi_list_instructions, speakerName);
@@ -111,11 +139,12 @@ public class WifiListFragment extends Fragment {
     }
 
     /**
-     * Initializes network recyclerview and data
+     * Initializes network recyclerview and adapter
      */
     private void initNetworkList() {
-
-        //todo handle clicks and prompt for password
+        adapter = new WifiListAdapter(new ArrayList<>(), this);
+        networkList.setAdapter(adapter);
+        networkList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     /**
@@ -123,7 +152,14 @@ public class WifiListFragment extends Fragment {
      */
     private void startSearch() {
         showSearchView();
-        //todo start search
+        Handler handler = new Handler();
+        Runnable runnable = () -> {
+            adapter.addNetwork(new WifiNetwork("Network 1", 100, ""));
+            adapter.addNetwork(new WifiNetwork("Network 2", 100, ""));
+            adapter.addNetwork(new WifiNetwork("Network 3", 100, ""));
+            adapter.addNetwork(new WifiNetwork("Network 4", 100, ""));
+        };
+        handler.postDelayed(runnable, 5000);
     }
 
     /**
@@ -171,33 +207,21 @@ public class WifiListFragment extends Fragment {
         listener.onWifiSetupSkipped();
     }
 
+
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof WifiListFragmentCallbacks) {
-            listener = (WifiListFragmentCallbacks) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement WifiListFragmentCallbacks");
-        }
+    public void onWifiNetworkSelected(WifiNetwork network) {
+        listener.onWifiNetworkChosen(network);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    public void showWifiNetworkInfo(WifiNetwork network) {
+        //todo show network info
     }
 
     public interface WifiListFragmentCallbacks {
 
         //todo change once we know what data are required for joining a network, password, id etc
-        void onWifiNetworkChosen(String networkName);
+        void onWifiNetworkChosen(WifiNetwork network);
 
         void onWifiSetupSkipped();
     }

@@ -31,7 +31,7 @@
     <string name="speaker_search_instructions">Select the speaker you would like to connect with your phone</string>
     <string name="speaker_search_no_speakers_found">Hmm… no speakers were found nearby. Be sure the speaker is on and near your phone. You should see a blue light on the speaker.</string>
 
-    
+
     <!-- Wifi Setup -->
     <string name="wifi_list_title">Connect to Wi-Fi</string>
     <string name="wifi_list_instructions">Add %1$s to a Wi-Fi network.</string>
@@ -55,5 +55,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_speaker_wifi">SpeakerWifiActivity</string>
+    <string name="title_activity_first_time_setup">FirstTimeSetupActivity</string>
 
 </resources>
