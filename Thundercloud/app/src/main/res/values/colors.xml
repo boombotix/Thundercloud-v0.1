@@ -7,4 +7,5 @@
     <color name="colorAccent">#40b3ff</color>
     <color name="colorBackground">#000000</color>
     <color name="playerBarColor">#80000000</color>
+    <color name="textColorSecondary">#ffffff</color>
 </resources>

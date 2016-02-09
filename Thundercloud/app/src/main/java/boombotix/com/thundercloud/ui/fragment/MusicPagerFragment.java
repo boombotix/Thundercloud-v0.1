@@ -21,15 +21,16 @@ import butterknife.ButterKnife;
  *
  * @author Jayd Saucedo
  */
-public class MusicPager extends BaseFragment {
+public class MusicPagerFragment extends BaseFragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
-
+    private static final String ARG_PAGE = "page";
+    private int page = 0;
     @Bind(R.id.container)
     ViewPager viewPager;
     @Bind(R.id.tabs)
     TabLayout tabLayout;
 
-    public MusicPager() {
+    public MusicPagerFragment() {
         // Required empty public constructor
     }
 
@@ -38,26 +39,29 @@ public class MusicPager extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
+    public static MusicPagerFragment newInstance(int page) {
+        MusicPagerFragment musicPager = new MusicPagerFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, page);
+        musicPager.setArguments(args);
+        return musicPager;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_music_pager, container, false);
         ButterKnife.bind(this, view);
 
-        // Create the adapter that will return a fragment for each of the
-        // primary sections of the activity.
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        // Inflate the layout for this fragment
+        viewPager.setCurrentItem(getArguments().getInt(ARG_PAGE));
+
         return view;
     }
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -66,8 +70,6 @@ public class MusicPager extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             return MusicListFragment.newInstance(position);
         }
 
@@ -79,13 +81,13 @@ public class MusicPager extends BaseFragment {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
+                case MusicListFragment.PLAYLIST_SECTION:
                     return getString(R.string.playlist);
-                case 1:
+                case MusicListFragment.SONGS_SECTION:
                     return getString(R.string.songs);
-                case 2:
+                case MusicListFragment.ALBUMS_SECTION:
                     return getString(R.string.albums);
-                case 3:
+                case MusicListFragment.ARTISTS_SECTION:
                     return getString(R.string.artists);
             }
             return null;

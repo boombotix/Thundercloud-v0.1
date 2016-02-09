@@ -13,12 +13,13 @@ import android.view.MenuItem;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
-import boombotix.com.thundercloud.ui.fragment.MusicPager;
+import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
+import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private FragmentManager fm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +27,11 @@ public class MainActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
         if (mainFragment == null) {
-            mainFragment = new MusicPager();
+            // TODO actually have  a main fragment
+            mainFragment =  MusicPagerFragment.newInstance(0);
             fm.beginTransaction()
                     .add(R.id.main_fragment, mainFragment)
                     .commit();
@@ -65,19 +67,14 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -88,25 +85,27 @@ public class MainActivity extends BaseActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_playlists) {
+            changeMusicPagerPage(MusicListFragment.PLAYLIST_SECTION);
+        } else if (id == R.id.nav_songs) {
+            changeMusicPagerPage(MusicListFragment.SONGS_SECTION);
+        } else if (id == R.id.nav_albums) {
+            changeMusicPagerPage(MusicListFragment.ALBUMS_SECTION);
+        } else if (id == R.id.nav_artists) {
+            changeMusicPagerPage(MusicListFragment.ARTISTS_SECTION);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeMusicPagerPage(int page){
+        Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
+        fm.beginTransaction()
+                .add(R.id.main_fragment, musicPagerFragment)
+                .commit();
     }
 }

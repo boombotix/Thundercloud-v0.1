@@ -1,35 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+    <item android:title="Music">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_playlists"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Playlists" />
+                <item
+                    android:id="@+id/nav_songs"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Songs" />
+                <item
+                    android:id="@+id/nav_albums"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Albums" />
+                <item
+                    android:id="@+id/nav_artists"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Artists" />
+            </group>
+        </menu>
+    </item>
 
-    <item android:title="Communicate">
+    <item android:title="Sources">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Spotify" />
+        </menu>
+    </item>
+    <item android:title="Settings">
+        <menu>
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/app_settings"
+                android:icon="@drawable/ic_menu_share"
+                android:title="App Settings" />
+            <item
+                android:id="@+id/about"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="About" />
         </menu>
     </item>
 
