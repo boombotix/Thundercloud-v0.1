@@ -11,8 +11,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
@@ -28,13 +30,15 @@ public class MainActivity extends BaseActivity
     private FragmentManager fm;
     @Bind(R.id.searchText)
     EditText searchText;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fm = getSupportFragmentManager();
@@ -117,5 +121,22 @@ public class MainActivity extends BaseActivity
         fm.beginTransaction()
                 .add(R.id.main_fragment, musicPagerFragment)
                 .commit();
+    }
+
+    /**
+     * Hides search input from toolbar
+     *
+     */
+    public void hideSearch(){
+        searchText.setVisibility(View.GONE);
+    }
+
+    public void showSearch(){
+        searchText.setVisibility(View.VISIBLE);
+    }
+
+
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
     }
 }

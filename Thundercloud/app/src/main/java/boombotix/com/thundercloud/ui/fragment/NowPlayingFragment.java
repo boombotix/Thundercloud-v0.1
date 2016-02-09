@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ui.activity.MainActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +46,7 @@ public class NowPlayingFragment extends BaseFragment implements
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         ButterKnife.bind(this, view);
         picker.setOnSeekBarChangeListener(this);
+        ((MainActivity) getActivity()).showSearch();
         return view;
     }
 
