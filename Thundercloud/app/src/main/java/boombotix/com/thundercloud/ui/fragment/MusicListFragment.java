@@ -144,9 +144,14 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                 .subscribe(new SongsSubscriber(this));
     }
 
+    /**
+     * Formats duration of song time hh:mm:ss
+     * prettytime plugin cannot be used here because it only offers relative time formatting
+     * @param l duration in seconds
+     * @return string formatted hh:mm:ss
+     */
     /*
-    * Formats duration of song time hh:mm:ss
-    * prettytime plugin cannot be used here because it only offers relative time formatting
+    *
     */
     private String prettyTime(long l) {
         String time = "";
