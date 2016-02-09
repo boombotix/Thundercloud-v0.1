@@ -20,11 +20,11 @@ public class ConnectButton extends AppCompatButton {
         CONNECT(android.R.color.white, R.color.colorAccent, R.string.connect),
         CONNECTED(R.color.colorPrimary, R.color.primaryBg, R.string.connected);
 
-        private int textColorResourceId;
+        int textColorResourceId;
 
-        private int backgroundColorResourceId;
+        int backgroundColorResourceId;
 
-        private int textResourceId;
+        int textResourceId;
 
         Style(int textColor, int background, int textString) {
             this.textColorResourceId = textColor;

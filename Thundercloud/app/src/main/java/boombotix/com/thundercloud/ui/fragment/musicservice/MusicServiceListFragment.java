@@ -3,12 +3,15 @@ package boombotix.com.thundercloud.ui.fragment.musicservice;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.model.MusicService;
+import boombotix.com.thundercloud.ui.adapter.MusicServiceListAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -18,7 +21,8 @@ import butterknife.ButterKnife;
  *
  * @author Theo Kanning
  */
-public class MusicServiceListFragment extends Fragment {
+public class MusicServiceListFragment extends Fragment
+        implements MusicServiceListAdapter.MusicServiceListListener {
 
     private static final String ARG_SPEAKER_NAME = "speaker_name";
     private static final String ARG_FIRST_TIME = "first_time";
@@ -37,6 +41,8 @@ public class MusicServiceListFragment extends Fragment {
     private boolean firstTime;
 
     private OnMusicServiceSelectedListener listener;
+
+    private MusicServiceListAdapter adapter;
 
     public MusicServiceListFragment() {
         // Required empty public constructor
@@ -71,7 +77,8 @@ public class MusicServiceListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         showSkipOptionsIfFirstTime();
-
+        setTitle();
+        initMusicServiceList();
         return view;
     }
 
@@ -101,19 +108,29 @@ public class MusicServiceListFragment extends Fragment {
     private void showSkipOptionsIfFirstTime(){
         if(firstTime){
             skip.setVisibility(View.VISIBLE);
-            finish.setVisibility(View.VISIBLE);
         } else {
             skip.setVisibility(View.GONE);
-            finish.setVisibility(View.GONE);
         }
     }
 
-    public void initMusicServiceList(){
+    private void showFinishIfOneConnected(){
+        //todo show the finish button only if at least one service is connected
+    }
 
+    public void initMusicServiceList(){
+        adapter = new MusicServiceListAdapter(this);
+        musicServiceList.setAdapter(adapter);
+        musicServiceList.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public void onMusicServiceSelected(MusicService service) {
+        listener.onMusicServiceSelected(service.getName());
     }
 
     public interface OnMusicServiceSelectedListener {
         //todo replace with music service model object?
         void onMusicServiceSelected(String name);
+        void onMusicServiceFinished();
     }
 }
