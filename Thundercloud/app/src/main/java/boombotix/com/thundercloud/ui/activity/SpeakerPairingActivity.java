@@ -11,7 +11,7 @@ import boombotix.com.thundercloud.ui.fragment.pairing.ConnectBluetoothFragment;
 import boombotix.com.thundercloud.ui.fragment.pairing.SpeakerSearchFragment;
 
 /**
- * Shows fragment asking user to start bluetooth search, then shows  a list of available Boombots.
+ * Shows fragment asking user to start bluetooth search, then shows a list of available Boombots.
  * Finishes with selected UUID as a result.
  *
  * @author Theo Kanning

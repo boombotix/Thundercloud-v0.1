@@ -40,6 +40,7 @@
     <string name="wifi_list_no_networks_found">Hmm…no Wi-Fi networks were found nearby. You can still listen to your music using Bluetooth for now.</string>
     <string name="wifi_list_skip">Skip Wi-Fi setup for now</string>
     <string name="wifi_list_skip_reminder">You can add a wireless network later in Settings.</string>
+    <string name="wifi_list_prompt_title">%1$s</string>
 
     <string name="wifi_connect_title">Set up %1$s</string>
     <string name="wifi_connect_connecting">Connecting to "%1$s"&#8230;</string>

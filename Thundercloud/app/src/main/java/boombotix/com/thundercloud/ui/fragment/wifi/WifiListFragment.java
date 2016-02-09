@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.model.WifiNetwork;
 import boombotix.com.thundercloud.ui.adapter.WifiListAdapter;
-import boombotix.com.thundercloud.ui.base.WifiCredentialsDialog;
+import boombotix.com.thundercloud.ui.dialog.WifiCredentialsDialog;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -97,8 +97,8 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
         ButterKnife.bind(this, view);
         getActivity().setResult(R.string.wifi_list_title);
 
-        setInstructions();
-        initSkipping();
+        showInstructions();
+        showSkipOptionIfFirstTime();
         initNetworkList();
         startSearch();
         return view;
@@ -131,7 +131,7 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
      * Shows a different instruction message based on the speaker name wand whether or not this is
      * the first-time setup.
      */
-    private void setInstructions() {
+    private void showInstructions() {
         String message;
         if (firstTime) {
             message = getString(R.string.wifi_list_instructions_first_time, speakerName);
@@ -200,10 +200,7 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
         noResultsContainer.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Hide skip text and reminder unless this is first-time setup
-     */
-    private void initSkipping() {
+    private void showSkipOptionIfFirstTime() {
         if (firstTime) {
             skipContainer.setVisibility(View.VISIBLE);
         } else {
@@ -229,7 +226,7 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
     }
 
     @Override
-    public void onCredentialsConfirmed(WifiNetwork network, String password) {
+    public void onCredentialsConfirmed(WifiNetwork network) {
         listener.onWifiNetworkChosen(network);
     }
 

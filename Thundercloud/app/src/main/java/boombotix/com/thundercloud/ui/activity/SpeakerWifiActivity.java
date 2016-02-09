@@ -45,7 +45,6 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
         setSupportActionBar(toolbar);
 
         getFirstTimeExtra();
-        getSpeakerName();
         showWifiListFragment();
     }
 
