@@ -101,7 +101,11 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_playlists) {
+        if(id == R.id.nav_nowplaying){
+            fm.beginTransaction()
+                    .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
+                    .commit();
+        } else if (id == R.id.nav_playlists) {
             changeMusicPagerPage(MusicListFragment.PLAYLIST_SECTION);
         } else if (id == R.id.nav_songs) {
             changeMusicPagerPage(MusicListFragment.SONGS_SECTION);
@@ -119,7 +123,7 @@ public class MainActivity extends BaseActivity
     private void changeMusicPagerPage(int page){
         Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
         fm.beginTransaction()
-                .add(R.id.main_fragment, musicPagerFragment)
+                .replace(R.id.main_fragment, musicPagerFragment)
                 .commit();
     }
 
