@@ -68,7 +68,8 @@
     <!--  Music Service Setup -->
     <string name="music_setup_title">Set up %1$s</string>
     <string name="music_setup_instructions">Select your music source</string>
-    <string name="music_setup_more_apps_coming">More apps coming soon…</string>
+    <string name="music_setup_more_apps_coming">More apps coming soon …</string>
+    <string name="music_setup_skip">Skip for now</string>
 
     <!-- Content Descriptions -->
     <string name="connect_bluetooth_button_description">Connect bluetooth</string>
