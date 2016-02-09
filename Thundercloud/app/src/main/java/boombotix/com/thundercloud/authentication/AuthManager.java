@@ -2,6 +2,7 @@ package boombotix.com.thundercloud.authentication;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -13,7 +14,9 @@ import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
 import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import kaaes.spotify.webapi.android.SpotifyApi;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -108,6 +111,32 @@ public class AuthManager {
         }
         DateTime dateTime = new DateTime(getExpires());
         return dateTime.isBeforeNow();
+    }
+
+    public Observable<AuthRefreshResponse> getValidAccessToken(){
+
+        if(isExpired()) {
+            Observable observable = spotifyAuthenticationEndpoint.getToken("Basic " + getEncodedAuthHeader(), "refresh_token", getRefreshToken());
+
+            observable.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).share()
+            .subscribe(new Action1() {
+                @Override
+                public void call(Object o) {
+                    Log.e("AuthManager", "Token expired!");
+                    handleRefreshResponse((AuthRefreshResponse) o);
+                }
+            });
+
+            return observable;
+        }
+        else{
+            Log.e("AuthManager", "token not expired!");
+            AuthRefreshResponse authRefreshResponse = new AuthRefreshResponse();
+            authRefreshResponse.setAccessToken(getAccessToken());
+            authRefreshResponse.setExpiresIn(3600);
+            return Observable.just(authRefreshResponse);
+        }
     }
 
     public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback){

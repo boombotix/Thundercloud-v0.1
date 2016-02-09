@@ -68,12 +68,12 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         super.onActivityCreated(savedInstanceState);
         getSupportActivity().getActivityComponent().inject(this);
         if(authManager.getUserId() != null) {
-            if (authManager.isExpired()) {
-                authManager.refreshAuthToken(this);
-            }
-            else{
+           // if (authManager.isExpired()) {
+           //     authManager.refreshAuthToken(this);
+           // }
+           // else{
                 initView();
-            }
+          //  }
         }
         else{
             startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -182,14 +182,14 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
                     @Override
                     public void onNext(Pager<SavedTrack> savedTrackPager) {
-                            ArrayList<Pair<String, String>> items = new ArrayList<>();
-                            for (SavedTrack savedTrack : savedTrackPager.items) {
-                                items.add(new Pair<>(savedTrack.track.name,
-                                        prettyTime(savedTrack.track.duration_ms / 1000)));
-                            }
-
-                            recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                        ArrayList<Pair<String, String>> items = new ArrayList<>();
+                        for (SavedTrack savedTrack : savedTrackPager.items) {
+                            items.add(new Pair<>(savedTrack.track.name,
+                                    prettyTime(savedTrack.track.duration_ms / 1000)));
                         }
+
+                        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+                    }
                 });
     }
 
@@ -208,7 +208,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     }
 
     private void displayPlaylistContent() {
-        Observable.defer(() -> Observable.just(spotifyService.getPlaylists(authManager.getUserId())))
+        Observable.defer(() -> authManager.getValidAccessToken()
+                .flatMap(authRefreshResponse ->  Observable.just(spotifyService.getPlaylists(authManager.getUserId()))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Pager<PlaylistSimple>>() {
