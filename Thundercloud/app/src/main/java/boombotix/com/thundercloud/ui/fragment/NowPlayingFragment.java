@@ -62,6 +62,6 @@ public class NowPlayingFragment extends BaseFragment implements
 
     @Override
     public void onStopTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
-
+        progressText.setText(String.valueOf(holoCircleSeekBar.getValue()));
     }
 }
