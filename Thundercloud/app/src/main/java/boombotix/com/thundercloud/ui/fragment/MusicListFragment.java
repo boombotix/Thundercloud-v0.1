@@ -78,12 +78,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         super.onActivityCreated(savedInstanceState);
         getSupportActivity().getActivityComponent().inject(this);
         if(authManager.getUserId() != null) {
-           // if (authManager.isExpired()) {
-           //     authManager.refreshAuthToken(this);
-           // }
-           // else{
-                initView();
-          //  }
+            initView();
         }
         else{
             startActivity(new Intent(getActivity(), LoginActivity.class));

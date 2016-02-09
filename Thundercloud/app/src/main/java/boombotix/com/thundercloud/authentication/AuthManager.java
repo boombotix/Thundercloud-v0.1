@@ -113,6 +113,13 @@ public class AuthManager {
         return dateTime.isBeforeNow();
     }
 
+    /**
+     *
+     * This function is designed to be flatmapped into any call that requires user authentication
+     * It will cehck if the token is expired and renew it.
+     *
+     * @return returns observable for authtoken request
+     */
     public Observable<AuthRefreshResponse> getValidAccessToken(){
 
         if(isExpired()) {
