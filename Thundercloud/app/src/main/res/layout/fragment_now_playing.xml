@@ -20,8 +20,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center"
         android:id="@+id/progress_text"
+        android:background="@drawable/now_playing_circle"
         android:layout_centerVertical="true"
+        android:textColor="#fff"
         android:layout_centerHorizontal="true" />
 
     <ImageView
