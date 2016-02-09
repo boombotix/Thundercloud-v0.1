@@ -23,7 +23,7 @@
         android:layout_toRightOf="@+id/logo"
         android:text="Spotify" />
 
-    <Button
+    <boombotix.com.thundercloud.ui.view.ConnectButton
         android:layout_width="@dimen/button_width_large"
         android:layout_height="wrap_content"
         android:text="@string/connected"
