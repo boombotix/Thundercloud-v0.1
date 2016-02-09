@@ -15,7 +15,14 @@
         app:text_size="0sp"
         app:wheel_active_color="#b4b4b4"
         app:wheel_unactive_color="#000000"/>
-
+   <ImageButton
+       android:layout_width="80dp"
+       android:layout_height="80dp"
+       android:layout_centerHorizontal="true"
+       android:layout_centerVertical="true"
+       android:src="@android:drawable/ic_media_play"
+       android:visibility="gone"
+       android:id="@+id/play_button"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

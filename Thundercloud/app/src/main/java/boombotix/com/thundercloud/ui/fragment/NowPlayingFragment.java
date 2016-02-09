@@ -3,9 +3,11 @@ package boombotix.com.thundercloud.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -23,6 +25,8 @@ public class NowPlayingFragment extends BaseFragment implements
     HoloCircleSeekBar picker;
     @Bind(R.id.progress_text)
     TextView progressText;
+    @Bind(R.id.play_button)
+    ImageButton playButton;
 
     public NowPlayingFragment() {
         // Required empty public constructor
@@ -46,13 +50,21 @@ public class NowPlayingFragment extends BaseFragment implements
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         ButterKnife.bind(this, view);
         picker.setOnSeekBarChangeListener(this);
+        progressText.setOnClickListener(v -> {
+            progressText.setVisibility(View.GONE);
+            playButton.setVisibility(View.VISIBLE);
+        });
+
+        playButton.setOnClickListener(v -> {
+            progressText.setVisibility(View.VISIBLE);
+            playButton.setVisibility(View.GONE);
+        });
         ((MainActivity) getActivity()).showSearch();
         return view;
     }
 
     @Override
     public void onProgressChanged(HoloCircleSeekBar holoCircleSeekBar, int i, boolean b) {
-        progressText.setText(String.valueOf(i));
     }
 
     @Override
