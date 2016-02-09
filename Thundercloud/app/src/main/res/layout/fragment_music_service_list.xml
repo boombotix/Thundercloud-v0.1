@@ -33,7 +33,7 @@
 
     <Button
         android:id="@+id/finish"
-        style="@style/Thundercloud.Button.Active"
+        style="@style/Thundercloud.Button"
         android:layout_width="@dimen/button_width_large"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

@@ -31,12 +31,11 @@
 
     <Button
         android:id="@+id/add_music"
-        style="@style/Thundercloud.Button.Active"
         android:layout_width="@dimen/button_width_large"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/default_margin"
-        android:text="@string/wifi_success_add_music" />
+        android:text="@string/wifi_success_add_music"/>
 
     <TextView
         android:id="@+id/skip_music"

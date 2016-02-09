@@ -78,6 +78,7 @@
     <string name="wifi_strength_description">Wifi strength</string>
     <string name="wifi_info_description">Wifi info</string>
     <string name="boombotix_logo_description">Boombotix logo</string>
+    <string name="music_service_logo_description">Logo</string>
     <string name="title_activity_music_service_setup">MusicServiceSetupActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -108,6 +108,10 @@ public class MusicServiceListFragment extends Fragment {
         }
     }
 
+    public void initMusicServiceList(){
+
+    }
+
     public interface OnMusicServiceSelectedListener {
         //todo replace with music service model object?
         void onMusicServiceSelected(String name);
