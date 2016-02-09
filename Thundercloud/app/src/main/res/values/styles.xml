@@ -47,9 +47,6 @@
     </style>
 
 
-
-
-
     <style name="TextAppearance.Thundercloud.Speaker">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
@@ -81,7 +78,6 @@
     <style name="TextAppearance.Thundercloud.Body.Gray">
         <item name="android:alpha">0.7</item>
     </style>
-
 
 
 </resources>
