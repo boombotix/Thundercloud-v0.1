@@ -7,8 +7,11 @@ package boombotix.com.thundercloud.model;
  */
 public class WifiNetwork {
 
+    //todo move into common folder to be shared with embedded module
     private String ssid;
+
     private Integer strength;
+
     private String securityType; //todo replace with security type enum
 
     private WifiCredentials credentials;

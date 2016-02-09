@@ -14,18 +14,20 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Enables bluetooth if necessary, shows the user an option to initiate bluetooth search, and
- * communicates button press to {@link SpeakerPairingActivity} via {@link OnBluetoothSearchStartedListener}
+ * Shows the user an option to initiate bluetooth search, enables bluetooth if necessary, and
+ * communicates button press to {@link SpeakerPairingActivity} via {@link
+ * OnBluetoothEnabledListener}
  *
  * @author Theo Kanning
  */
-public class ConnectBluetoothFragment extends Fragment {
+public class EnableBluetoothFragment extends Fragment {
 
-    public interface OnBluetoothSearchStartedListener {
-        void onBluetoothSearchStarted();
+    public interface OnBluetoothEnabledListener {
+
+        void onBluetoothEnabled();
     }
 
-    private OnBluetoothSearchStartedListener onBluetoothSearchStartedListener;
+    private OnBluetoothEnabledListener onBluetoothEnabledListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,16 +44,16 @@ public class ConnectBluetoothFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onBluetoothSearchStartedListener = (OnBluetoothSearchStartedListener) context;
+            onBluetoothEnabledListener = (OnBluetoothEnabledListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnBluetoothSearchStartedListener");
+                    + " must implement OnBluetoothEnabledListener");
         }
     }
 
     @OnClick(R.id.connect)
-    public void showSpeakerListFragment(){
-        onBluetoothSearchStartedListener.onBluetoothSearchStarted();
+    public void showSpeakerListFragment() {
+        onBluetoothEnabledListener.onBluetoothEnabled();
     }
 
     @Override

@@ -111,10 +111,11 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
 
     /**
      * If this is not first time set up, we're done. If it is, then show {@link
-     * WifiConnectFragment}
+     * WifiSuccessFragment}
      */
     @Override
     public void onWifiConnectSuccess() {
+
         if (firstTime) {
             showWifiSuccessFragment();
         } else {

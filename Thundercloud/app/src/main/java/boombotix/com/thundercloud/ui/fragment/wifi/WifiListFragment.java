@@ -61,7 +61,7 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
     private WifiListFragmentCallbacks listener;
 
     public WifiListFragment() {
-        // Required empty public constructor
+
     }
 
     /**

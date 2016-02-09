@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
-import boombotix.com.thundercloud.ui.fragment.pairing.ConnectBluetoothFragment;
+import boombotix.com.thundercloud.ui.fragment.pairing.EnableBluetoothFragment;
 import boombotix.com.thundercloud.ui.fragment.pairing.SpeakerSearchFragment;
 
 /**
@@ -17,7 +17,7 @@ import boombotix.com.thundercloud.ui.fragment.pairing.SpeakerSearchFragment;
  * @author Theo Kanning
  */
 public class SpeakerPairingActivity extends BaseActivity implements
-        ConnectBluetoothFragment.OnBluetoothSearchStartedListener,
+        EnableBluetoothFragment.OnBluetoothEnabledListener,
         SpeakerSearchFragment.OnSpeakerSelectedListener {
 
     public static final int SUCCESS = 0;
@@ -33,7 +33,8 @@ public class SpeakerPairingActivity extends BaseActivity implements
     }
 
     @Override
-    public void onBluetoothSearchStarted() {
+    public void onBluetoothEnabled() {
+        //search can now start
         showSpeakerSearchFragment();
     }
 
@@ -47,7 +48,7 @@ public class SpeakerPairingActivity extends BaseActivity implements
     private void showConnectBluetoothFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, new ConnectBluetoothFragment())
+                .replace(R.id.fragment_container, new EnableBluetoothFragment())
                 .commit();
     }
 

@@ -43,6 +43,7 @@ public class WifiConnectFragment extends Fragment {
      * @return A new instance of fragment WifiConnectFragment.
      */
     public static WifiConnectFragment newInstance(String networkName, String speakerName) {
+        //todo take instance of WifiNetwork instead of name
         WifiConnectFragment fragment = new WifiConnectFragment();
         Bundle args = new Bundle();
         args.putString(ARG_NETWORK_NAME, networkName);
