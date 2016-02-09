@@ -15,6 +15,7 @@ import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
+import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 
 public class MainActivity extends BaseActivity
@@ -31,7 +32,7 @@ public class MainActivity extends BaseActivity
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
         if (mainFragment == null) {
             // TODO actually have  a main fragment
-            mainFragment =  MusicPagerFragment.newInstance(0);
+            mainFragment = NowPlayingFragment.newInstance();
             fm.beginTransaction()
                     .add(R.id.main_fragment, mainFragment)
                     .commit();
