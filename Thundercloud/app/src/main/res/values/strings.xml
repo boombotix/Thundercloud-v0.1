@@ -20,6 +20,13 @@
     <string name="expires">expires</string>
     <string name="items">items</string>
 
+    <plurals name="songs">
+        <item quantity="one">%d song</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
+
+    <string name="title_activity_first_time_setup">FirstTimeSetupActivity</string>
+
     <!-- Speaker Pairing -->
     <string name="title_activity_speaker_pairing">Select a speaker</string>
 
@@ -31,14 +38,34 @@
     <string name="speaker_search_no_speakers_found">Hmm… no speakers were found nearby. Be sure the speaker is on and near your phone. You should see a blue light on the speaker.</string>
 
 
+    <!-- Wifi Setup -->
+    <string name="title_activity_speaker_wifi">SpeakerWifiActivity</string>
+    <string name="wifi_list_title">Connect to Wi-Fi</string>
+    <string name="wifi_list_instructions">Add %1$s to a Wi-Fi network.</string>
+    <string name="wifi_list_instructions_first_time">Great! Now add %1$s to a Wi-Fi network.</string>
+    <string name="wifi_list_searching">Searching for available networks&#8230;</string>
+    <string name="wifi_list_no_networks_found">Hmm…no Wi-Fi networks were found nearby. You can still listen to your music using Bluetooth for now.</string>
+    <string name="wifi_list_skip">Skip Wi-Fi setup for now</string>
+    <string name="wifi_list_skip_reminder">You can add a wireless network later in Settings.</string>
+    <string name="wifi_list_prompt_title">%1$s</string>
+
+    <string name="wifi_connect_title">Set up %1$s</string>
+    <string name="wifi_connect_connecting">Connecting to "%1$s"&#8230;</string>
+
+    <string name="wifi_success_title">Set up %1$s</string>
+    <string name="wifi_success_instructions">We\'re in! Let\'s get those tunes going!</string>
+    <string name="wifi_success_add_music">Add your music</string>
+    <string name="wifi_success_skip_music">Skip for now</string>
+
     <!-- Content Descriptions -->
     <string name="connect_bluetooth_button_description">Connect bluetooth</string>
     <string name="no_speakers_found_description">No speakers found</string>
+    <string name="no_wifi_found_description">No networks found</string>
+    <string name="wifi_strength_description">Wifi strength</string>
+    <string name="wifi_info_description">Wifi info</string>
     <string name="boombotix_logo_description">Boombotix logo</string>
 
-    <plurals name="songs">
-        <item quantity="one">%d song</item>
-        <item quantity="other">%d songs</item>
-    </plurals>
+
+
 
 </resources>

@@ -24,6 +24,21 @@
         <item name="android:textColorPrimary">@color/colorAccent</item>
     </style>
 
+    <style name="Thundercloud.Button" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="Thundercloud.Button.Active">
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="Thundercloud.Button.Inactive">
+        <item name="android:background">@color/primaryBg</item>
+    </style>
+
+
     <!-- Text Appearance Styles -->
     <style name="TextAppearance" parent="TextAppearance.AppCompat" />
 
@@ -31,12 +46,22 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+
+
+
+
     <style name="TextAppearance.Thundercloud.Speaker">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
-    
+
+    <style name="TextAppearance.Thundercloud.ListItem">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextAppearance.Thundercloud.Title">
         <item name="android:textSize">20sp</item>
     </style>
@@ -50,11 +75,13 @@
     </style>
 
     <style name="TextAppearance.Thundercloud.Body.Accent">
-        <item name="android:color">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="TextAppearance.Thundercloud.Body.Gray">
         <item name="android:alpha">0.7</item>
     </style>
+
+
 
 </resources>

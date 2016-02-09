@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wifi Network SSID"
+        android:id="@+id/wifi_network_ssid"
+        style="@style/TextAppearance.Thundercloud.ListItem" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:contentDescription="@string/wifi_strength_description"
+        android:layout_height="wrap_content"
+        android:id="@+id/wifi_network_strength"
+        android:layout_toLeftOf="@+id/wifi_network_info"
+        android:layout_toStartOf="@+id/wifi_network_info"
+        android:layout_alignWithParentIfMissing="false" />
+
+    <ImageButton
+        android:contentDescription="@string/wifi_info_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wifi_network_info"
+        android:layout_alignParentRight="true" />
+</RelativeLayout>
