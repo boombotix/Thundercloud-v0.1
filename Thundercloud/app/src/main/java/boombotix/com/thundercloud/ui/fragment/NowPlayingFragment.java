@@ -6,11 +6,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ui.base.BaseFragment;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class NowPlayingFragment extends Fragment {
-
+public class NowPlayingFragment extends BaseFragment implements
+        HoloCircleSeekBar.OnCircleSeekBarChangeListener {
+    @Bind(R.id.picker)
+    HoloCircleSeekBar picker;
+    @Bind(R.id.progress_text)
+    TextView progressText;
 
     public NowPlayingFragment() {
         // Required empty public constructor
@@ -31,8 +42,24 @@ public class NowPlayingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_now_playing, container, false);
+        View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
+        ButterKnife.bind(this, view);
+        picker.setOnSeekBarChangeListener(this);
+        return view;
     }
 
+    @Override
+    public void onProgressChanged(HoloCircleSeekBar holoCircleSeekBar, int i, boolean b) {
+        progressText.setText(String.valueOf(i));
+    }
+
+    @Override
+    public void onStartTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
+
+    }
 }
