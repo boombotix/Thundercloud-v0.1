@@ -14,12 +14,18 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="playlist">Playlist</string>
     <string name="songs">Songs</string>
-    <string name="song">Song</string>
     <string name="albums">Albums</string>
     <string name="artists">Artists</string>
     <string name="user_id">userId</string>
     <string name="expires">expires</string>
     <string name="items">items</string>
+
+    <plurals name="songs">
+        <item quantity="one">%d song</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
+
+    <string name="title_activity_first_time_setup">FirstTimeSetupActivity</string>
 
     <!-- Speaker Pairing -->
     <string name="title_activity_speaker_pairing">Select a speaker</string>
@@ -33,6 +39,7 @@
 
 
     <!-- Wifi Setup -->
+    <string name="title_activity_speaker_wifi">SpeakerWifiActivity</string>
     <string name="wifi_list_title">Connect to Wi-Fi</string>
     <string name="wifi_list_instructions">Add %1$s to a Wi-Fi network.</string>
     <string name="wifi_list_instructions_first_time">Great! Now add %1$s to a Wi-Fi network.</string>
@@ -58,9 +65,7 @@
     <string name="wifi_info_description">Wifi info</string>
     <string name="boombotix_logo_description">Boombotix logo</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_speaker_wifi">SpeakerWifiActivity</string>
-    <string name="title_activity_first_time_setup">FirstTimeSetupActivity</string>
+
+
 
 </resources>

@@ -42,6 +42,10 @@ import rx.schedulers.Schedulers;
 public class MusicListFragment extends BaseFragment implements AuthManager.AuthRefreshRespCallback {
     private final String TAG = "MusicListFragment";
     private static final String ARG_SECTION = "section";
+    public static final int PLAYLIST_SECTION = 0;
+    public static final int SONGS_SECTION = 1;
+    public static final int ALBUMS_SECTION = 2;
+    public static final int ARTISTS_SECTION = 3;
     @Bind(R.id.recycler)
     RecyclerView recyclerView;
     @Inject
@@ -85,16 +89,16 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<>()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         switch(getArguments().getInt(ARG_SECTION)){
-            case 0:
+            case PLAYLIST_SECTION:
                 displayPlaylistContent();
                 break;
-            case 1:
+            case SONGS_SECTION:
                 displaySongsContent();
                 break;
-            case 2:
+            case ALBUMS_SECTION:
                 displayAlbumsContent();
                 break;
-            case 3:
+            case ARTISTS_SECTION:
                 displayArtistsContent();
                 break;
         }
@@ -107,6 +111,12 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         ButterKnife.bind(this, rootView);
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
     }
 
     private void displayArtistsContent() {
@@ -156,7 +166,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                         ArrayList<Pair<String, String>> items = new ArrayList<>();
                         for (SavedAlbum savedAlbum : savedAlbumPager.items) {
                             items.add(new Pair<>(savedAlbum.album.name,
-                                    pluralize(getSupportActivity().getString(R.string.song),
+                                    getResources().getQuantityString(R.plurals.songs,
+                                            savedAlbum.album.tracks.items.size(),
                                             savedAlbum.album.tracks.items.size())));
                         }
 
@@ -227,8 +238,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                         ArrayList<Pair<String, String>> items = new ArrayList<>();
                         for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
                             items.add(new Pair<>(playlistSimple.name,
-                                    pluralize(getSupportActivity().getString(R.string.song),
-                                            playlistSimple.tracks.total)));
+                                    getResources().getQuantityString(R.plurals.songs,
+                                            playlistSimple.tracks.total, playlistSimple.tracks.total)));
                         }
 
                         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -245,10 +256,5 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     public void onError(Throwable error) {
         Log.e(TAG, error.getMessage());
         error.printStackTrace();
-    }
-
-    private String pluralize(String s, int c){
-        if(c < 2) return String.valueOf(c) + " " + s;
-        return String.valueOf(c) + " " + s + "s";
     }
 }
