@@ -5,20 +5,20 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_camera"
-                    android:icon="@drawable/ic_menu_camera"
+                    android:id="@+id/nav_playlists"
+                    android:icon="@drawable/ic_menu_send"
                     android:title="Playlists" />
                 <item
-                    android:id="@+id/nav_gallery"
-                    android:icon="@drawable/ic_menu_gallery"
+                    android:id="@+id/nav_songs"
+                    android:icon="@drawable/ic_menu_send"
                     android:title="Songs" />
                 <item
-                    android:id="@+id/nav_slideshow"
-                    android:icon="@drawable/ic_menu_slideshow"
+                    android:id="@+id/nav_albums"
+                    android:icon="@drawable/ic_menu_send"
                     android:title="Albums" />
                 <item
-                    android:id="@+id/nav_manage"
-                    android:icon="@drawable/ic_menu_manage"
+                    android:id="@+id/nav_artists"
+                    android:icon="@drawable/ic_menu_send"
                     android:title="Artists" />
             </group>
         </menu>
@@ -30,10 +30,6 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Spotify" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Soundcloud" />
         </menu>
     </item>
     <item android:title="Settings">
@@ -42,10 +38,6 @@
                 android:id="@+id/app_settings"
                 android:icon="@drawable/ic_menu_share"
                 android:title="App Settings" />
-            <item
-                android:id="@+id/speaker"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Speaker" />
             <item
                 android:id="@+id/about"
                 android:icon="@drawable/ic_menu_send"
