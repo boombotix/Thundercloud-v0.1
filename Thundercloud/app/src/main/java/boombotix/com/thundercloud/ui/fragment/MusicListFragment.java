@@ -43,7 +43,9 @@ import rx.schedulers.Schedulers;
  * Created by jsaucedo on 2/1/16.
  */
 public class MusicListFragment extends BaseFragment implements AuthManager.AuthRefreshRespCallback,
-        PlaylistsSubscriber.PlaylistsSubscriberCallback, SongsSubscriber.SongsSubscriberCallback, AlbumsSubscriber.AlbumsSubscriberCallback, ArtistsSubscriber.ArtistsSubscriberCallback {
+        PlaylistsSubscriber.PlaylistsSubscriberCallback, SongsSubscriber.SongsSubscriberCallback,
+        AlbumsSubscriber.AlbumsSubscriberCallback, ArtistsSubscriber.ArtistsSubscriberCallback {
+
     private final String TAG = "MusicListFragment";
     private static final String ARG_SECTION = "section";
     public static final int PLAYLIST_SECTION = 0;
@@ -76,12 +78,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         super.onActivityCreated(savedInstanceState);
         getSupportActivity().getActivityComponent().inject(this);
         if(authManager.getUserId() != null) {
-            if (authManager.isExpired()) {
-                authManager.refreshAuthToken(this);
-            }
-            else{
-                initView();
-            }
+            initView();
         }
         else{
             startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -124,21 +121,24 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     }
 
     private void displayArtistsContent() {
-        Observable.defer(() -> Observable.just(spotifyService.getFollowedArtists()))
+        Observable.defer(() -> authManager.getValidAccessToken()
+                .flatMap(authRefreshResponse -> Observable.just(spotifyService.getFollowedArtists())))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ArtistsSubscriber(this));
     }
 
     private void displayAlbumsContent() {
-        Observable.defer(() -> Observable.just(spotifyService.getMySavedAlbums()))
+        Observable.defer(() -> authManager.getValidAccessToken()
+                .flatMap(authRefreshResponse -> Observable.just(spotifyService.getMySavedAlbums())))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AlbumsSubscriber(this));
     }
 
     private void displaySongsContent() {
-        Observable.defer(() -> Observable.just(spotifyService.getMySavedTracks()))
+        Observable.defer(() -> authManager.getValidAccessToken()
+                .flatMap(authRefreshResponse -> Observable.just(spotifyService.getMySavedTracks())))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SongsSubscriber(this));
@@ -168,7 +168,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     }
 
     private void displayPlaylistContent() {
-        Observable.defer(() -> Observable.just(spotifyService.getPlaylists(authManager.getUserId())))
+        Observable.defer(() -> authManager.getValidAccessToken()
+                .flatMap(authRefreshResponse -> Observable.just(spotifyService.getPlaylists(authManager.getUserId()))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new PlaylistsSubscriber(this));

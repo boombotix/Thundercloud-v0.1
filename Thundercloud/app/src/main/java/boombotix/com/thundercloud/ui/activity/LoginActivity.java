@@ -131,7 +131,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userPrivate -> {
-                    AuthManager.setUserId(userPrivate.id);
+                    authManager.setUserId(userPrivate.id);
                 });
     }
 
