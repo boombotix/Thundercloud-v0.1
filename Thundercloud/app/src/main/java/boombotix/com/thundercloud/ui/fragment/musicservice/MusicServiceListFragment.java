@@ -14,6 +14,7 @@ import boombotix.com.thundercloud.model.MusicService;
 import boombotix.com.thundercloud.ui.adapter.MusicServiceListAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Shows a list of music services and gives the user the option of connecting to one or several of
@@ -25,20 +26,19 @@ public class MusicServiceListFragment extends Fragment
         implements MusicServiceListAdapter.MusicServiceListListener {
 
     private static final String ARG_SPEAKER_NAME = "speaker_name";
+
     private static final String ARG_FIRST_TIME = "first_time";
 
     @Bind(R.id.finish)
     View finish;
-
-    @Bind(R.id.skip)
-    View skip;
 
     @Bind(R.id.music_service_list)
     RecyclerView musicServiceList;
 
 
     private String speakerName;
-    private boolean firstTime;
+
+    private boolean firstTime; //todo see if we can remove this
 
     private OnMusicServiceSelectedListener listener;
 
@@ -76,7 +76,7 @@ public class MusicServiceListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_music_service_list, container, false);
         ButterKnife.bind(this, view);
 
-        showSkipOptionsIfFirstTime();
+        showFinishIfOneConnected();
         setTitle();
         initMusicServiceList();
         return view;
@@ -100,27 +100,24 @@ public class MusicServiceListFragment extends Fragment
         listener = null;
     }
 
-    private void setTitle(){
+    private void setTitle() {
         String title = getString(R.string.music_setup_title, speakerName);
         getActivity().setTitle(title);
     }
 
-    private void showSkipOptionsIfFirstTime(){
-        if(firstTime){
-            skip.setVisibility(View.VISIBLE);
-        } else {
-            skip.setVisibility(View.GONE);
-        }
-    }
-
-    private void showFinishIfOneConnected(){
+    private void showFinishIfOneConnected() {
         //todo show the finish button only if at least one service is connected
     }
 
-    public void initMusicServiceList(){
+    public void initMusicServiceList() {
         adapter = new MusicServiceListAdapter(this);
         musicServiceList.setAdapter(adapter);
         musicServiceList.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @OnClick(R.id.finish)
+    public void finish() {
+        listener.onMusicServiceFinished();
     }
 
     @Override
@@ -129,8 +126,10 @@ public class MusicServiceListFragment extends Fragment
     }
 
     public interface OnMusicServiceSelectedListener {
+
         //todo replace with music service model object?
         void onMusicServiceSelected(String name);
+
         void onMusicServiceFinished();
     }
 }

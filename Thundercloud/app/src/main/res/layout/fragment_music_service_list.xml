@@ -40,15 +40,6 @@
         android:layout_marginBottom="@dimen/default_margin"
         android:text="@string/finish" />
 
-    <TextView
-        android:id="@+id/skip"
-        style="@style/TextAppearance.Thundercloud.Body.Accent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/default_margin_3x"
-        android:text="@string/music_setup_skip" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

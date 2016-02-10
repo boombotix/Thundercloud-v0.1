@@ -45,7 +45,12 @@ public class MusicServiceSetupActivity extends BaseActivity
 
     @Override
     public void onMusicServiceSelected(String name) {
-        //todo navigate to details fragment
+        //todo navigate to info fragment
         Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onMusicServiceFinished() {
+        finish();
     }
 }

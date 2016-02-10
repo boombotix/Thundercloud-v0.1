@@ -89,6 +89,7 @@ public class FirstTimeSetupActivity extends BaseActivity {
                 break;
             case REQUEST_CODE_MUSIC_SERVICES:
                 finish();
+                break;
             default:
                 Log.e(TAG, "Unrecognized request code: " + requestCode);
         }
