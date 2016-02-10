@@ -82,6 +82,8 @@
     <string name="description_music_service_logo">Logo</string>
     <string name="description_music_row_menu">Options</string>
     <string name="description_music_row_art">Art</string>
+    <string name="description_now_playing_mute">Mute</string>
+    <string name="description_now_playing_full_volume">Full Volume</string>
 
     
 

@@ -47,17 +47,26 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         AlbumsSubscriber.AlbumsSubscriberCallback, ArtistsSubscriber.ArtistsSubscriberCallback {
 
     private final String TAG = "MusicListFragment";
+
     private static final String ARG_SECTION = "section";
+
     public static final int PLAYLIST_SECTION = 0;
+
     public static final int SONGS_SECTION = 1;
+
     public static final int ALBUMS_SECTION = 2;
+
     public static final int ARTISTS_SECTION = 3;
+
     @Bind(R.id.recycler)
     RecyclerView recyclerView;
+
     @Inject
     AuthManager authManager;
+
     @Inject
     SpotifyService spotifyService;
+
     @Inject
     SpotifyApi spotifyApi;
 
@@ -77,10 +86,9 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getSupportActivity().getActivityComponent().inject(this);
-        if(authManager.getUserId() != null) {
+        if (authManager.getUserId() != null) {
             initView();
-        }
-        else{
+        } else {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
     }
@@ -89,7 +97,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         spotifyApi.setAccessToken(authManager.getAccessToken());
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<>()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        switch(getArguments().getInt(ARG_SECTION)){
+        switch (getArguments().getInt(ARG_SECTION)) {
             case PLAYLIST_SECTION:
                 displayPlaylistContent();
                 break;
@@ -107,7 +115,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_music_pager_list, container, false);
         ButterKnife.bind(this, rootView);
 
@@ -122,7 +130,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     private void displayArtistsContent() {
         Observable.defer(() -> authManager.getValidAccessToken()
-                .flatMap(authRefreshResponse -> Observable.just(spotifyService.getFollowedArtists())))
+                .flatMap(authRefreshResponse -> Observable
+                        .just(spotifyService.getFollowedArtists())))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ArtistsSubscriber(this));
@@ -145,18 +154,19 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     }
 
     /**
-     * Formats duration of song time hh:mm:ss
-     * prettytime plugin cannot be used here because it only offers relative time formatting
+     * Formats duration of song time hh:mm:ss prettytime plugin cannot be used here because it only
+     * offers relative time formatting
+     *
      * @param l duration in seconds
      * @return string formatted hh:mm:ss
      */
     private String prettyTime(long l) {
         String time = "";
         long seconds = l % 60;
-        long minutes = l/60 % 60;
-        long hours = l/3600 % 60;
+        long minutes = l / 60 % 60;
+        long hours = l / 3600 % 60;
 
-        if(hours > 0){
+        if (hours > 0) {
             time += ((hours < 10) ? "0" : "") + hours + ":";
         }
         time += ((minutes < 10 && hours > 0) ? "0" : "") + minutes + ":";
@@ -166,7 +176,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     private void displayPlaylistContent() {
         Observable.defer(() -> authManager.getValidAccessToken()
-                .flatMap(authRefreshResponse -> Observable.just(spotifyService.getPlaylists(authManager.getUserId()))))
+                .flatMap(authRefreshResponse -> Observable
+                        .just(spotifyService.getPlaylists(authManager.getUserId()))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new PlaylistsSubscriber(this));
@@ -185,7 +196,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     @Override
     public void playlistsResponse(Pager<PlaylistSimple> playlistSimplePager) {
-        ArrayList < Pair < String, String >> items = new ArrayList<>();
+        ArrayList<Pair<String, String>> items = new ArrayList<>();
         for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
             items.add(new Pair<>(playlistSimple.name,
                     getResources().getQuantityString(R.plurals.songs,
@@ -200,7 +211,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         ArrayList<Pair<String, String>> items = new ArrayList<>();
         for (SavedTrack savedTrack : savedTrackPager.items) {
             items.add(new Pair<>(savedTrack.track.name,
-                    savedTrack.track.artists.get(0).name));
+                    savedTrack.track.artists.get(0).name)); //todo show all artists
 
         }
 
@@ -211,7 +222,9 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     public void albumsResponse(Pager<SavedAlbum> savedAlbumPager) {
         ArrayList<Pair<String, String>> items = new ArrayList<>();
         for (SavedAlbum savedAlbum : savedAlbumPager.items) {
-            items.add(new Pair<>(savedAlbum.album.name, savedAlbum.album.release_date));
+            int tracks = savedAlbum.album.tracks.total;
+            items.add(new Pair<>(savedAlbum.album.name,
+                    getResources().getQuantityString(R.plurals.songs, tracks, tracks)));
         }
 
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));

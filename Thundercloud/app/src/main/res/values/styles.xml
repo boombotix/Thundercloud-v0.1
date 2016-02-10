@@ -74,5 +74,9 @@
         <item name="android:alpha">0.7</item>
     </style>
 
+    <style name="TextAppearance.Thundercloud.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 
 </resources>
