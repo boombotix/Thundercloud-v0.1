@@ -22,6 +22,7 @@ import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
+import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -47,7 +48,7 @@ public class MainActivity extends BaseActivity
             // TODO actually have  a main fragment
             mainFragment = NowPlayingFragment.newInstance();
             fm.beginTransaction()
-                    .add(R.id.main_fragment, mainFragment)
+                    .add(R.id.main_fragment, mainFragment, NowPlayingFragment.TAG)
                     .commit();
         }
 
@@ -101,6 +102,11 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        Fragment fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
+        if(fragment != null){
+            fm.beginTransaction().remove(fragment).commit();
+        }
+
         if(id == R.id.nav_nowplaying){
             fm.beginTransaction()
                     .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
@@ -121,15 +127,41 @@ public class MainActivity extends BaseActivity
     }
 
     private void changeMusicPagerPage(int page){
+
         Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
         fm.beginTransaction()
                 .replace(R.id.main_fragment, musicPagerFragment)
                 .commit();
     }
 
+    public void addVoiceSearchFragmentOverlay(String query){
+        // find current fragment
+        Fragment fragment = fm.findFragmentById(R.id.main_fragment);
+        if(fragment.getTag() != NowPlayingFragment.TAG){
+            // replace with now playing fragment if it's not the current fragment
+            fragment = NowPlayingFragment.newInstance();
+            fm.beginTransaction()
+                    .add(R.id.main_fragment, fragment, NowPlayingFragment.TAG)
+                    .commit();
+        }
+        // hide content in now playing fragment
+        NowPlayingFragment nowPlayingFragment = (NowPlayingFragment) fragment;
+        nowPlayingFragment.hideContent();
+
+        // add overlay
+        fm.beginTransaction()
+                .add(R.id.overlay_fragment,
+                        VoiceSearchResultFragment.newInstance(query),
+                        VoiceSearchResultFragment.TAG)
+                .commit();
+    }
+
+    public void removeFragment(Fragment fragment){
+        fm.beginTransaction().remove(fragment).commit();
+    }
+
     /**
      * Hides search input from toolbar
-     *
      */
     public void hideSearch(){
         searchText.setVisibility(View.GONE);
@@ -138,7 +170,6 @@ public class MainActivity extends BaseActivity
     public void showSearch(){
         searchText.setVisibility(View.VISIBLE);
     }
-
 
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);

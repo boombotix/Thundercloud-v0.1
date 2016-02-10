@@ -1,6 +1,9 @@
 package boombotix.com.thundercloud.ui.fragment;
 
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,10 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.activity.MainActivity;
@@ -21,12 +28,17 @@ import butterknife.ButterKnife;
 
 public class NowPlayingFragment extends BaseFragment implements
         HoloCircleSeekBar.OnCircleSeekBarChangeListener {
+    public static final String TAG = "NowPlayingFragment";
     @Bind(R.id.picker)
     HoloCircleSeekBar picker;
     @Bind(R.id.progress_text)
     TextView progressText;
     @Bind(R.id.play_button)
     ImageButton playButton;
+    @Bind(R.id.nowplaying_content)
+    RelativeLayout mainContent;
+    @Bind(R.id.now_playing_album_art)
+    ImageView nowPlayingAlbumArt;
 
     public NowPlayingFragment() {
         // Required empty public constructor
@@ -60,6 +72,11 @@ public class NowPlayingFragment extends BaseFragment implements
             playButton.setVisibility(View.GONE);
         });
         ((MainActivity) getActivity()).showSearch();
+
+        Picasso.with(getContext())
+                .load(R.drawable.daftpunk_bg)
+                .fit()
+                .into(nowPlayingAlbumArt);
         return view;
     }
 
@@ -75,5 +92,13 @@ public class NowPlayingFragment extends BaseFragment implements
     @Override
     public void onStopTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
         progressText.setText(String.valueOf(holoCircleSeekBar.getValue()));
+    }
+
+    public void hideContent(){
+        mainContent.setVisibility(View.GONE);
+    }
+
+    public void showContent(){
+        mainContent.setVisibility(View.VISIBLE);
     }
 }
