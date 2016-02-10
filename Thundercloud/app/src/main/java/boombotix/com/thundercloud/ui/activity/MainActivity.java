@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void setQueueFragment(){
-        Fragment queueFragment = QueueFragment.newInstance("param1", "param2");
+        Fragment queueFragment = QueueFragment.newInstance();
         fm.beginTransaction()
                 .replace(R.id.queue_container, queueFragment)
                 .commit();

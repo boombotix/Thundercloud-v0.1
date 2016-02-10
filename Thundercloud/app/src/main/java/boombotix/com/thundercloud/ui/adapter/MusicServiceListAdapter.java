@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.model.MusicService;
+import boombotix.com.thundercloud.ui.viewholder.MusicServiceViewHolder;
 
 /**
  * RecyclerView adapter for a list of music services, uses

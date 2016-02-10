@@ -26,7 +26,7 @@ public class YourMusicAdapter extends RecyclerView.Adapter<YourMusicViewHolder> 
     @Override
     public YourMusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(activity);
-        View view = layoutInflater.inflate(R.layout.music_list_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.row_music_item, parent, false);
         return new YourMusicViewHolder(view);
     }
 
