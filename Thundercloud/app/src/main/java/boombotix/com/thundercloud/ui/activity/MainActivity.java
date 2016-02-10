@@ -1,6 +1,5 @@
 package boombotix.com.thundercloud.ui.activity;
 
-import android.app.Service;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,9 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
@@ -22,6 +19,7 @@ import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
+import boombotix.com.thundercloud.ui.fragment.QueueFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -67,6 +65,8 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setQueueFragment();
     }
 
     @Override
@@ -124,6 +124,13 @@ public class MainActivity extends BaseActivity
         Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
         fm.beginTransaction()
                 .replace(R.id.main_fragment, musicPagerFragment)
+                .commit();
+    }
+
+    private void setQueueFragment(){
+        Fragment queueFragment = QueueFragment.newInstance();
+        fm.beginTransaction()
+                .replace(R.id.queue_container, queueFragment)
                 .commit();
     }
 

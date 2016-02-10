@@ -66,23 +66,24 @@
     <string name="wifi_success_skip_music">Skip for now</string>
 
     <!--  Music Service Setup -->
+    <string name="title_activity_music_service_setup">MusicServiceSetupActivity</string>
     <string name="music_setup_title">Set up %1$s</string>
     <string name="music_setup_instructions">Select your music source</string>
     <string name="music_setup_more_apps_coming">More apps coming soon …</string>
     <string name="music_setup_skip">Skip for now</string>
 
     <!-- Content Descriptions -->
-    <string name="connect_bluetooth_button_description">Connect bluetooth</string>
-    <string name="no_speakers_found_description">No speakers found</string>
-    <string name="no_wifi_found_description">No networks found</string>
-    <string name="wifi_strength_description">Wifi strength</string>
-    <string name="wifi_info_description">Wifi info</string>
-    <string name="boombotix_logo_description">Boombotix logo</string>
-    <string name="music_service_logo_description">Logo</string>
-    <string name="title_activity_music_service_setup">MusicServiceSetupActivity</string>
+    <string name="description_connect_bluetooth_button">Connect bluetooth</string>
+    <string name="description_no_speakers_found">No speakers found</string>
+    <string name="description_no_wifi_found">No networks found</string>
+    <string name="description_wifi_strength">Wifi strength</string>
+    <string name="description_wifi_info">Wifi info</string>
+    <string name="description_boombotix_logo">Boombotix logo</string>
+    <string name="description_music_service_logo">Logo</string>
+    <string name="description_music_row_menu">Options</string>
+    <string name="description_music_row_art">Art</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
 
 
 </resources>

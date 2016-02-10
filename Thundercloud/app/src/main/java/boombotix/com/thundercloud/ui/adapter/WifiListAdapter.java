@@ -9,6 +9,7 @@ import java.util.List;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.model.WifiNetwork;
+import boombotix.com.thundercloud.ui.viewholder.WifiViewHolder;
 
 /**
  * Adapter for a list of wifi networks. Each row contains the name, signal strength, and info
