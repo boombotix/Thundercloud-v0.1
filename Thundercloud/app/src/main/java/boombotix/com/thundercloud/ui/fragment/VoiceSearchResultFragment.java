@@ -60,6 +60,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
         queryText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tapToEdit.setVisibility(View.GONE);
                 queryText.setVisibility(View.GONE);
                 editText.setVisibility(View.VISIBLE);
             }

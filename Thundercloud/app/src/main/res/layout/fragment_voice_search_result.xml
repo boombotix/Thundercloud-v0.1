@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/voice_search_result_edit"
         android:visibility="gone"
-        android:lines="1"
+        android:singleLine="true"
         android:textColor="#0f0"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>

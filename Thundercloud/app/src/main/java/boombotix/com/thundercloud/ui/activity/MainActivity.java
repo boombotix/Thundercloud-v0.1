@@ -102,10 +102,6 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        Fragment fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
-        if(fragment != null){
-            fm.beginTransaction().remove(fragment).commit();
-        }
 
         if(id == R.id.nav_nowplaying){
             fm.beginTransaction()
@@ -162,8 +158,11 @@ public class MainActivity extends BaseActivity
                 .commit();
     }
 
-    public void removeFragment(Fragment fragment){
-        fm.beginTransaction().remove(fragment).commit();
+    public void removeFragmentByTag(String tag){
+        Fragment fragment = fm.findFragmentByTag(tag);
+        if(fragment != null) {
+            fm.beginTransaction().remove(fragment).commit();
+        }
     }
 
     /**

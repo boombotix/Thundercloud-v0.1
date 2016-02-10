@@ -81,8 +81,14 @@ public class NowPlayingFragment extends BaseFragment implements
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onDestroyView() {
         ButterKnife.unbind(this);
+        ((MainActivity) getActivity()).removeFragmentByTag(VoiceSearchResultFragment.TAG);
         super.onDestroyView();
     }
 
