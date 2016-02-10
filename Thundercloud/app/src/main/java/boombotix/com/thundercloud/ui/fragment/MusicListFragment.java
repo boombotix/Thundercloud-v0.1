@@ -150,9 +150,6 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
      * @param l duration in seconds
      * @return string formatted hh:mm:ss
      */
-    /*
-    *
-    */
     private String prettyTime(long l) {
         String time = "";
         long seconds = l % 60;
@@ -203,7 +200,8 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         ArrayList<Pair<String, String>> items = new ArrayList<>();
         for (SavedTrack savedTrack : savedTrackPager.items) {
             items.add(new Pair<>(savedTrack.track.name,
-                    prettyTime(savedTrack.track.duration_ms / 1000)));
+                    savedTrack.track.artists.get(0).name));
+
         }
 
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));

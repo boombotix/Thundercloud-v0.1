@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="Sandstorm"
         android:id="@+id/song"
-        style="@style/TextAppearance.Thundercloud.Body"
+        style="@style/TextAppearance.Thundercloud.Title"
         android:textStyle="bold" />
 
     <TextView

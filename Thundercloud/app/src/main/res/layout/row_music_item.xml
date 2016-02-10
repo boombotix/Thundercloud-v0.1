@@ -25,17 +25,20 @@
 
         <TextView
             android:id="@+id/item_title"
+            style="@style/TextAppearance.Thundercloud.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/basicText" />
 
         <TextView
             android:id="@+id/item_subtitle"
+            style="@style/TextAppearance.Thundercloud.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/basicText" />
+            android:singleLine="true" />
     </LinearLayout>
 
     <ImageView
@@ -43,8 +46,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@android:drawable/sym_def_app_icon"
-        android:contentDescription="@string/description_music_row_menu" />
+        android:contentDescription="@string/description_music_row_menu"
+        android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha" />
 </LinearLayout>
 
 
