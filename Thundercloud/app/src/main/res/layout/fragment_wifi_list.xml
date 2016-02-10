@@ -115,7 +115,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_margin"
-        android:contentDescription="@string/boombotix_logo_description"
+        android:contentDescription="@string/description_boombotix_logo"
         android:src="@mipmap/ic_launcher" />
 
 </RelativeLayout>
