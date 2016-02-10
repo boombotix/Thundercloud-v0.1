@@ -109,7 +109,9 @@ public class MainActivity extends BaseActivity
 
         if(id == R.id.nav_nowplaying){
             fm.beginTransaction()
-                    .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
+                    .replace(R.id.main_fragment,
+                            NowPlayingFragment.newInstance(),
+                            NowPlayingFragment.TAG)
                     .commit();
         } else if (id == R.id.nav_playlists) {
             changeMusicPagerPage(MusicListFragment.PLAYLIST_SECTION);

@@ -81,6 +81,12 @@ public class NowPlayingFragment extends BaseFragment implements
     }
 
     @Override
+    public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
+    @Override
     public void onProgressChanged(HoloCircleSeekBar holoCircleSeekBar, int i, boolean b) {
     }
 
