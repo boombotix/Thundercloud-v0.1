@@ -45,6 +45,12 @@ public class FirstTimeSetupActivity extends BaseActivity {
         startActivityForResult(intent, REQUEST_CODE_SPEAKER_WIFI);
     }
 
+    private void startMusicServiceSetupActivity(){
+        Intent intent = new Intent(this, MusicServiceSetupActivity.class);
+        intent.putExtra(MusicServiceSetupActivity.FIRST_TIME_SETUP_KEY, true);
+        startActivityForResult(intent, REQUEST_CODE_MUSIC_SERVICES);
+    }
+
     /**
      * Handles all result codes returned from {@link SpeakerPairingActivity}
      *
@@ -61,8 +67,7 @@ public class FirstTimeSetupActivity extends BaseActivity {
         switch (resultCode) {
             case SpeakerWifiActivity.SUCCESS:
             case SpeakerWifiActivity.SKIPPED:
-                //todo show music service activity
-                finish();
+                startMusicServiceSetupActivity();
                 break;
             case SpeakerWifiActivity.SUCCESS_SKIP_MUSIC:
                 finish();
@@ -81,6 +86,9 @@ public class FirstTimeSetupActivity extends BaseActivity {
                 break;
             case REQUEST_CODE_SPEAKER_WIFI:
                 handleSpeakerWifiResult(resultCode);
+                break;
+            case REQUEST_CODE_MUSIC_SERVICES:
+                finish();
                 break;
             default:
                 Log.e(TAG, "Unrecognized request code: " + requestCode);

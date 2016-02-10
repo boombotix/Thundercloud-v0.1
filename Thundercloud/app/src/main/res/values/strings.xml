@@ -1,15 +1,23 @@
 <resources>
     <string name="app_name">Thundercloud</string>
-    <string name="title_activity_main">MainActivity</string>
+
     <string name="access_token">auth_token</string>
     <string name="refresh_token">refresh_token</string>
+
+    <!-- Common -->
+    <string name="connect">Connect</string>
+    <string name="connected">Connected</string>
+    <string name="finish">Finish</string>
+
+    <!-- Main Activity -->
+    <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_drawer">DrawerActivity</string>
     <string name="title_activity_player">PlayerActivity</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
+
+    <!-- Your Music -->
     <string name="title_activity_music_pager">Your Music</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="playlist">Playlist</string>
@@ -19,12 +27,12 @@
     <string name="user_id">userId</string>
     <string name="expires">expires</string>
     <string name="items">items</string>
-
     <plurals name="songs">
         <item quantity="one">%d song</item>
         <item quantity="other">%d songs</item>
     </plurals>
 
+    <!-- First Time Setup -->
     <string name="title_activity_first_time_setup">FirstTimeSetupActivity</string>
 
     <!-- Speaker Pairing -->
@@ -57,6 +65,12 @@
     <string name="wifi_success_add_music">Add your music</string>
     <string name="wifi_success_skip_music">Skip for now</string>
 
+    <!--  Music Service Setup -->
+    <string name="music_setup_title">Set up %1$s</string>
+    <string name="music_setup_instructions">Select your music source</string>
+    <string name="music_setup_more_apps_coming">More apps coming soon …</string>
+    <string name="music_setup_skip">Skip for now</string>
+
     <!-- Content Descriptions -->
     <string name="connect_bluetooth_button_description">Connect bluetooth</string>
     <string name="no_speakers_found_description">No speakers found</string>
@@ -64,6 +78,8 @@
     <string name="wifi_strength_description">Wifi strength</string>
     <string name="wifi_info_description">Wifi info</string>
     <string name="boombotix_logo_description">Boombotix logo</string>
+    <string name="music_service_logo_description">Logo</string>
+    <string name="title_activity_music_service_setup">MusicServiceSetupActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
