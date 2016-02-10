@@ -138,17 +138,21 @@ public class MainActivity extends BaseActivity
 
     public void addVoiceSearchFragmentOverlay(String query){
         // find current fragment
-        Fragment fragment = fm.findFragmentById(R.id.main_fragment);
-        if(fragment.getTag() != NowPlayingFragment.TAG){
+        Fragment nowPlayingFragment = fm.findFragmentById(R.id.main_fragment);
+        if(nowPlayingFragment.getTag() != NowPlayingFragment.TAG){
             // replace with now playing fragment if it's not the current fragment
-            fragment = NowPlayingFragment.newInstance();
+            nowPlayingFragment = NowPlayingFragment.newInstance();
             fm.beginTransaction()
-                    .add(R.id.main_fragment, fragment, NowPlayingFragment.TAG)
+                    .add(R.id.main_fragment, nowPlayingFragment, NowPlayingFragment.TAG)
                     .commit();
         }
         // hide content in now playing fragment
-        NowPlayingFragment nowPlayingFragment = (NowPlayingFragment) fragment;
-        nowPlayingFragment.hideContent();
+        ((NowPlayingFragment) nowPlayingFragment).hideContent();
+
+        Fragment voiceSearchResultFragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
+        if(voiceSearchResultFragment != null){
+            fm.beginTransaction().remove(voiceSearchResultFragment).commit();
+        }
 
         // add overlay
         fm.beginTransaction()
