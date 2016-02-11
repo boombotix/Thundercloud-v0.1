@@ -18,7 +18,8 @@ public class MusicController {
 
     private List<SongProgressListener> songProgressListeners = new ArrayList<>();
 
-    public MusicController(){
+    public MusicController(MusicPlayer musicPlayer){
+        this.musicPlayer = musicPlayer;
         musicPlayer.registerSongFinishedListener(songFinishedListener);
     }
 

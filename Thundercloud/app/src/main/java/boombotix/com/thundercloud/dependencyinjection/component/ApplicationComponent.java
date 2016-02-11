@@ -1,8 +1,8 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
-import android.content.SharedPreferences;
-
 import com.google.gson.Gson;
+
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
@@ -10,7 +10,9 @@ import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
+import boombotix.com.thundercloud.dependencyinjection.module.MusicModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
+import boombotix.com.thundercloud.music.MusicController;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -30,7 +32,8 @@ import kaaes.spotify.webapi.android.SpotifyService;
         {
                 ApplicationModule.class,
                 RepositoryModule.class,
-                ApiModule.class
+                ApiModule.class,
+                MusicModule.class
         }
 )
 public interface ApplicationComponent {
@@ -42,6 +45,7 @@ public interface ApplicationComponent {
                     .applicationModule(new ApplicationModule(application))
                     .apiModule(new ApiModule())
                     .repositoryModule(new RepositoryModule(application))
+                    .musicModule(new MusicModule())
                     .build();
         }
 
@@ -55,5 +59,5 @@ public interface ApplicationComponent {
     SharedPreferences sharedPreferences();
     AuthManager authManager();
     SpotifyService spotifyService();
-
+    MusicController musicController();
 }
