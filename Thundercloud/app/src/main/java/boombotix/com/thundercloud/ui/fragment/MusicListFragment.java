@@ -73,7 +73,6 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     public MusicListFragment() {
     }
 
-
     public static MusicListFragment newInstance(int sectionNumber) {
         MusicListFragment fragment = new MusicListFragment();
         Bundle args = new Bundle();
