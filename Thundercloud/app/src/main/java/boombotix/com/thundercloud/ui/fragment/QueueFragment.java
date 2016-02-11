@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 public class QueueFragment extends Fragment {
 
     @Bind(R.id.queue)
-    RecyclerView queue;
+    RecyclerView queueRecyclerView;
 
     public static QueueFragment newInstance() {
         QueueFragment fragment = new QueueFragment();
@@ -48,7 +48,7 @@ public class QueueFragment extends Fragment {
         for (int i = 0; i < 15; i++) {
             songs.add(song);
         }
-        queue.setAdapter(new QueueAdapter(songs));
-        queue.setLayoutManager(new LinearLayoutManager(getContext()));
+        queueRecyclerView.setAdapter(new QueueAdapter(songs));
+        queueRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }

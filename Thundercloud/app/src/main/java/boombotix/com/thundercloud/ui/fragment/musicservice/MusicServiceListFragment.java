@@ -33,7 +33,7 @@ public class MusicServiceListFragment extends Fragment
     View finish;
 
     @Bind(R.id.music_service_list)
-    RecyclerView musicServiceList;
+    RecyclerView musicServiceRecyclerView;
 
 
     private String speakerName;
@@ -111,8 +111,8 @@ public class MusicServiceListFragment extends Fragment
 
     public void initMusicServiceList() {
         adapter = new MusicServiceListAdapter(this);
-        musicServiceList.setAdapter(adapter);
-        musicServiceList.setLayoutManager(new LinearLayoutManager(getContext()));
+        musicServiceRecyclerView.setAdapter(adapter);
+        musicServiceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @OnClick(R.id.finish)

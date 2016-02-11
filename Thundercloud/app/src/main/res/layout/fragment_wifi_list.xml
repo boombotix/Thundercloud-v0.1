@@ -25,7 +25,7 @@
             android:text="@string/wifi_list_instructions_first_time" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/network_list"
+            android:id="@+id/wifi_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible" />
