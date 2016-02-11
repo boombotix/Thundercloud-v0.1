@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.activity.MainActivity;
@@ -94,7 +92,6 @@ public class NowPlayingFragment extends BaseFragment implements
     @Override
     public void onDestroyView() {
         ButterKnife.unbind(this);
-        ((MainActivity) getActivity()).removeFragmentByTag(VoiceSearchResultFragment.TAG);
         super.onDestroyView();
     }
 

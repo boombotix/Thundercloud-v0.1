@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ui.activity.MainActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,10 +30,9 @@ public class VoiceSearchResultFragment extends BaseFragment {
     public VoiceSearchResultFragment() {
     }
 
-    public static VoiceSearchResultFragment newInstance(String query) {
+    public static VoiceSearchResultFragment newInstance() {
         VoiceSearchResultFragment fragment = new VoiceSearchResultFragment();
         Bundle args = new Bundle();
-        args.putString(QUERY_ARG, query);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,6 +45,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         ButterKnife.unbind(this);
+        ((MainActivity) getActivity()).stopPlayerSearch();
         super.onDestroyView();
     }
 
@@ -53,10 +54,17 @@ public class VoiceSearchResultFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_voice_search_result, container, false);
         ButterKnife.bind(this, view);
+        return view;
+    }
 
+    public void updateText(String s){
+        queryText.setText(s);
+    }
+
+    public void setQuery(String s){
+        queryText.setText(s);
         tapToEdit.setVisibility(View.VISIBLE);
-        queryText.setText(getArguments().getString(QUERY_ARG));
-        editText.setText(getArguments().getString(QUERY_ARG));
+        editText.setText(s);
         queryText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +73,6 @@ public class VoiceSearchResultFragment extends BaseFragment {
                 editText.setVisibility(View.VISIBLE);
             }
         });
-        return view;
     }
 
 }

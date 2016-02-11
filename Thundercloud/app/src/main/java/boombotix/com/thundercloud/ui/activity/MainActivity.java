@@ -2,6 +2,7 @@ package boombotix.com.thundercloud.ui.activity;
 
 import android.app.Service;
 import android.os.Bundle;
+import android.speech.tts.Voice;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -56,7 +57,7 @@ public class MainActivity extends BaseActivity
         if (playerFragment == null) {
             playerFragment = new PlayerFragment();
             fm.beginTransaction()
-                    .add(R.id.player_fragment, playerFragment)
+                    .add(R.id.player_fragment, playerFragment, PlayerFragment.TAG)
                     .commit();
         }
 
@@ -102,6 +103,7 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        removeFragmentByTag(VoiceSearchResultFragment.TAG);
 
         if(id == R.id.nav_nowplaying){
             fm.beginTransaction()
@@ -132,19 +134,7 @@ public class MainActivity extends BaseActivity
                 .commit();
     }
 
-    public void addVoiceSearchFragmentOverlay(String query){
-        // find current fragment
-        Fragment nowPlayingFragment = fm.findFragmentById(R.id.main_fragment);
-        if(nowPlayingFragment.getTag() != NowPlayingFragment.TAG){
-            // replace with now playing fragment if it's not the current fragment
-            nowPlayingFragment = NowPlayingFragment.newInstance();
-            fm.beginTransaction()
-                    .add(R.id.main_fragment, nowPlayingFragment, NowPlayingFragment.TAG)
-                    .commit();
-        }
-        // hide content in now playing fragment
-        ((NowPlayingFragment) nowPlayingFragment).hideContent();
-
+    public void addVoiceSearchFragmentOverlay(){
         Fragment voiceSearchResultFragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
         if(voiceSearchResultFragment != null){
             fm.beginTransaction().remove(voiceSearchResultFragment).commit();
@@ -153,15 +143,40 @@ public class MainActivity extends BaseActivity
         // add overlay
         fm.beginTransaction()
                 .add(R.id.overlay_fragment,
-                        VoiceSearchResultFragment.newInstance(query),
+                        VoiceSearchResultFragment.newInstance(),
                         VoiceSearchResultFragment.TAG)
                 .commit();
+    }
+
+    public void updateVoiceSearchFragmentOverlayText(String s){
+       setAndGetVoiceSearchResultFragment().updateText(s);
+    }
+
+    public void setVoiceSearchFragmentOverlayQuery(String s){
+        setAndGetVoiceSearchResultFragment().setQuery(s);
+    }
+
+
+
+    public VoiceSearchResultFragment setAndGetVoiceSearchResultFragment(){
+        Fragment fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
+        if(fragment == null){
+            addVoiceSearchFragmentOverlay();
+        }
+        return (VoiceSearchResultFragment) fragment;
     }
 
     public void removeFragmentByTag(String tag){
         Fragment fragment = fm.findFragmentByTag(tag);
         if(fragment != null) {
             fm.beginTransaction().remove(fragment).commit();
+        }
+    }
+
+    public void stopPlayerSearch(){
+       Fragment fragment = fm.findFragmentByTag(PlayerFragment.TAG);
+        if(fragment != null){
+            ((PlayerFragment) fragment).stopSearch();
         }
     }
 
