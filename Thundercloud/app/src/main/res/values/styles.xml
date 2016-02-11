@@ -40,21 +40,22 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-
     <style name="TextAppearance.Thundercloud.Speaker">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
-    <style name="TextAppearance.Thundercloud.ListItem">
+    <style name="TextAppearance.Thundercloud.Title">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Title.Bold">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextAppearance.Thundercloud.Title">
-        <item name="android:textSize">20sp</item>
+    <style name="TextAppearance.Thundercloud.Title.Bold.Accent">
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="TextAppearance.Thundercloud.Title.Gray">
@@ -71,6 +72,10 @@
 
     <style name="TextAppearance.Thundercloud.Body.Gray">
         <item name="android:alpha">0.7</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Small">
+        <item name="android:textSize">12sp</item>
     </style>
 
 

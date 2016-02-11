@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Wifi Network SSID"
         android:id="@+id/wifi_network_ssid"
-        style="@style/TextAppearance.Thundercloud.ListItem" />
+        style="@style/TextAppearance.Thundercloud.Title.Bold.Accent" />
 
     <ImageButton
         android:layout_width="wrap_content"
