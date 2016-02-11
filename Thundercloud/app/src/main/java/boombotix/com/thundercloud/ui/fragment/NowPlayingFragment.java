@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -73,10 +74,15 @@ public class NowPlayingFragment extends BaseFragment implements
         });
         ((MainActivity) getActivity()).showSearch();
 
-        Picasso.with(getContext())
+//        Picasso.with(getContext())
+//                .load(R.drawable.daftpunk_bg)
+//                .fit()
+//                .into(nowPlayingAlbumArt);
+        Glide.with(getContext())
                 .load(R.drawable.daftpunk_bg)
-                .fit()
+                .centerCrop()
                 .into(nowPlayingAlbumArt);
+
         return view;
     }
 
