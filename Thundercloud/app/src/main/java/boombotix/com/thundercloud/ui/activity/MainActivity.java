@@ -146,6 +146,7 @@ public class MainActivity extends BaseActivity
                         VoiceSearchResultFragment.newInstance(),
                         VoiceSearchResultFragment.TAG)
                 .commit();
+        fm.executePendingTransactions();
     }
 
     public void updateVoiceSearchFragmentOverlayText(String s){
@@ -162,6 +163,7 @@ public class MainActivity extends BaseActivity
         Fragment fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
         if(fragment == null){
             addVoiceSearchFragmentOverlay();
+            fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
         }
         return (VoiceSearchResultFragment) fragment;
     }
