@@ -126,6 +126,11 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    /**
+     * Helper method to open music pager fragment to a certain page
+     *
+     * @param page
+     */
     private void changeMusicPagerPage(int page){
 
         Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
@@ -134,6 +139,10 @@ public class MainActivity extends BaseActivity
                 .commit();
     }
 
+    /**
+     * Adds fragment overlay for te voice search results, if it already exists it  will remove
+     * it and recreate it.
+     */
     public void addVoiceSearchFragmentOverlay(){
         Fragment voiceSearchResultFragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
         if(voiceSearchResultFragment != null){
@@ -146,19 +155,34 @@ public class MainActivity extends BaseActivity
                         VoiceSearchResultFragment.newInstance(),
                         VoiceSearchResultFragment.TAG)
                 .commit();
+        // TODO look into ramifications of this
         fm.executePendingTransactions();
     }
 
+    /**
+     * Updates text on the voice search fragment overlay
+     *
+     * @param s
+     */
     public void updateVoiceSearchFragmentOverlayText(String s){
        setAndGetVoiceSearchResultFragment().updateText(s);
     }
 
+    /**
+     * sets voice search fragment text to the query and allows editing via input box
+     *
+     * @param s
+     */
     public void setVoiceSearchFragmentOverlayQuery(String s){
         setAndGetVoiceSearchResultFragment().setQuery(s);
     }
 
 
-
+    /**
+     * Gets viuce search result fragment, if it doesn't exist it will create it first
+     *
+     * @return the voice search result fragment
+     */
     public VoiceSearchResultFragment setAndGetVoiceSearchResultFragment(){
         Fragment fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
         if(fragment == null){
@@ -168,6 +192,11 @@ public class MainActivity extends BaseActivity
         return (VoiceSearchResultFragment) fragment;
     }
 
+    /**
+     * Searches fragment by tag and removes it
+     *
+     * @param tag
+     */
     public void removeFragmentByTag(String tag){
         Fragment fragment = fm.findFragmentByTag(tag);
         if(fragment != null) {
@@ -175,6 +204,9 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    /**
+     * Retrieves player fragment and stops any in process searches
+     */
     public void stopPlayerSearch(){
        Fragment fragment = fm.findFragmentByTag(PlayerFragment.TAG);
         if(fragment != null){
@@ -189,10 +221,19 @@ public class MainActivity extends BaseActivity
         searchText.setVisibility(View.GONE);
     }
 
+
+    /**
+     * Shows search input in toolbar
+     */
     public void showSearch(){
         searchText.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Sets title of toolbar...hmm
+     *
+     * @param title
+     */
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
     }

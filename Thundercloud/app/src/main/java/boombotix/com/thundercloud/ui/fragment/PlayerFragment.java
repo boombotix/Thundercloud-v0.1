@@ -78,6 +78,8 @@ public class PlayerFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_player, container, false);
         ButterKnife.bind(this, view);
 
+
+
         okhoundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,9 +167,8 @@ public class PlayerFragment extends BaseFragment {
                 .setClientKey(CLIENT_KEY)
                 .setListener(voiceListener)
                 .build();
-// TODO add listening prompt
-//        textView.setText("Listening...");
-//        button.setText("Stop Recording");
+
+        //TODO change button style here
 
         voiceSearch.start();
     }
