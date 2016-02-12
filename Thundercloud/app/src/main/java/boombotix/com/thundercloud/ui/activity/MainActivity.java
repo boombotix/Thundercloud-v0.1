@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
-import boombotix.com.thundercloud.ui.fragment.MusicPager;
+import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 
 public class MainActivity extends BaseActivity
@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity
         FragmentManager fm = getSupportFragmentManager();
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
         if (mainFragment == null) {
-            mainFragment = new MusicPager();
+            mainFragment = new MusicPagerFragment();
             fm.beginTransaction()
                     .add(R.id.main_fragment, mainFragment)
                     .commit();

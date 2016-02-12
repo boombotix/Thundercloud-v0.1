@@ -48,6 +48,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     public static final int ARTISTS_SECTION = 3;
     @Bind(R.id.recycler)
     RecyclerView recyclerView;
+
     @Inject
     AuthManager authManager;
     @Inject

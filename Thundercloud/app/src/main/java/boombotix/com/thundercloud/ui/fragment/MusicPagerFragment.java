@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  *
  * @author Jayd Saucedo
  */
-public class MusicPager extends BaseFragment {
+public class MusicPagerFragment extends BaseFragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
 
     @Bind(R.id.container)
@@ -29,7 +29,7 @@ public class MusicPager extends BaseFragment {
     @Bind(R.id.tabs)
     TabLayout tabLayout;
 
-    public MusicPager() {
+    public MusicPagerFragment() {
         // Required empty public constructor
     }
 
@@ -51,6 +51,18 @@ public class MusicPager extends BaseFragment {
 
         return view;
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getSupportActivity().getActivityComponent().inject(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {

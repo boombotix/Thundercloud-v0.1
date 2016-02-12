@@ -16,4 +16,5 @@
         android:paddingBottom="@dimen/player_bar_inner_height"
         android:clipToPadding="false"
         android:id="@+id/recycler" />
+
 </RelativeLayout>
