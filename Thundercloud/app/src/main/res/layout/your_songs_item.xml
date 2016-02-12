@@ -10,7 +10,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/playlist_art"
+            android:id="@+id/album_art"
             />
         <LinearLayout
             android:layout_width="wrap_content"
@@ -21,7 +21,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/basicText"
-                android:id="@+id/item_title"/>
+                android:id="@+id/song_title"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/basicText"
+                android:id="@+id/artist_name"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/basicText"
+                android:id="@+id/album_name"/>
         </LinearLayout>
 
     </LinearLayout>

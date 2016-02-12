@@ -21,6 +21,7 @@ import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.adapter.YourMusicAdapter;
 import boombotix.com.thundercloud.ui.adapter.YourPlaylistsAdapter;
+import boombotix.com.thundercloud.ui.adapter.YourSongsAdapter;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.fragment.yourmusic.subscriber.AlbumsSubscriber;
 import boombotix.com.thundercloud.ui.fragment.yourmusic.subscriber.ArtistsSubscriber;
@@ -199,7 +200,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
                     prettyTime(savedTrack.track.duration_ms / 1000)));
         }
 
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+        recyclerView.setAdapter(new YourSongsAdapter(getActivity(), savedTrackPager));
     }
 
     @Override

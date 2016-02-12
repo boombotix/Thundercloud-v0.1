@@ -16,20 +16,24 @@ import kaaes.spotify.webapi.android.models.Image;
 /**
  * Created by jsaucedo on 2/1/16.
  */
-public class YourPlaylistsViewHolder extends RecyclerView.ViewHolder{
+public class YourSongsViewHolder extends RecyclerView.ViewHolder{
     Activity activity;
-    @Bind(R.id.item_title)
-    TextView itemTitle;
-    @Bind(R.id.playlist_art)
+    @Bind(R.id.song_title)
+    TextView songTitle;
+    @Bind(R.id.artist_name)
+    TextView artistName;
+    @Bind(R.id.album_name)
+    TextView albumName;
+    @Bind(R.id.album_art)
     ImageView imageview;
-    public YourPlaylistsViewHolder(Activity acivity, View view) {
+    public YourSongsViewHolder(Activity acivity, View view) {
         super(view);
         ButterKnife.bind(this, view);
         this.activity = acivity;
     }
 
     public void bindTitle(String title){
-        this.itemTitle.setText(title);
+        this.songTitle.setText(title);
     }
 
     public void bindImage(Image image) {
@@ -40,4 +44,11 @@ public class YourPlaylistsViewHolder extends RecyclerView.ViewHolder{
                 .into(imageview);
     }
 
+    public void bindArtistName(String artist) {
+        this.artistName.setText(artist);
+    }
+
+    public void bindAlbumTitle(String name) {
+        this.albumName.setText(name);
+    }
 }
