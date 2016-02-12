@@ -20,6 +20,7 @@ import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.model.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.adapter.YourAlbumsAdapter;
+import boombotix.com.thundercloud.ui.adapter.YourArtistsAdapter;
 import boombotix.com.thundercloud.ui.adapter.YourMusicAdapter;
 import boombotix.com.thundercloud.ui.adapter.YourPlaylistsAdapter;
 import boombotix.com.thundercloud.ui.adapter.YourSongsAdapter;
@@ -183,10 +184,6 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     @Override
     public void artistsResponse(ArtistsCursorPager artistsCursorPager) {
-        ArrayList<Pair<String, String>> items = new ArrayList<>();
-        for (Artist artist : artistsCursorPager.artists.items) {
-            items.add(new Pair<>(artist.name, TextUtils.join(", ", artist.genres)));
-        }
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+        recyclerView.setAdapter(new YourArtistsAdapter(getActivity(), artistsCursorPager));
     }
 }
