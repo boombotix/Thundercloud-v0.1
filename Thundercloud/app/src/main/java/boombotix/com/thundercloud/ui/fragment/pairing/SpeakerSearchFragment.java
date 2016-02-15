@@ -35,7 +35,7 @@ public class SpeakerSearchFragment extends BaseFragment {
     }
 
     @Bind(R.id.speaker_list)
-    ListView speakerList;
+    ListView speakerListView;
 
     @Bind(R.id.search_container)
     View searchContainer;
@@ -66,8 +66,8 @@ public class SpeakerSearchFragment extends BaseFragment {
      */
     private void initSpeakerList() {
         speakerAdapter = new ArrayAdapter<>(getContext(), R.layout.row_speaker, R.id.speaker_name, new ArrayList<>());
-        speakerList.setAdapter(speakerAdapter);
-        speakerList.setOnItemClickListener(speakerClickListener);
+        speakerListView.setAdapter(speakerAdapter);
+        speakerListView.setOnItemClickListener(speakerClickListener);
     }
 
     /**

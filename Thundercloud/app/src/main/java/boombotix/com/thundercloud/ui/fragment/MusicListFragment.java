@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,10 @@ import javax.inject.Inject;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.model.AuthRefreshResponse;
+import boombotix.com.thundercloud.model.music.Album;
+import boombotix.com.thundercloud.model.music.MusicListItem;
+import boombotix.com.thundercloud.model.music.Playlist;
+import boombotix.com.thundercloud.model.music.Song;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.adapter.YourMusicAdapter;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
@@ -195,11 +198,13 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     @Override
     public void playlistsResponse(Pager<PlaylistSimple> playlistSimplePager) {
-        ArrayList<Pair<String, String>> items = new ArrayList<>();
+        ArrayList<MusicListItem> items = new ArrayList<>();
         for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
-            items.add(new Pair<>(playlistSimple.name,
-                    getResources().getQuantityString(R.plurals.songs,
-                            playlistSimple.tracks.total, playlistSimple.tracks.total)));
+            Playlist playlist = new Playlist();
+            playlist.name = playlistSimple.name;
+            playlist.totalSongs = playlistSimple.tracks.total;
+            playlist.artworkUrl = playlistSimple.images.get(0).url;
+            items.add(playlist);
         }
 
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -207,11 +212,13 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     @Override
     public void songsResponse(Pager<SavedTrack> savedTrackPager) {
-        ArrayList<Pair<String, String>> items = new ArrayList<>();
+        ArrayList<MusicListItem> items = new ArrayList<>();
         for (SavedTrack savedTrack : savedTrackPager.items) {
-            items.add(new Pair<>(savedTrack.track.name,
-                    savedTrack.track.artists.get(0).name)); //todo show all artists
-
+            Song song = new Song();
+            song.name = savedTrack.track.name;
+            song.artist = savedTrack.track.artists.get(0).name; //todo show all artists
+            song.artworkUrl = savedTrack.track.album.images.get(0).url;
+            items.add(song);
         }
 
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -219,11 +226,14 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     @Override
     public void albumsResponse(Pager<SavedAlbum> savedAlbumPager) {
-        ArrayList<Pair<String, String>> items = new ArrayList<>();
+        ArrayList<MusicListItem> items = new ArrayList<>();
         for (SavedAlbum savedAlbum : savedAlbumPager.items) {
-            int tracks = savedAlbum.album.tracks.total;
-            items.add(new Pair<>(savedAlbum.album.name,
-                    getResources().getQuantityString(R.plurals.songs, tracks, tracks)));
+            //todo adapter from spotify to model
+            Album album = new Album();
+            album.name = savedAlbum.album.name;
+            album.totalSongs = savedAlbum.album.tracks.total;
+            album.artworkUrl = savedAlbum.album.images.get(0).url;
+            items.add(album);
         }
 
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
@@ -231,9 +241,13 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     @Override
     public void artistsResponse(ArtistsCursorPager artistsCursorPager) {
-        ArrayList<Pair<String, String>> items = new ArrayList<>();
-        for (Artist artist : artistsCursorPager.artists.items) {
-            items.add(new Pair<>(artist.name, TextUtils.join(", ", artist.genres)));
+        ArrayList<MusicListItem> items = new ArrayList<>();
+        for (Artist savedArtist : artistsCursorPager.artists.items) {
+            boombotix.com.thundercloud.model.music.Artist artist = new boombotix.com.thundercloud.model.music.Artist();
+            artist.name = savedArtist.name;
+            artist.genre =TextUtils.join(", ", savedArtist.genres);
+            artist.artworkUrl = savedArtist.images.get(0).url;
+            items.add(artist);
         }
         recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
     }
