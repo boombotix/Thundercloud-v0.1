@@ -1,8 +1,6 @@
 package boombotix.com.thundercloud.ui.activity;
 
-import android.app.Service;
 import android.os.Bundle;
-import android.speech.tts.Voice;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,12 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
+import boombotix.com.thundercloud.ui.controller.VoiceSearchController;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
@@ -27,41 +24,32 @@ import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/*
+* Main activity attaches the main fragment view and the bottom player bar fragment upon search
+* through the player fragment, it also attaches the result fragment as an overlay. Communication
+* between the player bar and result fragment is controlled through this activity.
+*/
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        VoiceSearchController {
     private FragmentManager fm;
     @Bind(R.id.searchText)
     EditText searchText;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fm = getSupportFragmentManager();
-        Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
-        if (mainFragment == null) {
-            // TODO actually have  a main fragment
-            mainFragment = NowPlayingFragment.newInstance();
-            fm.beginTransaction()
-                    .add(R.id.main_fragment, mainFragment, NowPlayingFragment.TAG)
-                    .commit();
-        }
+        attachMainFragment();
+        attachPlayerFragment();
 
-        Fragment playerFragment = fm.findFragmentById(R.id.player_fragment);
-        if (playerFragment == null) {
-            playerFragment = new PlayerFragment();
-            fm.beginTransaction()
-                    .add(R.id.player_fragment, playerFragment, PlayerFragment.TAG)
-                    .commit();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -69,6 +57,27 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void attachPlayerFragment() {
+        Fragment playerFragment = fm.findFragmentById(R.id.player_fragment);
+        if (playerFragment == null) {
+            playerFragment = new PlayerFragment();
+            fm.beginTransaction()
+                    .add(R.id.player_fragment, playerFragment, PlayerFragment.TAG)
+                    .commit();
+        }
+    }
+
+    private void attachMainFragment() {
+        fm = getSupportFragmentManager();
+        Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
+        if (mainFragment == null) {
+            mainFragment = NowPlayingFragment.newInstance();
+            fm.beginTransaction()
+                    .add(R.id.main_fragment, mainFragment, NowPlayingFragment.TAG)
+                    .commit();
+        }
     }
 
     @Override
@@ -98,7 +107,6 @@ public class MainActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -121,7 +129,6 @@ public class MainActivity extends BaseActivity
             changeMusicPagerPage(MusicListFragment.ARTISTS_SECTION);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -143,11 +150,8 @@ public class MainActivity extends BaseActivity
      * Adds fragment overlay for te voice search results, if it already exists it  will remove
      * it and recreate it.
      */
-    public void addVoiceSearchFragmentOverlay(){
-        Fragment voiceSearchResultFragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
-        if(voiceSearchResultFragment != null){
-            fm.beginTransaction().remove(voiceSearchResultFragment).commit();
-        }
+    public void addVoiceSearchResultFragment(){
+        removeFragmentByTag(VoiceSearchResultFragment.TAG);
 
         // add overlay
         fm.beginTransaction()
@@ -155,8 +159,14 @@ public class MainActivity extends BaseActivity
                         VoiceSearchResultFragment.newInstance(),
                         VoiceSearchResultFragment.TAG)
                 .commit();
-        // TODO look into ramifications of this
         fm.executePendingTransactions();
+    }
+
+    private void findAndRefreshFragment(String tag) {
+        Fragment voiceSearchResultFragment = fm.findFragmentByTag(tag);
+        if (voiceSearchResultFragment != null) {
+            fm.beginTransaction().remove(voiceSearchResultFragment).commit();
+        }
     }
 
     /**
@@ -164,7 +174,7 @@ public class MainActivity extends BaseActivity
      *
      * @param s
      */
-    public void updateVoiceSearchFragmentOverlayText(String s){
+    public void updateVoiceSearchResultFragmentText(String s){
        setAndGetVoiceSearchResultFragment().updateText(s);
     }
 
@@ -173,7 +183,7 @@ public class MainActivity extends BaseActivity
      *
      * @param s
      */
-    public void setVoiceSearchFragmentOverlayQuery(String s){
+    public void setVoiceSearchResultFragmentQuery(String s){
         setAndGetVoiceSearchResultFragment().setQuery(s);
     }
 
@@ -186,7 +196,7 @@ public class MainActivity extends BaseActivity
     public VoiceSearchResultFragment setAndGetVoiceSearchResultFragment(){
         Fragment fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
         if(fragment == null){
-            addVoiceSearchFragmentOverlay();
+            addVoiceSearchResultFragment();
             fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
         }
         return (VoiceSearchResultFragment) fragment;

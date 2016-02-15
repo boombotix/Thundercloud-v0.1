@@ -1,12 +1,9 @@
 package boombotix.com.thundercloud.ui.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +21,6 @@ import com.hound.android.sdk.util.HoundRequestInfoFactory;
 import com.hound.core.model.sdk.HoundRequestInfo;
 import com.hound.core.model.sdk.HoundResponse;
 import com.hound.core.model.sdk.PartialTranscript;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -87,7 +81,7 @@ public class PlayerFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Log.v("PlayerFragment", "Clicky click");
-                activity.addVoiceSearchFragmentOverlay();
+                activity.addVoiceSearchResultFragment();
                 if (voiceSearch == null) {
 //                    resetUIState();
 
@@ -239,7 +233,7 @@ public class PlayerFragment extends BaseFragment {
                 lastConversationState = response.getResults().get(0).getConversationState();
             }
 
-//            activity.setVoiceSearchFragmentOverlayQuery(response.getResults().get(0).getNativeData());
+//            activity.setVoiceSearchResultFragmentQuery(response.getResults().get(0).getNativeData());
 
 
 //            textView.setText("Received response...displaying the JSON");
@@ -308,7 +302,7 @@ public class PlayerFragment extends BaseFragment {
     };
 
     private void updateText(String s) {
-        ((MainActivity) getActivity()).updateVoiceSearchFragmentOverlayText(s);
+        ((MainActivity) getActivity()).updateVoiceSearchResultFragmentText(s);
     }
 
 }
