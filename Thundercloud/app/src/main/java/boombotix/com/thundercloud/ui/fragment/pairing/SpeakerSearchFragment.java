@@ -4,6 +4,7 @@ package boombotix.com.thundercloud.ui.fragment.pairing;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class SpeakerSearchFragment extends BaseFragment {
     }
 
     @Bind(R.id.speaker_list)
-    ListView speakerList;
+    ListView speakerListView;
 
     @Bind(R.id.search_container)
     View searchContainer;
@@ -55,7 +56,8 @@ public class SpeakerSearchFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         getActivity().setTitle(R.string.speaker_search_title);
-
+        initSpeakerList();
+        startSpeakerBleScan();
         return view;
     }
 
@@ -63,9 +65,9 @@ public class SpeakerSearchFragment extends BaseFragment {
      * Initializes the speaker list with a new adapter
      */
     private void initSpeakerList() {
-        speakerAdapter = new ArrayAdapter<>(getContext(), R.layout.row_speaker, new ArrayList<>());
-        speakerList.setAdapter(speakerAdapter);
-        speakerList.setOnItemClickListener(speakerClickListener);
+        speakerAdapter = new ArrayAdapter<>(getContext(), R.layout.row_speaker, R.id.speaker_name, new ArrayList<>());
+        speakerListView.setAdapter(speakerAdapter);
+        speakerListView.setOnItemClickListener(speakerClickListener);
     }
 
     /**
@@ -78,6 +80,14 @@ public class SpeakerSearchFragment extends BaseFragment {
         //todo start ble scan
         //todo subscribe to ble results
         //todo on each ble result, add to adapter and speakers
+        Handler handler = new Handler();
+        Runnable runnable = () -> {
+            speakerAdapter.add("Boombot 1");
+            speakerAdapter.add("Boombot 2");
+            speakerAdapter.add("Boombot 3");
+            speakerAdapter.add("Boombot 4");
+        };
+        handler.postDelayed(runnable, 1000);
     }
 
     /**
@@ -110,8 +120,8 @@ public class SpeakerSearchFragment extends BaseFragment {
      */
     private AdapterView.OnItemClickListener speakerClickListener = (parent, view, position, id) -> {
         //todo stop scan
-        BluetoothDevice selectedDevice = speakers.get(position);
-        onSpeakerSelectedListener.onSpeakerSelected(selectedDevice);
+        //BluetoothDevice selectedDevice = speakers.get(position);
+        onSpeakerSelectedListener.onSpeakerSelected(null);
     };
 
     @Override

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.pairing.ConnectBluetoothFragment">
+    tools:context=".ui.fragment.pairing.EnableBluetoothFragment">
 
     <TextView
         style="@style/TextAppearance.Thundercloud.Title.Gray"
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:contentDescription="@string/connect_bluetooth_button_description"
+        android:contentDescription="@string/description_connect_bluetooth_button"
         android:src="@mipmap/ic_launcher"
         android:background="#00000000" />
 
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:contentDescription="@string/boombotix_logo_description"
+        android:contentDescription="@string/description_boombotix_logo"
         android:src="@mipmap/ic_launcher" />
 
 </RelativeLayout>

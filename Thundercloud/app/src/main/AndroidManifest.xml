@@ -26,6 +26,18 @@
         <activity
             android:name=".ui.activity.SpeakerPairingActivity"
             android:label="@string/title_activity_speaker_pairing"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.SpeakerWifiActivity"
+            android:label="@string/title_activity_speaker_wifi"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.FirstTimeSetupActivity"
+            android:label="@string/title_activity_first_time_setup"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.MusicServiceSetupActivity"
+            android:label="@string/title_activity_music_service_setup"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

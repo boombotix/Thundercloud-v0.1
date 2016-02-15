@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:buttonStyle">@style/Thundercloud.Button</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -24,6 +25,14 @@
         <item name="android:textColorPrimary">@color/colorAccent</item>
     </style>
 
+    <!-- Button Style -->
+    <style name="Thundercloud.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16dp</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+    </style>
+
     <!-- Text Appearance Styles -->
     <style name="TextAppearance" parent="TextAppearance.AppCompat" />
 
@@ -36,9 +45,17 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
-    
+
     <style name="TextAppearance.Thundercloud.Title">
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Title.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Thundercloud.Title.Bold.Accent">
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="TextAppearance.Thundercloud.Title.Gray">
@@ -50,11 +67,16 @@
     </style>
 
     <style name="TextAppearance.Thundercloud.Body.Accent">
-        <item name="android:color">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="TextAppearance.Thundercloud.Body.Gray">
         <item name="android:alpha">0.7</item>
     </style>
+
+    <style name="TextAppearance.Thundercloud.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 
 </resources>

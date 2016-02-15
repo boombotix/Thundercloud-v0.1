@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ui.activity.MainActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,7 +25,6 @@ import butterknife.ButterKnife;
 public class MusicPagerFragment extends BaseFragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
     private static final String ARG_PAGE = "page";
-    private int page = 0;
     @Bind(R.id.container)
     ViewPager viewPager;
     @Bind(R.id.tabs)
@@ -52,6 +52,9 @@ public class MusicPagerFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_music_pager, container, false);
         ButterKnife.bind(this, view);
+
+        ((MainActivity) getActivity()).hideSearch();
+        ((MainActivity) getActivity()).setToolbarTitle("Your Music");
 
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 

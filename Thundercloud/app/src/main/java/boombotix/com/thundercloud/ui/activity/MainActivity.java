@@ -10,28 +10,40 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
+import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
+import boombotix.com.thundercloud.ui.fragment.QueueFragment;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FragmentManager fm;
+    @Bind(R.id.searchText)
+    EditText searchText;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fm = getSupportFragmentManager();
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
         if (mainFragment == null) {
             // TODO actually have  a main fragment
-            mainFragment =  MusicPagerFragment.newInstance(0);
+            mainFragment = NowPlayingFragment.newInstance();
             fm.beginTransaction()
                     .add(R.id.main_fragment, mainFragment)
                     .commit();
@@ -53,6 +65,8 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setQueueFragment();
     }
 
     @Override
@@ -87,7 +101,11 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_playlists) {
+        if(id == R.id.nav_nowplaying){
+            fm.beginTransaction()
+                    .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
+                    .commit();
+        } else if (id == R.id.nav_playlists) {
             changeMusicPagerPage(MusicListFragment.PLAYLIST_SECTION);
         } else if (id == R.id.nav_songs) {
             changeMusicPagerPage(MusicListFragment.SONGS_SECTION);
@@ -105,7 +123,31 @@ public class MainActivity extends BaseActivity
     private void changeMusicPagerPage(int page){
         Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
         fm.beginTransaction()
-                .add(R.id.main_fragment, musicPagerFragment)
+                .replace(R.id.main_fragment, musicPagerFragment)
                 .commit();
+    }
+
+    private void setQueueFragment(){
+        Fragment queueFragment = QueueFragment.newInstance();
+        fm.beginTransaction()
+                .replace(R.id.queue_container, queueFragment)
+                .commit();
+    }
+
+    /**
+     * Hides search input from toolbar
+     *
+     */
+    public void hideSearch(){
+        searchText.setVisibility(View.GONE);
+    }
+
+    public void showSearch(){
+        searchText.setVisibility(View.VISIBLE);
+    }
+
+
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
     }
 }

@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="@dimen/default_margin"
+    android:layout_marginLeft="@dimen/default_margin"
+    android:layout_marginRight="@dimen/default_margin"
+    android:layout_marginStart="@dimen/default_margin"
+    android:layout_marginTop="@dimen/default_margin_2x"
+    android:orientation="vertical"
+    tools:context="boombotix.com.thundercloud.ui.fragment.musicservice.MusicServiceListFragment">
+
+    <TextView
+        style="@style/TextAppearance.Thundercloud.Title.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/music_setup_instructions" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/music_service_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        style="@style/TextAppearance.Thundercloud.Body.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/default_margin_2x"
+        android:layout_marginTop="@dimen/default_margin"
+        android:text="@string/music_setup_more_apps_coming" />
+
+    <Button
+        android:id="@+id/finish"
+        style="@style/Thundercloud.Button"
+        android:layout_width="@dimen/button_width_large"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:text="@string/finish" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/default_margin"
+        android:contentDescription="@string/description_boombotix_logo"
+        android:src="@mipmap/ic_launcher" />
+
+</LinearLayout>
