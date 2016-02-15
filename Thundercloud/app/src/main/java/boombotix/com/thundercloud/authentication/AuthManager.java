@@ -25,6 +25,7 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class AuthManager {
 
+    public static final String GRANT_TYPE = "refresh_token";
     private String accessToken;
     private String refreshToken;
     private String userId;
@@ -123,27 +124,19 @@ public class AuthManager {
     public Observable<AuthRefreshResponse> getValidAccessToken(){
 
         if(isExpired()) {
-            Observable observable = spotifyAuthenticationEndpoint.getToken("Basic " + getEncodedAuthHeader(), "refresh_token", getRefreshToken());
+            Observable observable = spotifyAuthenticationEndpoint.getToken("Basic " + getEncodedAuthHeader(), GRANT_TYPE, getRefreshToken());
 
             observable.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).share()
-            .subscribe(new Action1() {
-                @Override
-                public void call(Object o) {
-                    Log.e("AuthManager", "Token expired!");
-                    handleRefreshResponse((AuthRefreshResponse) o);
-                }
-            });
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .share()
+                    .subscribe((Action1) o -> {
+                        Log.e("AuthManager", "Token expired!");
+                        handleRefreshResponse((AuthRefreshResponse) o);
+                    });
 
             return observable;
         }
-        else{
-            Log.e("AuthManager", "token not expired!");
-            AuthRefreshResponse authRefreshResponse = new AuthRefreshResponse();
-            authRefreshResponse.setAccessToken(getAccessToken());
-            authRefreshResponse.setExpiresIn(3600);
-            return Observable.just(authRefreshResponse);
-        }
+        return Observable.empty();
     }
 
     public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback){
@@ -161,7 +154,7 @@ public class AuthManager {
     private void handleRefreshResponse(AuthRefreshResponse authRefreshResponse) {
         spotifyApi.setAccessToken(authRefreshResponse.getAccessToken());
         setAccessToken(authRefreshResponse.getAccessToken());
-        DateTime expires = (new DateTime()).plusSeconds(authRefreshResponse.getExpiresIn());
+        DateTime expires = new DateTime().plusSeconds(authRefreshResponse.getExpiresIn());
         setExpires(expires);
     }
 
