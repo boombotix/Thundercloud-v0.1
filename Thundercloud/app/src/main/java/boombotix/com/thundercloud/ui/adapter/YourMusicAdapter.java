@@ -18,9 +18,11 @@ import boombotix.com.thundercloud.ui.viewholder.YourMusicViewHolder;
 public class YourMusicAdapter extends RecyclerView.Adapter<YourMusicViewHolder> {
     Activity activity;
     ArrayList<MusicListItem> items;
-    public YourMusicAdapter(Activity activity, ArrayList<MusicListItem> items) {
+    int type;
+    public YourMusicAdapter(Activity activity, ArrayList<MusicListItem> items, int type) {
         this.activity = activity;
         this.items = items;
+        this.type = type;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class YourMusicAdapter extends RecyclerView.Adapter<YourMusicViewHolder> 
         //todo inflate from parent and remove call to activity
         LayoutInflater layoutInflater = LayoutInflater.from(activity);
         View view = layoutInflater.inflate(R.layout.row_music_item, parent, false);
-        return new YourMusicViewHolder(view);
+        return new YourMusicViewHolder(view, activity);
     }
 
     @Override
@@ -36,6 +38,8 @@ public class YourMusicAdapter extends RecyclerView.Adapter<YourMusicViewHolder> 
         MusicListItem item = items.get(position);
         holder.bindTitle(item.getTitle());
         holder.bindSubtitle(item.getSubtitle());
+        holder.bindSubtitle2(item.getSubtitle2());
+        holder.bindImage(item.getArtworkUrl());
     }
 
     @Override

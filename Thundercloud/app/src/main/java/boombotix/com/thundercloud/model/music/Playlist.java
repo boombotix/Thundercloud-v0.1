@@ -6,7 +6,6 @@ package boombotix.com.thundercloud.model.music;
 public class Playlist implements MusicListItem {
 
     public String name;
-    public int totalSongs;
     public String artworkUrl;
 
     @Override
@@ -16,11 +15,16 @@ public class Playlist implements MusicListItem {
 
     @Override
     public String getSubtitle() {
-        return String.valueOf(totalSongs);
+        return null;
     }
 
     @Override
     public String getArtworkUrl() {
         return artworkUrl;
+    }
+
+    @Override
+    public String getSubtitle2() {
+        return null;
     }
 }

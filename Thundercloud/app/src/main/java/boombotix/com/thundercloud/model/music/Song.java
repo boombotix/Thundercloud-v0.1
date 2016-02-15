@@ -7,6 +7,7 @@ public class Song implements MusicListItem{
     public String name;
     public String artist; //todo change to list of strings?
     public String artworkUrl;
+    public String album;
 
     @Override
     public String getTitle() {
@@ -21,5 +22,10 @@ public class Song implements MusicListItem{
     @Override
     public String getArtworkUrl() {
         return artworkUrl;
+    }
+
+    @Override
+    public String getSubtitle2() {
+        return album;
     }
 }
