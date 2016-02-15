@@ -4,17 +4,26 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.hound.android.sdk.TextSearch;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.activity.MainActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 public class VoiceSearchResultFragment extends BaseFragment {
@@ -54,6 +63,39 @@ public class VoiceSearchResultFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_voice_search_result, container, false);
         ButterKnife.bind(this, view);
+
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    TextSearch textSearch = new TextSearch.Builder()
+                            .setRequestInfo(PlayerFragment.getHoundRequestInfo(getContext()))
+                            .setClientId(PlayerFragment.CLIENT_ID)
+                            .setClientKey(PlayerFragment.CLIENT_KEY)
+                            .setQuery("Play Sandstorm")
+                            .build();
+
+                    Observable.defer(() -> {
+                        try {
+                            return Observable.just(textSearch.search());
+                        } catch (TextSearch.TextSearchException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action1<TextSearch.Result>() {
+                                @Override
+                                public void call(TextSearch.Result result) {
+                                    Log.e("yep", result.getResponse().getResults().get(0).getNativeData().get("Tracks").get(0).toString());
+                                }
+                            });
+                    return true;
+                }
+                return false;
+            }
+        });
+
         return view;
     }
 

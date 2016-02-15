@@ -1,5 +1,6 @@
 package boombotix.com.thundercloud.ui.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ import butterknife.ButterKnife;
 
 public class PlayerFragment extends BaseFragment {
     public static final String TAG = "PlayerFragment";
+    private MainActivity activity;
+    private static JsonNode lastConversationState;
     @Bind(R.id.okhound_button)
     ImageButton okhoundButton;
     private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
@@ -47,7 +50,6 @@ public class PlayerFragment extends BaseFragment {
     private PhraseSpotterReader phraseSpotterReader;
     private VoiceSearch voiceSearch;
 
-    private JsonNode lastConversationState;
 
     public PlayerFragment() {
         // Required empty public constructor
@@ -63,6 +65,7 @@ public class PlayerFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (MainActivity) getActivity();
     }
 
     @Override
@@ -84,9 +87,7 @@ public class PlayerFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Log.v("PlayerFragment", "Clicky click");
-                MainActivity activity = (MainActivity) getActivity();
                 activity.addVoiceSearchFragmentOverlay();
-
                 if (voiceSearch == null) {
 //                    resetUIState();
 
@@ -141,8 +142,15 @@ public class PlayerFragment extends BaseFragment {
         }
     }
 
-    private HoundRequestInfo getHoundRequestInfo() {
-        final HoundRequestInfo requestInfo = HoundRequestInfoFactory.getDefault(getContext());
+    /*
+    * This method keeps track of the last conversation state for contextual searches
+    * it is also used by text searches in the voice search result fragment
+    *
+    * TODO perhaps houndify needs a manager class
+    *
+    */
+    public static HoundRequestInfo getHoundRequestInfo(Context context) {
+        final HoundRequestInfo requestInfo = HoundRequestInfoFactory.getDefault(context);
 
         requestInfo.setUserId("User ID");
         requestInfo.setRequestId(UUID.randomUUID().toString());
@@ -161,7 +169,7 @@ public class PlayerFragment extends BaseFragment {
 
 
         voiceSearch = new VoiceSearch.Builder()
-                .setRequestInfo(getHoundRequestInfo())
+                .setRequestInfo(getHoundRequestInfo(getContext()))
                 .setAudioSource(new SimpleAudioByteStreamSource())
                 .setClientId(CLIENT_ID)
                 .setClientKey(CLIENT_KEY)
@@ -230,6 +238,9 @@ public class PlayerFragment extends BaseFragment {
                 // conversation state and use it.
                 lastConversationState = response.getResults().get(0).getConversationState();
             }
+
+//            activity.setVoiceSearchFragmentOverlayQuery(response.getResults().get(0).getNativeData());
+
 
 //            textView.setText("Received response...displaying the JSON");
 
