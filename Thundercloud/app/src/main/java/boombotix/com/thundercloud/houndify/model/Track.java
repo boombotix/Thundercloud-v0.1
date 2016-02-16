@@ -1,5 +1,7 @@
 package boombotix.com.thundercloud.houndify.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  *
  * Track from houndify
@@ -7,36 +9,43 @@ package boombotix.com.thundercloud.houndify.model;
  * Created by jsaucedo on 2/16/16.
  */
 public class Track {
-    private long trackID;
-    private long albumID;
-    private long artistID;
+    @SerializedName("TrackID")
+    private long trackId;
+    @SerializedName("AlbumID")
+    private long albumId;
+    @SerializedName("ArtistID")
+    private long artistId;
+    @SerializedName("TrackName")
     private String trackName;
+    @SerializedName("AlbumName")
     private String albumName;
+    @SerializedName("ArtistName")
     private String artistName;
+    @SerializedName("AlbumDate")
     private String albumDate;
 
     public long getTrackID() {
-        return trackID;
+        return trackId;
     }
 
-    public void setTrackID(long trackID) {
-        this.trackID = trackID;
+    public void setTrackId(long trackId) {
+        this.trackId = trackId;
     }
 
-    public long getAlbumID() {
-        return albumID;
+    public long getAlbumId() {
+        return albumId;
     }
 
-    public void setAlbumID(long albumID) {
-        this.albumID = albumID;
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
     }
 
-    public long getArtistID() {
-        return artistID;
+    public long getArtistId() {
+        return artistId;
     }
 
-    public void setArtistID(long artistID) {
-        this.artistID = artistID;
+    public void setArtistId(long artistId) {
+        this.artistId = artistId;
     }
 
     public String getTrackName() {

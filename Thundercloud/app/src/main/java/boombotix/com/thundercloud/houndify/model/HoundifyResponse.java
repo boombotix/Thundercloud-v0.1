@@ -1,5 +1,7 @@
 package boombotix.com.thundercloud.houndify.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,9 @@ import java.util.List;
  * Created by jsaucedo on 2/16/16.
  */
 public class HoundifyResponse {
+    @SerializedName("Tracks")
     private List<Track> tracks;
+    @SerializedName("UserRequestedAutoPlay")
     private boolean userRequestedAutoPlay;
 
     public boolean isUserRequestedAutoPlay() {

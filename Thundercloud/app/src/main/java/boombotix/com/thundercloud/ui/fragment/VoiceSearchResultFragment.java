@@ -71,33 +71,31 @@ public class VoiceSearchResultFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_voice_search_result, container, false);
         ButterKnife.bind(this, view);
 
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    TextSearch textSearch = new TextSearch.Builder()
-                            .setClientId(PlayerFragment.CLIENT_ID)
-                            .setClientKey(PlayerFragment.CLIENT_KEY)
-                            .setRequestInfo(houndifyHelper.getHoundRequestInfo(getContext()))
-                            .setQuery(String.valueOf(v.getText()))
-                            .build();
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                TextSearch textSearch = new TextSearch.Builder()
+                        .setClientId(PlayerFragment.CLIENT_ID)
+                        .setClientKey(PlayerFragment.CLIENT_KEY)
+                        .setRequestInfo(houndifyHelper.getHoundRequestInfo(getContext()))
+                        .setQuery(String.valueOf(v.getText()))
+                        .build();
 
-                    Observable.defer(() -> {
-                        try {
-                            return Observable.just(textSearch.search());
-                        } catch (TextSearch.TextSearchException e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    }).subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(result -> {
-                                Log.e("yep", result.getResponse().getResults().get(0).getNativeData().get("Tracks").get(0).toString());
-                            });
-                    return true;
-                }
-                return false;
+                Observable.defer(() -> {
+                    try {
+                        return Observable.just(textSearch.search());
+                    } catch (TextSearch.TextSearchException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> {
+                            Log.e("yep", result.getResponse().getResults().get(0).getNativeData().get("Tracks").get(0).toString());
+                            houndifyHelper.parseResponse(result.getResponse());
+                        });
+                return true;
             }
+            return false;
         });
 
         return view;
