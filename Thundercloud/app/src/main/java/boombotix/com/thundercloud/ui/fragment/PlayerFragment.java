@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.houndify.HoundifyHelper;
+import boombotix.com.thundercloud.houndify.model.HoundifyResponse;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
@@ -37,6 +38,7 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
     private TopLevelActivity activity;
     @Bind(R.id.okhound_button)
     ImageButton okhoundButton;
+    String transcript;
     private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
     public static final String CLIENT_ID = BuildConfig.HOUNDIFY_CLIENT_ID;
     public static final String CLIENT_KEY = BuildConfig.HOUNDIFY_CLIENT_KEY;
@@ -158,8 +160,12 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
         ((TopLevelActivity) getActivity()).updateVoiceSearchResultFragmentText(s);
     }
 
+    private void setQuery(String s) {
+        ((TopLevelActivity) getActivity()).setVoiceSearchResultFragmentQuery(s);
+    }
+
     @Override
-    public void onTranscriptionUpdate(PartialTranscript transcript) {
+    public void onTranscriptionUpdate(PartialTranscript partialTranscript) {
         final StringBuilder str = new StringBuilder();
         switch (voiceSearch.getState()) {
             case STATE_STARTED:
@@ -173,7 +179,8 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
                 break;
         }
         str.append("\n\n");
-        str.append(transcript.getPartialTranscript());
+        transcript = partialTranscript.getPartialTranscript();
+        str.append(transcript);
 
         updateText(str.toString());
     }
@@ -182,7 +189,8 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
     public void onResponse(HoundResponse response, VoiceSearchInfo info) {
         voiceSearch = null;
 //            activity.setVoiceSearchResultFragmentQuery(response.getResults().get(0).getNativeData());
-        houndifyHelper.parseResponse(response);
+//        HoundifyResponse houndifyResponse = houndifyHelper.parseResponse(response);
+        setQuery(transcript);
         startPhraseSpotting();
     }
 

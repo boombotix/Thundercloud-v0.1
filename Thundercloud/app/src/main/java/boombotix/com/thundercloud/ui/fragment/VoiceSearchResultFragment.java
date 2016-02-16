@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hound.android.sdk.TextSearch;
 
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.houndify.HoundifyHelper;
+import boombotix.com.thundercloud.houndify.model.HoundifyResponse;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
@@ -90,8 +92,8 @@ public class VoiceSearchResultFragment extends BaseFragment {
                 }).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(result -> {
-                            Log.e("yep", result.getResponse().getResults().get(0).getNativeData().get("Tracks").get(0).toString());
-                            houndifyHelper.parseResponse(result.getResponse());
+                            HoundifyResponse houndifyResponse =  houndifyHelper.parseResponse(result.getResponse());
+                            Toast.makeText(getContext(),houndifyResponse.getTracks().get(0).getTrackName(), Toast.LENGTH_LONG).show();
                         });
                 return true;
             }

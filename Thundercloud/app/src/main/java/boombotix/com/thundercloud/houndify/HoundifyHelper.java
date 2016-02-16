@@ -38,44 +38,9 @@ public class HoundifyHelper {
     }
 
     @Inject
-    public void parseResponse(HoundResponse response){
+    public HoundifyResponse parseResponse(HoundResponse response){
         HoundifyResponse houndifyResponse =  new Gson().fromJson(response.getResults().get(0)
                 .getJsonNode().get("NativeData").toString(), HoundifyResponse.class);
-        Log.e("houndify response!", response.getResults().get(0).getJsonNode().toString());
-        Log.e("Parsed response!", houndifyResponse.getTracks().get(0).getAlbumName());
-        //            // We put pretty printing JSON on a separate thread as the server JSON can be quite large and will stutter the UI
-//            JsonNode tracks = response.getResults().get(0).getNativeData().get("Tracks").get(0);
-//            JsonNode thirdPartyInfo = tracks.get("MusicThirdPartyIds");
-//            String spotifyId;
-//            for(final JsonNode infoNode: thirdPartyInfo){
-//                if(infoNode.get("MusicThirdParty").get("Name").textValue().equals("Spotify")){
-//                    spotifyId = infoNode.get("Ids").get(0).textValue();
-////                    mPlayer.play(spotifyId);
-//                    break;
-//                }
-//            }
-
-//            // Not meant to be configuration change proof, this is just a demo
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    String message = "";
-//                    try {
-//                        message += "Response\n\n" + new JSONObject(info.getContentBody()).toString(4);
-//                    }
-//                    catch (final JSONException ex) {
-////                        textView.setText("Bad JSON\n\n" + response);
-//                        message += "Bad JSON\n\n" + response;
-//                    }
-//
-//                    final String finalMessage = message;
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-////                            textView.setText(finalMessage);
-//                        }
-//                    });
-//                }
-//            }).start();
+        return houndifyResponse;
     }
 }
