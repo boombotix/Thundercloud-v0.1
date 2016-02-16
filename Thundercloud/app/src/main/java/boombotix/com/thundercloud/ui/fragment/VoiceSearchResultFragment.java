@@ -1,9 +1,6 @@
 package boombotix.com.thundercloud.ui.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,20 +12,24 @@ import android.widget.TextView;
 
 import com.hound.android.sdk.TextSearch;
 
+import javax.inject.Inject;
+
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.ui.activity.MainActivity;
+import boombotix.com.thundercloud.houndify.HoundifyHelper;
+import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
 public class VoiceSearchResultFragment extends BaseFragment {
     public static final String TAG = "VoiceSearchResultFragment";
     private static final String QUERY_ARG = "query";
+    @Inject
+    HoundifyHelper houndifyHelper;
     @Bind(R.id.voice_search_result_tap_to_edit)
     TextView tapToEdit;
     @Bind(R.id.voice_search_result_text)
@@ -47,6 +48,12 @@ public class VoiceSearchResultFragment extends BaseFragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getSupportActivity().getActivityComponent().inject(this);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -54,7 +61,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         ButterKnife.unbind(this);
-        ((MainActivity) getActivity()).stopPlayerSearch();
+        ((TopLevelActivity) getActivity()).stopPlayerSearch();
         super.onDestroyView();
     }
 
@@ -69,10 +76,10 @@ public class VoiceSearchResultFragment extends BaseFragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     TextSearch textSearch = new TextSearch.Builder()
-                            .setRequestInfo(PlayerFragment.getHoundRequestInfo(getContext()))
                             .setClientId(PlayerFragment.CLIENT_ID)
                             .setClientKey(PlayerFragment.CLIENT_KEY)
-                            .setQuery("Play Sandstorm")
+                            .setRequestInfo(houndifyHelper.getHoundRequestInfo(getContext()))
+                            .setQuery(String.valueOf(v.getText()))
                             .build();
 
                     Observable.defer(() -> {
@@ -84,11 +91,8 @@ public class VoiceSearchResultFragment extends BaseFragment {
                         }
                     }).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<TextSearch.Result>() {
-                                @Override
-                                public void call(TextSearch.Result result) {
-                                    Log.e("yep", result.getResponse().getResults().get(0).getNativeData().get("Tracks").get(0).toString());
-                                }
+                            .subscribe(result -> {
+                                Log.e("yep", result.getResponse().getResults().get(0).getNativeData().get("Tracks").get(0).toString());
                             });
                     return true;
                 }

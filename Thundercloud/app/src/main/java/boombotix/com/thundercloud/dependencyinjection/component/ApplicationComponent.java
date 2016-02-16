@@ -11,6 +11,7 @@ import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
+import boombotix.com.thundercloud.houndify.HoundifyHelper;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -55,5 +56,6 @@ public interface ApplicationComponent {
     SharedPreferences sharedPreferences();
     AuthManager authManager();
     SpotifyService spotifyService();
+    HoundifyHelper houndifyHelper();
 
 }

@@ -1,26 +1,20 @@
 package boombotix.com.thundercloud.ui.fragment;
 
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.ui.activity.MainActivity;
+import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,7 +64,7 @@ public class NowPlayingFragment extends BaseFragment implements
             progressText.setVisibility(View.VISIBLE);
             playButton.setVisibility(View.GONE);
         });
-        ((MainActivity) getActivity()).showSearch();
+        ((TopLevelActivity) getActivity()).showSearch();
 
 //        Picasso.with(getContext())
 //                .load(R.drawable.daftpunk_bg)

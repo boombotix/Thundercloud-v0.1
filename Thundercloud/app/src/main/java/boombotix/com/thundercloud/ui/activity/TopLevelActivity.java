@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 * through the player fragment, it also attaches the result fragment as an overlay. Communication
 * between the player bar and result fragment is controlled through this activity.
 */
-public class MainActivity extends BaseActivity
+public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         VoiceSearchController {
     private FragmentManager fm;
