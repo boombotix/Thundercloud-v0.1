@@ -2,18 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingTop="@dimen/default_margin_half"
+    android:paddingBottom="@dimen/default_margin_half">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wifi Network SSID"
         android:id="@+id/wifi_network_ssid"
-        style="@style/TextAppearance.Thundercloud.ListItem" />
+        style="@style/TextAppearance.Thundercloud.Title.Bold.Accent" />
 
     <ImageButton
         android:layout_width="wrap_content"
-        android:contentDescription="@string/wifi_strength_description"
+        android:contentDescription="@string/description_wifi_strength"
         android:layout_height="wrap_content"
         android:id="@+id/wifi_network_strength"
         android:layout_toLeftOf="@+id/wifi_network_info"
@@ -21,7 +23,7 @@
         android:layout_alignWithParentIfMissing="false" />
 
     <ImageButton
-        android:contentDescription="@string/wifi_info_description"
+        android:contentDescription="@string/description_wifi_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/wifi_network_info"

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.filter.Captureable;
 import butterknife.Bind;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
  */
 public class MusicPagerFragment extends BaseFragment implements Captureable {
     private SectionsPagerAdapter sectionsPagerAdapter;
-
+    private static final String ARG_PAGE = "page";
     @Bind(R.id.container)
     ViewPager viewPager;
     @Bind(R.id.tabs)
@@ -41,24 +42,31 @@ public class MusicPagerFragment extends BaseFragment implements Captureable {
         super.onCreate(savedInstanceState);
     }
 
+    public static MusicPagerFragment newInstance(int page) {
+        MusicPagerFragment musicPager = new MusicPagerFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, page);
+        musicPager.setArguments(args);
+        return musicPager;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.inflatedView = inflater.inflate(R.layout.fragment_music_pager, container, false);
         ButterKnife.bind(this, this.inflatedView);
 
+        ((TopLevelActivity) getActivity()).hideSearch();
+        ((TopLevelActivity) getActivity()).setToolbarTitle("Your Music");
+
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        return this.inflatedView;
-    }
+        viewPager.setCurrentItem(getArguments().getInt(ARG_PAGE));
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getSupportActivity().getActivityComponent().inject(this);
+        return this.inflatedView;
     }
 
     @Override

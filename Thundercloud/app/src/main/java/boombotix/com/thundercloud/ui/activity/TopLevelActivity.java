@@ -12,18 +12,28 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.filter.Captureable;
+import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
+import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
+import boombotix.com.thundercloud.ui.fragment.QueueFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private FragmentManager fm;
+
+    @Bind(R.id.searchText)
+    EditText searchText;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
 
     @Bind(R.id.main_fragment)
@@ -34,13 +44,16 @@ public class TopLevelActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
         if (mainFragment == null) {
-            mainFragment = new MusicPagerFragment();
+
+            // TODO actually have  a main fragment
+            mainFragment = NowPlayingFragment.newInstance();
             fm.beginTransaction()
                     .add(R.id.main_fragment, mainFragment)
                     .commit();
@@ -64,6 +77,7 @@ public class TopLevelActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        setQueueFragment();
     }
 
     @Override
@@ -98,23 +112,54 @@ public class TopLevelActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if(id == R.id.nav_nowplaying){
+            fm.beginTransaction()
+                    .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
+                    .commit();
+        } else if (id == R.id.nav_playlists) {
+            changeMusicPagerPage(MusicListFragment.PLAYLIST_SECTION);
+        } else if (id == R.id.nav_songs) {
+            changeMusicPagerPage(MusicListFragment.SONGS_SECTION);
+        } else if (id == R.id.nav_albums) {
+            changeMusicPagerPage(MusicListFragment.ALBUMS_SECTION);
+        } else if (id == R.id.nav_artists) {
+            changeMusicPagerPage(MusicListFragment.ARTISTS_SECTION);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeMusicPagerPage(int page){
+        Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
+        fm.beginTransaction()
+                .replace(R.id.main_fragment, musicPagerFragment)
+                .commit();
+    }
+
+    private void setQueueFragment(){
+        Fragment queueFragment = QueueFragment.newInstance();
+        fm.beginTransaction()
+                .replace(R.id.queue_container, queueFragment)
+                .commit();
+    }
+
+    /**
+     * Hides search input from toolbar
+     *
+     */
+    public void hideSearch(){
+        searchText.setVisibility(View.GONE);
+    }
+
+    public void showSearch(){
+        searchText.setVisibility(View.VISIBLE);
+    }
+
+
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
     }
 
     /**

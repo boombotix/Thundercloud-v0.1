@@ -5,72 +5,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-        <RelativeLayout
-            android:id="@+id/player_base_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/player_bar_inner_height"
-            android:background="@color/playerBarColor"
-            android:layout_alignParentBottom="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/player_bar_inner_height"
+        android:layout_alignParentBottom="true">
 
-            <FrameLayout
-                android:id="@+id/player_blurred_background"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+        <boombotix.com.thundercloud.ui.view.CropImageView
+            android:id="@+id/player_blurred_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <RelativeLayout
+            android:paddingRight="@dimen/default_margin"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingTop="@dimen/default_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:id="@+id/linearLayout">
+                android:orientation="vertical">
+
                 <TextView
+                    style="@style/TextAppearance.Thundercloud.Small"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/basicText"
-                    android:textSize="@dimen/player_currently_playing"
                     android:text="Sleeping Fox" />
+
                 <TextView
+                    style="@style/TextAppearance.Thundercloud.Small"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/basicText"
-                    android:textSize="@dimen/player_currently_playing"
                     android:text="Pyramid" />
             </LinearLayout>
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/default_margin_2x"
+                android:layout_height="@dimen/default_margin_2x"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="@android:drawable/ic_media_play"
-                android:contentDescription="expand"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_alignParentEnd="true" />
-            <RelativeLayout
+                android:contentDescription="expand" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/linearLayout">
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@android:drawable/ic_lock_silent_mode_off"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:drawable/ic_lock_silent_mode"
+                    android:contentDescription="@string/description_now_playing_mute" />
 
                 <SeekBar
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="35dp"
                     android:id="@+id/seekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:max="100"
                     android:progress="50" />
-            </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:drawable/ic_lock_silent_mode_off"
+                    android:contentDescription="@string/description_now_playing_full_volume" />
+            </LinearLayout>
         </RelativeLayout>
+    </RelativeLayout>
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@android:drawable/sym_def_app_icon"
-        android:layout_centerHorizontal="true"/>
+        android:layout_width="@dimen/default_margin_4x"
+        android:layout_height="@dimen/default_margin_4x"
+        android:layout_centerHorizontal="true"
+        android:background="@android:drawable/sym_def_app_icon" />
 
 </RelativeLayout>

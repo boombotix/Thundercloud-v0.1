@@ -46,8 +46,8 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
     @Bind(R.id.skip_container)
     View skipContainer;
 
-    @Bind(R.id.network_list)
-    RecyclerView networkList;
+    @Bind(R.id.wifi_list)
+    RecyclerView wifiRecyclerView;
 
     @Bind(R.id.instructions)
     TextView instructions;
@@ -146,8 +146,8 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
      */
     private void initNetworkList() {
         adapter = new WifiListAdapter(new ArrayList<>(), this);
-        networkList.setAdapter(adapter);
-        networkList.setLayoutManager(new LinearLayoutManager(getContext()));
+        wifiRecyclerView.setAdapter(adapter);
+        wifiRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     /**
@@ -178,7 +178,7 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
     private void showSearchView() {
         searchContainer.setVisibility(View.VISIBLE);
         noResultsContainer.setVisibility(View.GONE);
-        networkList.setVisibility(View.GONE);
+        wifiRecyclerView.setVisibility(View.GONE);
         progressContainer.setVisibility(View.VISIBLE);
     }
 
@@ -188,7 +188,7 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
     private void showResultsView() {
         searchContainer.setVisibility(View.VISIBLE);
         noResultsContainer.setVisibility(View.GONE);
-        networkList.setVisibility(View.VISIBLE);
+        wifiRecyclerView.setVisibility(View.VISIBLE);
         progressContainer.setVisibility(View.GONE);
     }
 

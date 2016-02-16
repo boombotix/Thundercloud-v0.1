@@ -71,6 +71,7 @@ public class ScreenBlurUiFilter {
      *      Bitmap image of View
      */
     private Bitmap captureBitmapViaCanvas(View view) {
+
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         Bitmap bitmapOfView = Bitmap.createBitmap(view.getMeasuredWidth(),
