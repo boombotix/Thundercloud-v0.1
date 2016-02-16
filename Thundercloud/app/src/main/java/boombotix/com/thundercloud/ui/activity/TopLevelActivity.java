@@ -1,6 +1,7 @@
 package boombotix.com.thundercloud.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,19 +11,29 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
+import boombotix.com.thundercloud.ui.filter.Captureable;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity
+public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    @Bind(R.id.main_fragment)
+    FrameLayout blur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -42,6 +53,7 @@ public class MainActivity extends BaseActivity
                     .add(R.id.player_fragment, playerFragment)
                     .commit();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -103,5 +115,22 @@ public class MainActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Callthrough to return the captureable view of the main content fragment,
+     * if it implements {@link Captureable}
+     *
+     * May return null.
+     *
+     * @return
+     *          Captureable view of content fragment, OR null.
+     */
+    public @Nullable View getCaptureableView() {
+        Fragment contentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        if (contentFragment != null && contentFragment instanceof Captureable) {
+            return ((Captureable) contentFragment).captureView();
+        }
+        return null;
     }
 }

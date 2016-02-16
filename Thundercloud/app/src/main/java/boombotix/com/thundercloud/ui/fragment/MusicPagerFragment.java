@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
+import boombotix.com.thundercloud.ui.filter.Captureable;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -21,13 +22,15 @@ import butterknife.ButterKnife;
  *
  * @author Jayd Saucedo
  */
-public class MusicPagerFragment extends BaseFragment {
+public class MusicPagerFragment extends BaseFragment implements Captureable {
     private SectionsPagerAdapter sectionsPagerAdapter;
 
     @Bind(R.id.container)
     ViewPager viewPager;
     @Bind(R.id.tabs)
     TabLayout tabLayout;
+
+    private View inflatedView;
 
     public MusicPagerFragment() {
         // Required empty public constructor
@@ -41,15 +44,15 @@ public class MusicPagerFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_music_pager, container, false);
-        ButterKnife.bind(this, view);
+        this.inflatedView = inflater.inflate(R.layout.fragment_music_pager, container, false);
+        ButterKnife.bind(this, this.inflatedView);
 
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        return view;
+        return this.inflatedView;
     }
 
     @Override
@@ -61,6 +64,11 @@ public class MusicPagerFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public View captureView() {
+        return inflatedView;
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
