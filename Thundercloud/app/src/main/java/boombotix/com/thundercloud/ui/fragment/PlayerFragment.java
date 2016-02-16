@@ -40,8 +40,8 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
     ImageButton okhoundButton;
     String transcript;
     private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
-    public static final String CLIENT_ID = BuildConfig.HOUNDIFY_CLIENT_ID;
-    public static final String CLIENT_KEY = BuildConfig.HOUNDIFY_CLIENT_KEY;
+    public final String CLIENT_ID = BuildConfig.HOUNDIFY_CLIENT_ID;
+    public final String CLIENT_KEY = BuildConfig.HOUNDIFY_CLIENT_KEY;
 
     private PhraseSpotterReader phraseSpotterReader;
     private VoiceSearch voiceSearch;

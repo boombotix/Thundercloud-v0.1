@@ -42,7 +42,8 @@ public class VoiceSearchResultFragment extends BaseFragment {
     TextView queryText;
     @Bind(R.id.voice_search_result_edit)
     EditText editText;
-
+    // delay in ms before query happens automagically
+    private final long queryDelay = 5000;
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
         @Override
@@ -142,7 +143,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
     }
 
     public void setQuery(String s){
-        timerHandler.post(timerRunnable);
+        timerHandler.postDelayed(timerRunnable, queryDelay);
         queryText.setText(s);
         tapToEdit.setVisibility(View.VISIBLE);
         editText.setText(s);
