@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Gives public methods for controlling music playback, and alerts listeners when queue, state, or
+ * song changes are made
+ *
  * @author Theo Kanning
  */
 public class MusicController {
@@ -18,7 +21,7 @@ public class MusicController {
 
     private List<SongProgressListener> songProgressListeners = new ArrayList<>();
 
-    public MusicController(MusicPlayer musicPlayer){
+    public MusicController(MusicPlayer musicPlayer) {
         this.musicPlayer = musicPlayer;
         musicPlayer.registerSongFinishedListener(songFinishedListener);
     }
@@ -49,7 +52,7 @@ public class MusicController {
 
     }
 
-    private void playNextSong(){
+    private void playNextSong() {
         //todo remove first song from queue
         musicPlayer.playSong();
         notifySongChangeListeners();

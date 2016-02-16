@@ -1,12 +1,11 @@
 package boombotix.com.thundercloud.api;
 
 
-import boombotix.com.thundercloud.model.AuthRefreshResponse;
+import boombotix.com.thundercloud.model.authentication.AuthRefreshResponse;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.Header;
 import retrofit.http.POST;
-import retrofit.http.Query;
 import rx.Observable;
 
 /**

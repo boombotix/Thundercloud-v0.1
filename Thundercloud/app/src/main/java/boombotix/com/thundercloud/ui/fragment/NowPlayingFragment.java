@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.ui.activity.MainActivity;
+import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,7 +59,7 @@ public class NowPlayingFragment extends BaseFragment implements
             progressText.setVisibility(View.VISIBLE);
             playButton.setVisibility(View.GONE);
         });
-        ((MainActivity) getActivity()).showSearch();
+        ((TopLevelActivity) getActivity()).showSearch();
         return view;
     }
 

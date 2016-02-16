@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
-import boombotix.com.thundercloud.model.AuthRefreshResponse;
+import boombotix.com.thundercloud.model.authentication.AuthRefreshResponse;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

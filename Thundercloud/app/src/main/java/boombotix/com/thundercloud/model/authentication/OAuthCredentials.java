@@ -1,4 +1,4 @@
-package boombotix.com.thundercloud.authentication;
+package boombotix.com.thundercloud.model.authentication;
 
 /**
  * All information required to send to speaker after user logs in to OAuth system

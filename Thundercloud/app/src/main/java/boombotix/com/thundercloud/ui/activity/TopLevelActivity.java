@@ -23,7 +23,7 @@ import boombotix.com.thundercloud.ui.fragment.QueueFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity
+public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FragmentManager fm;
     @Bind(R.id.searchText)
@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_top_level);
         ButterKnife.bind(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

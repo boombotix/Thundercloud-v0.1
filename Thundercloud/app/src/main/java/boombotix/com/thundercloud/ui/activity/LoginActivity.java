@@ -3,7 +3,6 @@ package boombotix.com.thundercloud.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -27,21 +26,18 @@ import org.joda.time.DateTime;
 import java.io.IOException;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import javax.inject.Inject;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
-import boombotix.com.thundercloud.model.AuthRefreshResponse;
+import boombotix.com.thundercloud.model.authentication.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.PlaylistSimple;
-import kaaes.spotify.webapi.android.models.UserPrivate;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -71,7 +67,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
         ButterKnife.bind(this);
         getActivityComponent().inject(this);
         authorizeUser();
-        urmsc.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
+        urmsc.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TopLevelActivity.class)));
     }
 
     private void authorizeUser() {

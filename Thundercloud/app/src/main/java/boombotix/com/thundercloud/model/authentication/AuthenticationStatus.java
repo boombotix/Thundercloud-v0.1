@@ -1,4 +1,4 @@
-package boombotix.com.thundercloud.authentication;
+package boombotix.com.thundercloud.model.authentication;
 
 import boombotix.com.thundercloud.model.MusicService;
 

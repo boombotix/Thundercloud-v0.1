@@ -1,5 +1,7 @@
-package boombotix.com.thundercloud.authentication;
+package boombotix.com.thundercloud.bluetooth.authentication;
 
+import boombotix.com.thundercloud.model.authentication.AuthenticationStatus;
+import boombotix.com.thundercloud.model.authentication.OAuthCredentials;
 import boombotix.com.thundercloud.model.MusicService;
 import rx.Observable;
 
