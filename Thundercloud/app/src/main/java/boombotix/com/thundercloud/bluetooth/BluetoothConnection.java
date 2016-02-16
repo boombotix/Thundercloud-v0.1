@@ -1,8 +1,14 @@
 package boombotix.com.thundercloud.bluetooth;
 
 /**
- * Created by Theo Kanning on 2/16/2016.
+ * Handles all bluetooth connection details, such as connecting, writing, reading, etc.
+ *
+ * @author Theo Kanning
  */
 public class BluetoothConnection {
+
+    public void write(byte[] bytes){
+
+    }
 
 }
