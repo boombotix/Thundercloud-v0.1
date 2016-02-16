@@ -8,6 +8,5 @@ package boombotix.com.thundercloud.bluetooth;
  */
 public class BluetoothCommandReceiver {
 
-    @
 
 }

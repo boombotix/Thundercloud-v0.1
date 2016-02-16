@@ -6,6 +6,9 @@ import boombotix.com.thundercloud.bluetooth.BluetoothCommandReceiver;
 import boombotix.com.thundercloud.bluetooth.BluetoothCommandSender;
 import boombotix.com.thundercloud.bluetooth.BluetoothConnection;
 import boombotix.com.thundercloud.bluetooth.BluetoothMessageWrapper;
+import boombotix.com.thundercloud.bluetooth.authentication.AuthenticationBoombotBluetoothEndpoint;
+import boombotix.com.thundercloud.bluetooth.playback.MusicPlaybackBoombotBluetoothEndpoint;
+import boombotix.com.thundercloud.bluetooth.wifi.WifiBoombotBluetoothEndpoint;
 import dagger.Module;
 import dagger.Provides;
 
@@ -35,4 +38,23 @@ public class BluetoothModule {
     BluetoothMessageWrapper provideBluetoothMessageWrapper() {
         return new BluetoothMessageWrapper();
     }
+
+    @Singleton
+    @Provides
+    AuthenticationBoombotBluetoothEndpoint provideAuthenticationBoombotBluetoothEndpoint() {
+        return new AuthenticationBoombotBluetoothEndpoint();
+    }
+
+    @Singleton
+    @Provides
+    WifiBoombotBluetoothEndpoint provideWifiBoombotBluetoothEndpoint() {
+        return new WifiBoombotBluetoothEndpoint();
+    }
+
+    @Singleton
+    @Provides
+    MusicPlaybackBoombotBluetoothEndpoint provideMusicPlaybackBoombotBluetoothEndpoint() {
+        return new MusicPlaybackBoombotBluetoothEndpoint();
+    }
+
 }

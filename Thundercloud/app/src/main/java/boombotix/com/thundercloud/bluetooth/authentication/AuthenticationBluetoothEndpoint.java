@@ -10,7 +10,7 @@ import rx.Observable;
  *
  * @author Theo Kanning
  */
-public interface AuthenticationEndpoint {
+public interface AuthenticationBluetoothEndpoint {
 
     Observable<OAuthCredentials> updateCredentials(OAuthCredentials credentials,
             MusicService service);

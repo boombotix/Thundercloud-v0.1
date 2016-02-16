@@ -11,7 +11,7 @@ import rx.Observable;
  *
  * @author Theo Kanning
  */
-public interface WifiConnectionEndpoint {
+public interface WifiBluetoothEndpoint {
 
     Observable<List<WifiNetwork>> getAvailableNetworks();
 
