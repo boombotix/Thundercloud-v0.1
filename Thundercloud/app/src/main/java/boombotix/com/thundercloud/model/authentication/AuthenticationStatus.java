@@ -1,7 +1,5 @@
 package boombotix.com.thundercloud.model.authentication;
 
-import boombotix.com.thundercloud.model.MusicService;
-
 /**
  * The authentication status of a single music streaming service
  *

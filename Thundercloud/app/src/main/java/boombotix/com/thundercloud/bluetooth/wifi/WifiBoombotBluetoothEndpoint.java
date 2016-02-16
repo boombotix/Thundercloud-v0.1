@@ -2,8 +2,8 @@ package boombotix.com.thundercloud.bluetooth.wifi;
 
 import java.util.List;
 
-import boombotix.com.thundercloud.model.WifiCredentials;
-import boombotix.com.thundercloud.model.WifiNetwork;
+import boombotix.com.thundercloud.model.wifi.WifiCredentials;
+import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import rx.Observable;
 
 /**

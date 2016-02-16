@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.model.WifiNetwork;
+import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.wifi.WifiConnectFragment;
 import boombotix.com.thundercloud.ui.fragment.wifi.WifiConnectFragment.WifiConnectFragmentCallbacks;

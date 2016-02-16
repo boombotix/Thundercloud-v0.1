@@ -1,7 +1,7 @@
 package boombotix.com.thundercloud.bluetooth;
 
-import boombotix.com.thundercloud.model.MusicService;
-import boombotix.com.thundercloud.model.WifiCredentials;
+import boombotix.com.thundercloud.model.authentication.MusicService;
+import boombotix.com.thundercloud.model.wifi.WifiCredentials;
 import boombotix.com.thundercloud.model.authentication.OAuthCredentials;
 import boombotix.com.thundercloud.model.playback.MusicPlaybackAction;
 
