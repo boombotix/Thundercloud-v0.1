@@ -1,7 +1,6 @@
 package boombotix.com.thundercloud.dependencyinjection.module;
 
 import com.google.gson.Gson;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;

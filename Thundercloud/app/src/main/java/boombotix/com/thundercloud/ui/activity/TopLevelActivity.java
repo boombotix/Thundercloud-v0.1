@@ -1,6 +1,7 @@
 package boombotix.com.thundercloud.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,9 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
+import boombotix.com.thundercloud.ui.filter.Captureable;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
@@ -26,22 +29,29 @@ import butterknife.ButterKnife;
 public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FragmentManager fm;
+
     @Bind(R.id.searchText)
     EditText searchText;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
+
+    @Bind(R.id.main_fragment)
+    FrameLayout blur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_level);
         ButterKnife.bind(this);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fm = getSupportFragmentManager();
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
         if (mainFragment == null) {
+
             // TODO actually have  a main fragment
             mainFragment = NowPlayingFragment.newInstance();
             fm.beginTransaction()
@@ -56,6 +66,7 @@ public class TopLevelActivity extends BaseActivity
                     .add(R.id.player_fragment, playerFragment)
                     .commit();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -149,5 +160,22 @@ public class TopLevelActivity extends BaseActivity
 
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
+    }
+
+    /**
+     * Callthrough to return the captureable view of the main content fragment,
+     * if it implements {@link Captureable}
+     *
+     * May return null.
+     *
+     * @return
+     *          Captureable view of content fragment, OR null.
+     */
+    public @Nullable View getCaptureableView() {
+        Fragment contentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        if (contentFragment != null && contentFragment instanceof Captureable) {
+            return ((Captureable) contentFragment).captureView();
+        }
+        return null;
     }
 }

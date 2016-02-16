@@ -1,8 +1,6 @@
 package boombotix.com.thundercloud.ui.fragment;
 
 
-import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
+
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
+import boombotix.com.thundercloud.ui.filter.Captureable;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class NowPlayingFragment extends BaseFragment implements
-        HoloCircleSeekBar.OnCircleSeekBarChangeListener {
+        HoloCircleSeekBar.OnCircleSeekBarChangeListener,
+        Captureable {
 
     @Bind(R.id.picker)
     HoloCircleSeekBar picker;
@@ -75,5 +77,11 @@ public class NowPlayingFragment extends BaseFragment implements
     @Override
     public void onStopTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
         progressText.setText(String.valueOf(holoCircleSeekBar.getValue()));
+    }
+
+    @Override
+    public View captureView() {
+        View layout = getActivity().findViewById(R.id.now_playing_layout);
+        return layout;
     }
 }

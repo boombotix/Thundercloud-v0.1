@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
+import boombotix.com.thundercloud.ui.filter.Captureable;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -22,13 +23,15 @@ import butterknife.ButterKnife;
  *
  * @author Jayd Saucedo
  */
-public class MusicPagerFragment extends BaseFragment {
+public class MusicPagerFragment extends BaseFragment implements Captureable {
     private SectionsPagerAdapter sectionsPagerAdapter;
     private static final String ARG_PAGE = "page";
     @Bind(R.id.container)
     ViewPager viewPager;
     @Bind(R.id.tabs)
     TabLayout tabLayout;
+
+    private View inflatedView;
 
     public MusicPagerFragment() {
         // Required empty public constructor
@@ -50,8 +53,8 @@ public class MusicPagerFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_music_pager, container, false);
-        ButterKnife.bind(this, view);
+        this.inflatedView = inflater.inflate(R.layout.fragment_music_pager, container, false);
+        ButterKnife.bind(this, this.inflatedView);
 
         ((TopLevelActivity) getActivity()).hideSearch();
         ((TopLevelActivity) getActivity()).setToolbarTitle("Your Music");
@@ -63,8 +66,19 @@ public class MusicPagerFragment extends BaseFragment {
 
         viewPager.setCurrentItem(getArguments().getInt(ARG_PAGE));
 
-        return view;
+        return this.inflatedView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public View captureView() {
+        return inflatedView;
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
