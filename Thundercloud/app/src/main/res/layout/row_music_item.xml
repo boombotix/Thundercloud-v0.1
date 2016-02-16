@@ -39,6 +39,13 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true" />
+        <TextView
+            android:id="@+id/item_subtitle2"
+            style="@style/TextAppearance.Thundercloud.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true" />
     </LinearLayout>
 
     <ImageView

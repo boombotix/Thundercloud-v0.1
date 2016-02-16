@@ -33,6 +33,7 @@ import butterknife.ButterKnife;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
+import kaaes.spotify.webapi.android.models.ArtistSimple;
 import kaaes.spotify.webapi.android.models.ArtistsCursorPager;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
@@ -97,7 +98,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     private void initView() {
         spotifyApi.setAccessToken(authManager.getAccessToken());
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<>()));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<>(), 0));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         switch (getArguments().getInt(ARG_SECTION)) {
             case PLAYLIST_SECTION:
@@ -198,57 +199,65 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
 
     @Override
     public void playlistsResponse(Pager<PlaylistSimple> playlistSimplePager) {
+
         ArrayList<MusicListItem> items = new ArrayList<>();
         for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
             Playlist playlist = new Playlist();
             playlist.name = playlistSimple.name;
-            playlist.totalSongs = playlistSimple.tracks.total;
             playlist.artworkUrl = playlistSimple.images.get(0).url;
             items.add(playlist);
         }
 
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, PLAYLIST_SECTION));
     }
 
     @Override
     public void songsResponse(Pager<SavedTrack> savedTrackPager) {
+
         ArrayList<MusicListItem> items = new ArrayList<>();
         for (SavedTrack savedTrack : savedTrackPager.items) {
             Song song = new Song();
             song.name = savedTrack.track.name;
             song.artist = savedTrack.track.artists.get(0).name; //todo show all artists
+            song.album = savedTrack.track.album.name;
             song.artworkUrl = savedTrack.track.album.images.get(0).url;
             items.add(song);
         }
 
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, SONGS_SECTION));
     }
 
     @Override
     public void albumsResponse(Pager<SavedAlbum> savedAlbumPager) {
+
         ArrayList<MusicListItem> items = new ArrayList<>();
         for (SavedAlbum savedAlbum : savedAlbumPager.items) {
             //todo adapter from spotify to model
             Album album = new Album();
             album.name = savedAlbum.album.name;
-            album.totalSongs = savedAlbum.album.tracks.total;
+
+            ArrayList<String> artistNames = new ArrayList<>();
+            for(ArtistSimple artistSimple: savedAlbum.album.artists){
+                artistNames.add(artistSimple.name);
+            }
+            album.artist = TextUtils.join(",", artistNames);
             album.artworkUrl = savedAlbum.album.images.get(0).url;
             items.add(album);
         }
 
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, ALBUMS_SECTION));
     }
 
     @Override
     public void artistsResponse(ArtistsCursorPager artistsCursorPager) {
+
         ArrayList<MusicListItem> items = new ArrayList<>();
         for (Artist savedArtist : artistsCursorPager.artists.items) {
             boombotix.com.thundercloud.model.music.Artist artist = new boombotix.com.thundercloud.model.music.Artist();
             artist.name = savedArtist.name;
-            artist.genre =TextUtils.join(", ", savedArtist.genres);
             artist.artworkUrl = savedArtist.images.get(0).url;
             items.add(artist);
         }
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, ARTISTS_SECTION));
     }
 }

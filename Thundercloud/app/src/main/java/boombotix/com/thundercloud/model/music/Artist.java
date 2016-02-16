@@ -7,7 +7,6 @@ package boombotix.com.thundercloud.model.music;
  */
 public class Artist implements MusicListItem{
     public String name;
-    public String genre; //todo change to list?
     public String artworkUrl;
 
     @Override
@@ -17,11 +16,16 @@ public class Artist implements MusicListItem{
 
     @Override
     public String getSubtitle() {
-        return genre;
+        return null;
     }
 
     @Override
     public String getArtworkUrl() {
         return artworkUrl;
+    }
+
+    @Override
+    public String getSubtitle2() {
+        return null;
     }
 }
