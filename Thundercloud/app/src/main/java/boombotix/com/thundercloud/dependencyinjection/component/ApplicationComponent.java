@@ -8,8 +8,10 @@ import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.authentication.AuthManager;
+import boombotix.com.thundercloud.bluetooth.authentication.AuthenticationBoombotBluetoothEndpoint;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
+import boombotix.com.thundercloud.dependencyinjection.module.BluetoothModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -31,6 +33,7 @@ import kaaes.spotify.webapi.android.SpotifyService;
                 ApplicationModule.class,
                 RepositoryModule.class,
                 ApiModule.class,
+                BluetoothModule.class
         }
 )
 public interface ApplicationComponent {
@@ -42,6 +45,7 @@ public interface ApplicationComponent {
                     .applicationModule(new ApplicationModule(application))
                     .apiModule(new ApiModule())
                     .repositoryModule(new RepositoryModule(application))
+                    .bluetoothModule(new BluetoothModule())
                     .build();
         }
 
@@ -55,4 +59,5 @@ public interface ApplicationComponent {
     SharedPreferences sharedPreferences();
     AuthManager authManager();
     SpotifyService spotifyService();
+    AuthenticationBoombotBluetoothEndpoint authenticationBoombotBluetoothEndpoint();
 }

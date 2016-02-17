@@ -41,8 +41,10 @@ public class BluetoothModule {
 
     @Singleton
     @Provides
-    AuthenticationBoombotBluetoothEndpoint provideAuthenticationBoombotBluetoothEndpoint() {
-        return new AuthenticationBoombotBluetoothEndpoint();
+    AuthenticationBoombotBluetoothEndpoint provideAuthenticationBoombotBluetoothEndpoint(
+            BluetoothCommandSender sender,
+            BluetoothCommandReceiver receiver) {
+        return new AuthenticationBoombotBluetoothEndpoint(sender, receiver);
     }
 
     @Singleton

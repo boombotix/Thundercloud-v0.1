@@ -1,7 +1,12 @@
 package boombotix.com.thundercloud.bluetooth.authentication;
 
-import boombotix.com.thundercloud.model.authentication.MusicService;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import boombotix.com.thundercloud.bluetooth.BluetoothCommandReceiver;
+import boombotix.com.thundercloud.bluetooth.BluetoothCommandSender;
 import boombotix.com.thundercloud.model.authentication.AuthenticationStatus;
+import boombotix.com.thundercloud.model.authentication.MusicService;
 import boombotix.com.thundercloud.model.authentication.OAuthCredentials;
 import rx.Observable;
 
@@ -11,7 +16,20 @@ import rx.Observable;
  *
  * @author Theo Kanning
  */
+@Singleton
 public class AuthenticationBoombotBluetoothEndpoint implements AuthenticationBluetoothEndpoint{
+
+    private BluetoothCommandSender bluetoothCommandSender;
+
+    private BluetoothCommandReceiver bluetoothCommandReceiver;
+
+    @Inject
+    public AuthenticationBoombotBluetoothEndpoint(
+            BluetoothCommandSender bluetoothCommandSender,
+            BluetoothCommandReceiver bluetoothCommandReceiver) {
+        this.bluetoothCommandSender = bluetoothCommandSender;
+        this.bluetoothCommandReceiver = bluetoothCommandReceiver;
+    }
 
     @Override
     public Observable<OAuthCredentials> updateCredentials(OAuthCredentials credentials,
