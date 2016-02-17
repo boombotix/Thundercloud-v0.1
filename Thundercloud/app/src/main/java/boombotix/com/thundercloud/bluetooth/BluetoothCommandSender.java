@@ -3,9 +3,9 @@ package boombotix.com.thundercloud.bluetooth;
 import javax.inject.Inject;
 
 import boombotix.com.thundercloud.model.authentication.MusicService;
-import boombotix.com.thundercloud.model.wifi.WifiCredentials;
 import boombotix.com.thundercloud.model.authentication.OAuthCredentials;
 import boombotix.com.thundercloud.model.playback.MusicPlaybackAction;
+import boombotix.com.thundercloud.model.wifi.WifiCredentials;
 
 /**
  * Offers all bluetooth api commands, and encodes each message to bytes before adding a command
@@ -17,10 +17,14 @@ public class BluetoothCommandSender implements SpeakerBluetoothApi{
 
     private BluetoothMessageWrapper bluetoothMessageWrapper;
 
+    private BluetoothConnection bluetoothConnection;
+
     @Inject
     public BluetoothCommandSender(
-            BluetoothMessageWrapper bluetoothMessageWrapper) {
+            BluetoothMessageWrapper bluetoothMessageWrapper,
+            BluetoothConnection bluetoothConnection) {
         this.bluetoothMessageWrapper = bluetoothMessageWrapper;
+        this.bluetoothConnection = bluetoothConnection;
     }
 
     //todo add remaining commands

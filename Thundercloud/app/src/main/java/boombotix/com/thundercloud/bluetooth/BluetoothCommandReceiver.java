@@ -12,9 +12,16 @@ public class BluetoothCommandReceiver {
 
     private BluetoothMessageWrapper bluetoothMessageWrapper;
 
+    private BluetoothConnection bluetoothConnection;
+
+    //todo alert endpoints when a message is received
+
     @Inject
     public BluetoothCommandReceiver(
-            BluetoothMessageWrapper bluetoothMessageWrapper) {
+            BluetoothMessageWrapper bluetoothMessageWrapper,
+            BluetoothConnection bluetoothConnection) {
         this.bluetoothMessageWrapper = bluetoothMessageWrapper;
+        this.bluetoothConnection = bluetoothConnection;
     }
+
 }

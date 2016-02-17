@@ -23,14 +23,14 @@ public class BluetoothModule {
 
     @Singleton
     @Provides
-    BluetoothCommandSender provideBluetoothCommandSender(BluetoothMessageWrapper wrapper) {
-        return new BluetoothCommandSender(wrapper);
+    BluetoothCommandSender provideBluetoothCommandSender(BluetoothMessageWrapper wrapper, BluetoothConnection connection) {
+        return new BluetoothCommandSender(wrapper, connection);
     }
 
     @Singleton
     @Provides
-    BluetoothCommandReceiver provideBluetoothCommandReceiver(BluetoothMessageWrapper wrapper) {
-        return new BluetoothCommandReceiver(wrapper);
+    BluetoothCommandReceiver provideBluetoothCommandReceiver(BluetoothMessageWrapper wrapper, BluetoothConnection connection) {
+        return new BluetoothCommandReceiver(wrapper, connection);
     }
 
     @Singleton
