@@ -12,14 +12,14 @@ import rx.Observable;
  * Implementation of {@link MusicPlaybackBluetoothEndpoint} that sends and receives playback info
  * over bluetooth
  */
-public class MusicPlaybackBoombotBluetoothEndpoint implements MusicPlaybackBluetoothEndpoint {
+public class BoombotMusicPlaybackBluetoothEndpoint implements MusicPlaybackBluetoothEndpoint {
 
     private BluetoothCommandSender sender;
 
     private BluetoothCommandReceiver receiver;
 
     @Inject
-    public MusicPlaybackBoombotBluetoothEndpoint(
+    public BoombotMusicPlaybackBluetoothEndpoint(
             BluetoothCommandSender sender,
             BluetoothCommandReceiver receiver) {
         this.sender = sender;

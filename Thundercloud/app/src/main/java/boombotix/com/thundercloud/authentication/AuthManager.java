@@ -1,10 +1,10 @@
 package boombotix.com.thundercloud.authentication;
 
+import org.joda.time.DateTime;
+
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
-
-import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,30 +26,41 @@ import rx.schedulers.Schedulers;
 public class AuthManager {
 
     private String accessToken;
+
     private String refreshToken;
+
     private String userId;
+
     private DateTime expires;
+
     private Application application;
+
     private SharedPreferences sharedPreferences;
+
     private SpotifyAuthenticationEndpoint spotifyAuthenticationEndpoint;
+
     @Inject
     SpotifyApi spotifyApi;
 
     @Inject
-    AuthManager(Application application, SharedPreferences sharedPreferences, SpotifyAuthenticationEndpoint spotifyAuthenticationEndpoint){
+    AuthManager(Application application, SharedPreferences sharedPreferences,
+            SpotifyAuthenticationEndpoint spotifyAuthenticationEndpoint) {
         this.application = application;
         this.sharedPreferences = sharedPreferences;
         this.spotifyAuthenticationEndpoint = spotifyAuthenticationEndpoint;
     }
 
     public interface AuthRefreshRespCallback {
+
         void onSuccess(AuthRefreshResponse authRefreshResponse);
+
         void onError(Throwable error);
     }
 
     public String getAccessToken() {
-        if(sharedPreferences.contains(application.getString(R.string.access_token))) {
-            accessToken = sharedPreferences.getString(application.getString(R.string.access_token), null);
+        if (sharedPreferences.contains(application.getString(R.string.access_token))) {
+            accessToken = sharedPreferences
+                    .getString(application.getString(R.string.access_token), null);
         }
         return accessToken;
     }
@@ -63,8 +74,9 @@ public class AuthManager {
 
 
     public String getRefreshToken() {
-        if(sharedPreferences.contains(application.getString(R.string.refresh_token))) {
-            refreshToken = sharedPreferences.getString(application.getString(R.string.refresh_token), null);
+        if (sharedPreferences.contains(application.getString(R.string.refresh_token))) {
+            refreshToken = sharedPreferences
+                    .getString(application.getString(R.string.refresh_token), null);
         }
         return refreshToken;
     }
@@ -78,7 +90,7 @@ public class AuthManager {
     }
 
     public String getUserId() {
-        if(sharedPreferences.contains(application.getString(R.string.user_id))) {
+        if (sharedPreferences.contains(application.getString(R.string.user_id))) {
             userId = sharedPreferences.getString(application.getString(R.string.user_id), null);
         }
         return userId;
@@ -92,8 +104,9 @@ public class AuthManager {
     }
 
     public DateTime getExpires() {
-        if(sharedPreferences.contains(application.getString(R.string.expires))) {
-            expires = new DateTime(sharedPreferences.getLong(application.getString(R.string.expires), 0));
+        if (sharedPreferences.contains(application.getString(R.string.expires))) {
+            expires = new DateTime(
+                    sharedPreferences.getLong(application.getString(R.string.expires), 0));
         }
         return expires;
     }
@@ -105,8 +118,8 @@ public class AuthManager {
         this.expires = expires;
     }
 
-    public boolean isExpired(){
-        if(getExpires() == null){
+    public boolean isExpired() {
+        if (getExpires() == null) {
             return true;
         }
         DateTime dateTime = new DateTime(getExpires());
@@ -114,30 +127,31 @@ public class AuthManager {
     }
 
     /**
-     *
-     * This function is designed to be flatmapped into any call that requires user authentication
-     * It will cehck if the token is expired and renew it.
+     * This function is designed to be flatmapped into any call that requires user authentication It
+     * will cehck if the token is expired and renew it.
      *
      * @return returns observable for authtoken request
      */
-    public Observable<AuthRefreshResponse> getValidAccessToken(){
+    public Observable<AuthRefreshResponse> getValidAccessToken() {
 
-        if(isExpired()) {
-            Observable observable = spotifyAuthenticationEndpoint.getToken("Basic " + getEncodedAuthHeader(), "refresh_token", getRefreshToken());
+        if (isExpired()) {
+            Observable observable = spotifyAuthenticationEndpoint
+                    .getToken("Basic " + getEncodedAuthHeader(), "refresh_token",
+                            getRefreshToken());
 
             observable.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).share()
-            .subscribe(new Action1() {
-                @Override
-                public void call(Object o) {
-                    Log.e("AuthManager", "Token expired!");
-                    handleRefreshResponse((AuthRefreshResponse) o);
-                }
-            });
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .share()
+                    .subscribe(new Action1() {
+                        @Override
+                        public void call(Object o) {
+                            Log.e("AuthManager", "Token expired!");
+                            handleRefreshResponse((AuthRefreshResponse) o);
+                        }
+                    });
 
             return observable;
-        }
-        else{
+        } else {
             Log.e("AuthManager", "token not expired!");
             AuthRefreshResponse authRefreshResponse = new AuthRefreshResponse();
             authRefreshResponse.setAccessToken(getAccessToken());
@@ -146,8 +160,9 @@ public class AuthManager {
         }
     }
 
-    public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback){
-        spotifyAuthenticationEndpoint.getToken("Basic " + getEncodedAuthHeader(), "refresh_token", getRefreshToken())
+    public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback) {
+        spotifyAuthenticationEndpoint
+                .getToken("Basic " + getEncodedAuthHeader(), "refresh_token", getRefreshToken())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(authRefreshResponse -> {

@@ -15,13 +15,13 @@ import rx.Observable;
  *
  * @author Theo Kanning
  */
-public class WifiBoombotBluetoothEndpoint implements WifiBluetoothEndpoint{
+public class BoombotWifiBluetoothEndpoint implements WifiBluetoothEndpoint{
 
     private BluetoothCommandSender sender;
     private BluetoothCommandReceiver receiver;
 
     @Inject
-    public WifiBoombotBluetoothEndpoint(
+    public BoombotWifiBluetoothEndpoint(
             BluetoothCommandSender sender,
             BluetoothCommandReceiver receiver) {
         this.sender = sender;

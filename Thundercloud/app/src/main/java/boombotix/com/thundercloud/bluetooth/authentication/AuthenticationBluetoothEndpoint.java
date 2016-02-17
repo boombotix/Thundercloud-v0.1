@@ -12,7 +12,7 @@ import rx.Observable;
  */
 public interface AuthenticationBluetoothEndpoint {
 
-    Observable<OAuthCredentials> updateCredentials(OAuthCredentials credentials,
+    Observable<Boolean> updateCredentials(OAuthCredentials credentials,
             MusicService service);
 
     Observable<OAuthCredentials> refreshService(MusicService service);

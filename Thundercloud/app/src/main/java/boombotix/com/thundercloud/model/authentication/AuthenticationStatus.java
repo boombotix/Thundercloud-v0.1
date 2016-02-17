@@ -7,7 +7,7 @@ package boombotix.com.thundercloud.model.authentication;
  */
 public class AuthenticationStatus {
     private MusicService service;
-    private int status;
+    private int status; //todo enum for this?
     private String error;
 
     public AuthenticationStatus(MusicService service, int status, String error) {

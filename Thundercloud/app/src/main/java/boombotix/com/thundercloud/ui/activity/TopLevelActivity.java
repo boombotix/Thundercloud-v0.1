@@ -15,7 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import javax.inject.Inject;
+
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.bluetooth.authentication.MockAuthenticationEndpoint;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.filter.Captureable;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
@@ -25,13 +28,22 @@ import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.QueueFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import kaaes.spotify.webapi.android.SpotifyApi;
 
 public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     private FragmentManager fm;
+
+    @Inject
+    SpotifyApi spotifyApi;
+
+    @Inject
+    MockAuthenticationEndpoint mockAuthenticationEndpoint;
 
     @Bind(R.id.searchText)
     EditText searchText;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
@@ -67,10 +79,10 @@ public class TopLevelActivity extends BaseActivity
                     .commit();
         }
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -112,7 +124,7 @@ public class TopLevelActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.nav_nowplaying){
+        if (id == R.id.nav_nowplaying) {
             fm.beginTransaction()
                     .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
                     .commit();
@@ -131,14 +143,14 @@ public class TopLevelActivity extends BaseActivity
         return true;
     }
 
-    private void changeMusicPagerPage(int page){
-        Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
+    private void changeMusicPagerPage(int page) {
+        Fragment musicPagerFragment = MusicPagerFragment.newInstance(page);
         fm.beginTransaction()
                 .replace(R.id.main_fragment, musicPagerFragment)
                 .commit();
     }
 
-    private void setQueueFragment(){
+    private void setQueueFragment() {
         Fragment queueFragment = QueueFragment.newInstance();
         fm.beginTransaction()
                 .replace(R.id.queue_container, queueFragment)
@@ -147,13 +159,12 @@ public class TopLevelActivity extends BaseActivity
 
     /**
      * Hides search input from toolbar
-     *
      */
-    public void hideSearch(){
+    public void hideSearch() {
         searchText.setVisibility(View.GONE);
     }
 
-    public void showSearch(){
+    public void showSearch() {
         searchText.setVisibility(View.VISIBLE);
     }
 
@@ -163,15 +174,16 @@ public class TopLevelActivity extends BaseActivity
     }
 
     /**
-     * Callthrough to return the captureable view of the main content fragment,
-     * if it implements {@link Captureable}
+     * Callthrough to return the captureable view of the main content fragment, if it implements
+     * {@link Captureable}
      *
      * May return null.
      *
-     * @return
-     *          Captureable view of content fragment, OR null.
+     * @return Captureable view of content fragment, OR null.
      */
-    public @Nullable View getCaptureableView() {
+    public
+    @Nullable
+    View getCaptureableView() {
         Fragment contentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         if (contentFragment != null && contentFragment instanceof Captureable) {
             return ((Captureable) contentFragment).captureView();

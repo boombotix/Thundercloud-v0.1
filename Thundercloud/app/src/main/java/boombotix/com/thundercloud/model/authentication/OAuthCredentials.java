@@ -10,9 +10,25 @@ public class OAuthCredentials {
     private String refreshToken;
     private long expireTime;
 
+    public OAuthCredentials(){
+
+    }
+
     public OAuthCredentials(String accessToken, String refreshToken, long expireTime) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.expireTime = expireTime;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void setExpireTime(long expireTime) {
         this.expireTime = expireTime;
     }
 

@@ -2,13 +2,16 @@ package boombotix.com.thundercloud.dependencyinjection.module;
 
 import javax.inject.Singleton;
 
+import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
+import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.bluetooth.BluetoothCommandReceiver;
 import boombotix.com.thundercloud.bluetooth.BluetoothCommandSender;
 import boombotix.com.thundercloud.bluetooth.BluetoothConnection;
 import boombotix.com.thundercloud.bluetooth.BluetoothMessageWrapper;
-import boombotix.com.thundercloud.bluetooth.authentication.AuthenticationBoombotBluetoothEndpoint;
-import boombotix.com.thundercloud.bluetooth.playback.MusicPlaybackBoombotBluetoothEndpoint;
-import boombotix.com.thundercloud.bluetooth.wifi.WifiBoombotBluetoothEndpoint;
+import boombotix.com.thundercloud.bluetooth.authentication.BoombotAuthenticationBluetoothEndpoint;
+import boombotix.com.thundercloud.bluetooth.authentication.MockAuthenticationEndpoint;
+import boombotix.com.thundercloud.bluetooth.playback.BoombotMusicPlaybackBluetoothEndpoint;
+import boombotix.com.thundercloud.bluetooth.wifi.BoombotWifiBluetoothEndpoint;
 import dagger.Module;
 import dagger.Provides;
 
@@ -41,25 +44,33 @@ public class BluetoothModule {
 
     @Singleton
     @Provides
-    AuthenticationBoombotBluetoothEndpoint provideAuthenticationBoombotBluetoothEndpoint(
+    BoombotAuthenticationBluetoothEndpoint provideAuthenticationBoombotBluetoothEndpoint(
             BluetoothCommandSender sender,
             BluetoothCommandReceiver receiver) {
-        return new AuthenticationBoombotBluetoothEndpoint(sender, receiver);
+        return new BoombotAuthenticationBluetoothEndpoint(sender, receiver);
     }
 
     @Singleton
     @Provides
-    WifiBoombotBluetoothEndpoint provideWifiBoombotBluetoothEndpoint(BluetoothCommandSender sender,
-            BluetoothCommandReceiver receiver) {
-        return new WifiBoombotBluetoothEndpoint(sender, receiver);
+    MockAuthenticationEndpoint provideMockAuthenticationEndpoint(
+            SpotifyAuthenticationEndpoint spotifyEndpoint,
+            AuthManager authManager ) {
+        return new MockAuthenticationEndpoint(spotifyEndpoint, authManager);
     }
 
     @Singleton
     @Provides
-    MusicPlaybackBoombotBluetoothEndpoint provideMusicPlaybackBoombotBluetoothEndpoint(
+    BoombotWifiBluetoothEndpoint provideWifiBoombotBluetoothEndpoint(BluetoothCommandSender sender,
+            BluetoothCommandReceiver receiver) {
+        return new BoombotWifiBluetoothEndpoint(sender, receiver);
+    }
+
+    @Singleton
+    @Provides
+    BoombotMusicPlaybackBluetoothEndpoint provideMusicPlaybackBoombotBluetoothEndpoint(
             BluetoothCommandSender sender,
             BluetoothCommandReceiver receiver) {
-        return new MusicPlaybackBoombotBluetoothEndpoint(sender, receiver);
+        return new BoombotMusicPlaybackBluetoothEndpoint(sender, receiver);
     }
 
 }

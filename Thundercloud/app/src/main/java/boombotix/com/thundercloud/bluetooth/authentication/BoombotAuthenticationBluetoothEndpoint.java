@@ -17,14 +17,14 @@ import rx.Observable;
  * @author Theo Kanning
  */
 @Singleton
-public class AuthenticationBoombotBluetoothEndpoint implements AuthenticationBluetoothEndpoint {
+public class BoombotAuthenticationBluetoothEndpoint implements AuthenticationBluetoothEndpoint {
 
     private BluetoothCommandSender sender;
 
     private BluetoothCommandReceiver receiver;
 
     @Inject
-    public AuthenticationBoombotBluetoothEndpoint(
+    public BoombotAuthenticationBluetoothEndpoint(
             BluetoothCommandSender sender,
             BluetoothCommandReceiver receiver) {
         this.sender = sender;
@@ -32,7 +32,7 @@ public class AuthenticationBoombotBluetoothEndpoint implements AuthenticationBlu
     }
 
     @Override
-    public Observable<OAuthCredentials> updateCredentials(OAuthCredentials credentials,
+    public Observable<Boolean> updateCredentials(OAuthCredentials credentials,
             MusicService service) {
         return null;
     }
