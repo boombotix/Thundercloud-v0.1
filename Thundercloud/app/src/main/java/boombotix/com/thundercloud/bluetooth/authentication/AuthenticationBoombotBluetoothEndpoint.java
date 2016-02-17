@@ -17,18 +17,18 @@ import rx.Observable;
  * @author Theo Kanning
  */
 @Singleton
-public class AuthenticationBoombotBluetoothEndpoint implements AuthenticationBluetoothEndpoint{
+public class AuthenticationBoombotBluetoothEndpoint implements AuthenticationBluetoothEndpoint {
 
-    private BluetoothCommandSender bluetoothCommandSender;
+    private BluetoothCommandSender sender;
 
-    private BluetoothCommandReceiver bluetoothCommandReceiver;
+    private BluetoothCommandReceiver receiver;
 
     @Inject
     public AuthenticationBoombotBluetoothEndpoint(
-            BluetoothCommandSender bluetoothCommandSender,
-            BluetoothCommandReceiver bluetoothCommandReceiver) {
-        this.bluetoothCommandSender = bluetoothCommandSender;
-        this.bluetoothCommandReceiver = bluetoothCommandReceiver;
+            BluetoothCommandSender sender,
+            BluetoothCommandReceiver receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
     @Override

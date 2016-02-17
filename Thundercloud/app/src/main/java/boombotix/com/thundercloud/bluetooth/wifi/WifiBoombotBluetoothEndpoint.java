@@ -2,6 +2,10 @@ package boombotix.com.thundercloud.bluetooth.wifi;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import boombotix.com.thundercloud.bluetooth.BluetoothCommandReceiver;
+import boombotix.com.thundercloud.bluetooth.BluetoothCommandSender;
 import boombotix.com.thundercloud.model.wifi.WifiCredentials;
 import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import rx.Observable;
@@ -12,6 +16,17 @@ import rx.Observable;
  * @author Theo Kanning
  */
 public class WifiBoombotBluetoothEndpoint implements WifiBluetoothEndpoint{
+
+    private BluetoothCommandSender sender;
+    private BluetoothCommandReceiver receiver;
+
+    @Inject
+    public WifiBoombotBluetoothEndpoint(
+            BluetoothCommandSender sender,
+            BluetoothCommandReceiver receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
+    }
 
     @Override
     public Observable<List<WifiNetwork>> getAvailableNetworks() {

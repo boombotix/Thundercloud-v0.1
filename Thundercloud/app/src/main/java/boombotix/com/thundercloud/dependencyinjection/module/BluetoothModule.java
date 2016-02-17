@@ -23,14 +23,14 @@ public class BluetoothModule {
 
     @Singleton
     @Provides
-    BluetoothCommandSender provideBluetoothCommandSender() {
-        return new BluetoothCommandSender();
+    BluetoothCommandSender provideBluetoothCommandSender(BluetoothMessageWrapper wrapper) {
+        return new BluetoothCommandSender(wrapper);
     }
 
     @Singleton
     @Provides
-    BluetoothCommandReceiver provideBluetoothCommandReciever() {
-        return new BluetoothCommandReceiver();
+    BluetoothCommandReceiver provideBluetoothCommandReceiver(BluetoothMessageWrapper wrapper) {
+        return new BluetoothCommandReceiver(wrapper);
     }
 
     @Singleton
@@ -49,14 +49,17 @@ public class BluetoothModule {
 
     @Singleton
     @Provides
-    WifiBoombotBluetoothEndpoint provideWifiBoombotBluetoothEndpoint() {
-        return new WifiBoombotBluetoothEndpoint();
+    WifiBoombotBluetoothEndpoint provideWifiBoombotBluetoothEndpoint(BluetoothCommandSender sender,
+            BluetoothCommandReceiver receiver) {
+        return new WifiBoombotBluetoothEndpoint(sender, receiver);
     }
 
     @Singleton
     @Provides
-    MusicPlaybackBoombotBluetoothEndpoint provideMusicPlaybackBoombotBluetoothEndpoint() {
-        return new MusicPlaybackBoombotBluetoothEndpoint();
+    MusicPlaybackBoombotBluetoothEndpoint provideMusicPlaybackBoombotBluetoothEndpoint(
+            BluetoothCommandSender sender,
+            BluetoothCommandReceiver receiver) {
+        return new MusicPlaybackBoombotBluetoothEndpoint(sender, receiver);
     }
 
 }

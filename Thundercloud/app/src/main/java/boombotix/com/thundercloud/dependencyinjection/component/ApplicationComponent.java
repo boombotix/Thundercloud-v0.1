@@ -8,7 +8,10 @@ import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.authentication.AuthManager;
+import boombotix.com.thundercloud.bluetooth.BluetoothMessageWrapper;
 import boombotix.com.thundercloud.bluetooth.authentication.AuthenticationBoombotBluetoothEndpoint;
+import boombotix.com.thundercloud.bluetooth.playback.MusicPlaybackBoombotBluetoothEndpoint;
+import boombotix.com.thundercloud.bluetooth.wifi.WifiBoombotBluetoothEndpoint;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.BluetoothModule;
@@ -60,4 +63,7 @@ public interface ApplicationComponent {
     AuthManager authManager();
     SpotifyService spotifyService();
     AuthenticationBoombotBluetoothEndpoint authenticationBoombotBluetoothEndpoint();
+    MusicPlaybackBoombotBluetoothEndpoint musicPlaybackBoombotBluetoothEndpoint();
+    WifiBoombotBluetoothEndpoint wifiBoombotBluetoothEndpoint();
+    BluetoothMessageWrapper bluetoothMessageWrapper();
 }
