@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.filter.Captureable;
+import boombotix.com.thundercloud.ui.fragment.ArtistDetailsFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
@@ -53,7 +54,7 @@ public class TopLevelActivity extends BaseActivity
         if (mainFragment == null) {
 
             // TODO actually have  a main fragment
-            mainFragment = NowPlayingFragment.newInstance();
+            mainFragment = ArtistDetailsFragment.newInstance("0TnOYISbd1XYRBk9myaseg");
             fm.beginTransaction()
                     .add(R.id.main_fragment, mainFragment)
                     .commit();

@@ -85,7 +85,8 @@
     <string name="description_now_playing_mute">Mute</string>
     <string name="description_now_playing_full_volume">Full Volume</string>
 
-    
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
