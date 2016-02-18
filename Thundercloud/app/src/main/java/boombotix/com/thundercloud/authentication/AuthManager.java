@@ -136,7 +136,7 @@ public class AuthManager {
 
             return observable;
         }
-        return Observable.empty();
+        return Observable.just(new AuthRefreshResponse());
     }
 
     public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback){
