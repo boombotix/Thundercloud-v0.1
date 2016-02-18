@@ -54,7 +54,7 @@ public class TopLevelActivity extends BaseActivity
         if (mainFragment == null) {
 
             // TODO actually have  a main fragment
-            mainFragment = ArtistDetailsFragment.newInstance("0TnOYISbd1XYRBk9myaseg");
+            mainFragment = new NowPlayingFragment();
             fm.beginTransaction()
                     .add(R.id.main_fragment, mainFragment)
                     .commit();
