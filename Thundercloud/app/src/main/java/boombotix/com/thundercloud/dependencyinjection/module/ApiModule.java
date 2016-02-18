@@ -7,6 +7,8 @@ import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
+import boombotix.com.thundercloud.authentication.AuthManager;
+import boombotix.com.thundercloud.houndify.HoundifyHelper;
 import dagger.Module;
 import dagger.Provides;
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -66,5 +68,12 @@ public class ApiModule {
     @Singleton
     SpotifyService provideSpotifyService(SpotifyApi spotifyApi) {
         return spotifyApi.getService();
+    }
+
+    @Provides
+    @Singleton
+    HoundifyHelper houndifyHelper(){
+        return new HoundifyHelper();
+
     }
 }

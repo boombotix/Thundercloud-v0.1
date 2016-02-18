@@ -25,6 +25,8 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class AuthManager {
 
+    public static final String GRANT_TYPE = "refresh_token";
+
     private String accessToken;
 
     private String refreshToken;
@@ -136,18 +138,14 @@ public class AuthManager {
 
         if (isExpired()) {
             Observable observable = spotifyAuthenticationEndpoint
-                    .getToken("Basic " + getEncodedAuthHeader(), "refresh_token",
-                            getRefreshToken());
+                    .getToken("Basic " + getEncodedAuthHeader(), GRANT_TYPE, getRefreshToken());
 
             observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .share()
-                    .subscribe(new Action1() {
-                        @Override
-                        public void call(Object o) {
-                            Log.e("AuthManager", "Token expired!");
-                            handleRefreshResponse((AuthRefreshResponse) o);
-                        }
+                    .subscribe((Action1) o -> {
+                        Log.e("AuthManager", "Token expired!");
+                        handleRefreshResponse((AuthRefreshResponse) o);
                     });
 
             return observable;
@@ -159,6 +157,7 @@ public class AuthManager {
             return Observable.just(authRefreshResponse);
         }
     }
+
 
     public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback) {
         spotifyAuthenticationEndpoint
@@ -176,7 +175,7 @@ public class AuthManager {
     private void handleRefreshResponse(AuthRefreshResponse authRefreshResponse) {
         spotifyApi.setAccessToken(authRefreshResponse.getAccessToken());
         setAccessToken(authRefreshResponse.getAccessToken());
-        DateTime expires = (new DateTime()).plusSeconds(authRefreshResponse.getExpiresIn());
+        DateTime expires = new DateTime().plusSeconds(authRefreshResponse.getExpiresIn());
         setExpires(expires);
     }
 
