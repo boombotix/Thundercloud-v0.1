@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
-import boombotix.com.thundercloud.model.AuthRefreshResponse;
+import boombotix.com.thundercloud.model.authentication.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;

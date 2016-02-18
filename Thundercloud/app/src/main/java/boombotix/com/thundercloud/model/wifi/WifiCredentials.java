@@ -1,4 +1,4 @@
-package boombotix.com.thundercloud.model;
+package boombotix.com.thundercloud.model.wifi;
 
 /**
  * Credentials required to access a wifi network

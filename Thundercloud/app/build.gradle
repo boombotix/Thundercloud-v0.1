@@ -24,7 +24,6 @@ android {
         buildConfigField "String", "HOUNDIFY_CLIENT_KEY", HOUNDIFY_CLIENT_KEY
     }
 
-
     lintOptions {
         abortOnError false
     }

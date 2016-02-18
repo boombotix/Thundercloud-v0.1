@@ -1,27 +1,5 @@
 package boombotix.com.thundercloud.ui.fragment;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-
-import javax.inject.Inject;
-
-import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
-import boombotix.com.thundercloud.ui.base.BaseFragment;
-import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
-import boombotix.com.thundercloud.ui.view.CropImageView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import com.hound.android.libphs.PhraseSpotterReader;
 import com.hound.android.sdk.VoiceSearch;
 import com.hound.android.sdk.VoiceSearchInfo;
@@ -31,32 +9,55 @@ import com.hound.android.sdk.audio.SimpleAudioByteStreamSource;
 import com.hound.core.model.sdk.HoundResponse;
 import com.hound.core.model.sdk.PartialTranscript;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+
 import javax.inject.Inject;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.houndify.HoundifyHelper;
-import boombotix.com.thundercloud.houndify.model.HoundifyResponse;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
+import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
+import boombotix.com.thundercloud.ui.view.CropImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.Listener, VoiceSearchListener {
+public class PlayerFragment extends BaseFragment
+        implements PhraseSpotterReader.Listener, VoiceSearchListener {
+
     public static final String TAG = "PlayerFragment";
+
     @Inject
     HoundifyHelper houndifyHelper;
+
     private TopLevelActivity activity;
+
     @Bind(R.id.okhound_button)
     ImageButton okhoundButton;
+
     String transcript;
+
     private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+
     public final String CLIENT_ID = BuildConfig.HOUNDIFY_CLIENT_ID;
+
     public final String CLIENT_KEY = BuildConfig.HOUNDIFY_CLIENT_KEY;
 
     private PhraseSpotterReader phraseSpotterReader;
+
     private VoiceSearch voiceSearch;
 
     @Bind(R.id.player_blurred_background)
@@ -81,11 +82,13 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
         super.onCreate(savedInstanceState);
         activity = (TopLevelActivity) getActivity();
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getSupportActivity().getActivityComponent().inject(this);
     }
+
     @Override
     public void onDestroyView() {
         ButterKnife.unbind(this);
@@ -94,7 +97,7 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_player, container, false);
         ButterKnife.bind(this, view);
         getSupportActivity().getActivityComponent().inject(this);
@@ -111,7 +114,8 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
 
             this.blurredBackround.setImageDrawable(new BitmapDrawable(getResources(),
                     this.screenBlurUiFilter.blurView(toBlur)));
-            this.blurredBackround.setColorFilter(ContextCompat.getColor(getActivity(), R.color.playerBarTransparent),
+            this.blurredBackround.setColorFilter(
+                    ContextCompat.getColor(getActivity(), R.color.playerBarTransparent),
                     PorterDuff.Mode.DARKEN);
             this.blurredBackround.setOffset(0, 1);
         }
@@ -163,7 +167,7 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
     }
 
 
-    public void stopSearch(){
+    public void stopSearch() {
         if (voiceSearch != null) {
             voiceSearch.abort();
         }
@@ -173,7 +177,6 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
         if (voiceSearch != null) {
             return; // We are already searching
         }
-
 
         voiceSearch = new VoiceSearch.Builder()
                 .setRequestInfo(houndifyHelper.getHoundRequestInfo(getContext()))
@@ -187,7 +190,6 @@ public class PlayerFragment extends BaseFragment implements PhraseSpotterReader.
 
         voiceSearch.start();
     }
-
 
 
     private void updateText(String s) {

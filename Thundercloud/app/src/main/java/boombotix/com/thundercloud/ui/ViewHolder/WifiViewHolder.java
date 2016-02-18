@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.model.WifiNetwork;
+import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import boombotix.com.thundercloud.ui.adapter.WifiListAdapter.WifiListClickListener;
 import butterknife.Bind;
 import butterknife.ButterKnife;

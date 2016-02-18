@@ -17,12 +17,8 @@ import android.widget.FrameLayout;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
-import boombotix.com.thundercloud.ui.filter.Captureable;
-import boombotix.com.thundercloud.ui.fragment.ArtistDetailsFragment;
-
-import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.controller.VoiceSearchController;
+import boombotix.com.thundercloud.ui.filter.Captureable;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
@@ -40,12 +36,15 @@ import butterknife.ButterKnife;
 public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         VoiceSearchController {
+
     private FragmentManager fm;
 
     @Bind(R.id.searchText)
     EditText searchText;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
 
@@ -56,7 +55,7 @@ public class TopLevelActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_top_level);
         ButterKnife.bind(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -81,7 +80,6 @@ public class TopLevelActivity extends BaseActivity
                     .commit();
         }
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
 
@@ -89,7 +87,8 @@ public class TopLevelActivity extends BaseActivity
         attachPlayerFragment();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -151,9 +150,8 @@ public class TopLevelActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        removeFragmentByTag(VoiceSearchResultFragment.TAG);
+        if (id == R.id.nav_nowplaying) {
 
-        if(id == R.id.nav_nowplaying){
             fm.beginTransaction()
                     .replace(R.id.main_fragment,
                             NowPlayingFragment.newInstance(),
@@ -173,20 +171,20 @@ public class TopLevelActivity extends BaseActivity
         return true;
     }
 
+
     /**
      * Helper method to open music pager fragment to a certain page
-     *
-     * @param page
      */
-    private void changeMusicPagerPage(int page){
+    private void changeMusicPagerPage(int page) {
 
-        Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
+        Fragment musicPagerFragment = MusicPagerFragment.newInstance(page);
+
         fm.beginTransaction()
                 .replace(R.id.main_fragment, musicPagerFragment)
                 .commit();
     }
 
-    private void setQueueFragment(){
+    private void setQueueFragment() {
         Fragment queueFragment = QueueFragment.newInstance();
         fm.beginTransaction()
                 .replace(R.id.queue_container, queueFragment)
@@ -194,10 +192,10 @@ public class TopLevelActivity extends BaseActivity
     }
 
     /**
-     * Adds fragment overlay for te voice search results, if it already exists it  will remove
-     * it and recreate it.
+     * Adds fragment overlay for te voice search results, if it already exists it  will remove it
+     * and recreate it.
      */
-    public void addVoiceSearchResultFragment(){
+    public void addVoiceSearchResultFragment() {
         removeFragmentByTag(VoiceSearchResultFragment.TAG);
 
         // add overlay
@@ -218,31 +216,26 @@ public class TopLevelActivity extends BaseActivity
 
     /**
      * Updates text on the voice search fragment overlay
-     *
-     * @param s
      */
-    public void updateVoiceSearchResultFragmentText(String s){
-       setAndGetVoiceSearchResultFragment().updateText(s);
+    public void updateVoiceSearchResultFragmentText(String s) {
+        setAndGetVoiceSearchResultFragment().updateText(s);
     }
 
     /**
      * sets voice search fragment text to the query and allows editing via input box
-     *
-     * @param s
      */
-    public void setVoiceSearchResultFragmentQuery(String s){
+    public void setVoiceSearchResultFragmentQuery(String s) {
         setAndGetVoiceSearchResultFragment().setQuery(s);
     }
-
 
     /**
      * Gets viuce search result fragment, if it doesn't exist it will create it first
      *
      * @return the voice search result fragment
      */
-    public VoiceSearchResultFragment setAndGetVoiceSearchResultFragment(){
+    public VoiceSearchResultFragment setAndGetVoiceSearchResultFragment() {
         Fragment fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
-        if(fragment == null){
+        if (fragment == null) {
             addVoiceSearchResultFragment();
             fragment = fm.findFragmentByTag(VoiceSearchResultFragment.TAG);
         }
@@ -251,12 +244,10 @@ public class TopLevelActivity extends BaseActivity
 
     /**
      * Searches fragment by tag and removes it
-     *
-     * @param tag
      */
-    public void removeFragmentByTag(String tag){
+    public void removeFragmentByTag(String tag) {
         Fragment fragment = fm.findFragmentByTag(tag);
-        if(fragment != null) {
+        if (fragment != null) {
             fm.beginTransaction().remove(fragment).commit();
         }
     }
@@ -264,9 +255,9 @@ public class TopLevelActivity extends BaseActivity
     /**
      * Retrieves player fragment and stops any in process searches
      */
-    public void stopPlayerSearch(){
-       Fragment fragment = fm.findFragmentByTag(PlayerFragment.TAG);
-        if(fragment != null){
+    public void stopPlayerSearch() {
+        Fragment fragment = fm.findFragmentByTag(PlayerFragment.TAG);
+        if (fragment != null) {
             ((PlayerFragment) fragment).stopSearch();
         }
     }
@@ -274,7 +265,7 @@ public class TopLevelActivity extends BaseActivity
     /**
      * Hides search input from toolbar
      */
-    public void hideSearch(){
+    public void hideSearch() {
         searchText.setVisibility(View.GONE);
     }
 
@@ -282,30 +273,30 @@ public class TopLevelActivity extends BaseActivity
     /**
      * Shows search input in toolbar
      */
-    public void showSearch(){
+    public void showSearch() {
         searchText.setVisibility(View.VISIBLE);
     }
 
     /**
      * Sets title of toolbar...hmm
-     *
-     * @param title
      */
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
     }
 
     /**
-     * Callthrough to return the captureable view of the main content fragment,
-     * if it implements {@link Captureable}
+     * Callthrough to return the captureable view of the main content fragment, if it implements
+     * {@link Captureable}
      *
      * May return null.
      *
-     * @return
-     *          Captureable view of content fragment, OR null.
+     * @return Captureable view of content fragment, OR null.
      */
-    public @Nullable View getCaptureableView() {
-        Fragment contentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+    public
+    @Nullable
+    View getCaptureableView() {
+        Fragment contentFragment = getSupportFragmentManager()
+                .findFragmentById(R.id.main_fragment);
         if (contentFragment != null && contentFragment instanceof Captureable) {
             return ((Captureable) contentFragment).captureView();
         }

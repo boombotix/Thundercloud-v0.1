@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.model.WifiNetwork;
+import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import boombotix.com.thundercloud.ui.viewholder.WifiViewHolder;
 
 /**

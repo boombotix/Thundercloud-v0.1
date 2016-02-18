@@ -38,12 +38,11 @@ public interface ActivityComponent {
         }
     }
 
-    void inject(TopLevelActivity mainActivity);
+    void inject(TopLevelActivity topLevelActivity);
     void inject(LoginActivity loginActivity);
     void inject(MusicListFragment musicListFragment);
     void inject(MusicPagerFragment musicPagerFragment);
     void inject(PlayerFragment playerFragment);
     void inject(ArtistDetailsFragment artistDetailsFragment);
     void inject(VoiceSearchResultFragment voiceSearchResultFragment);
-
 }

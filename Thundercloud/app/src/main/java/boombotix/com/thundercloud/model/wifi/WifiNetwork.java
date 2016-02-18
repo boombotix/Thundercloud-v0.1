@@ -1,4 +1,6 @@
-package boombotix.com.thundercloud.model;
+package boombotix.com.thundercloud.model.wifi;
+
+import boombotix.com.thundercloud.model.wifi.WifiCredentials;
 
 /**
  * Class containing wif network data retrieved from speaker.
