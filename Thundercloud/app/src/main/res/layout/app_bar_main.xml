@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".ui.activity.TopLevelActivity">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,17 +45,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
             <FrameLayout
-                android:id="@+id/main_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="match_parent"
+                android:id="@+id/main_fragment" />
             <FrameLayout
-                android:id="@+id/player_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/overlay_fragment"/>
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/player_fragment"
                 android:layout_alignParentBottom="true" />
         </RelativeLayout>
 

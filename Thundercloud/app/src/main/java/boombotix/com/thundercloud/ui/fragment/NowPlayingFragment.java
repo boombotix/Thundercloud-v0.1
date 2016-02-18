@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 
 import boombotix.com.thundercloud.R;
@@ -21,6 +24,7 @@ public class NowPlayingFragment extends BaseFragment implements
         HoloCircleSeekBar.OnCircleSeekBarChangeListener,
         Captureable {
 
+    public static final String TAG = "NowPlayingFragment";
     @Bind(R.id.picker)
     HoloCircleSeekBar picker;
 
@@ -62,7 +66,25 @@ public class NowPlayingFragment extends BaseFragment implements
             playButton.setVisibility(View.GONE);
         });
         ((TopLevelActivity) getActivity()).showSearch();
+
+//
+//        Glide.with(getContext())
+//                .load(R.drawable.daftpunk_bg)
+//                .centerCrop()
+//                .into(nowPlayingAlbumArt);
+
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
     }
 
     @Override
@@ -84,4 +106,5 @@ public class NowPlayingFragment extends BaseFragment implements
         View layout = getActivity().findViewById(R.id.now_playing_layout);
         return layout;
     }
+
 }

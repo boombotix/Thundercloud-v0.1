@@ -13,6 +13,7 @@ import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.MusicModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
 import boombotix.com.thundercloud.music.MusicController;
+import boombotix.com.thundercloud.houndify.HoundifyHelper;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -60,4 +61,5 @@ public interface ApplicationComponent {
     AuthManager authManager();
     SpotifyService spotifyService();
     MusicController musicController();
+    HoundifyHelper houndifyHelper();
 }
