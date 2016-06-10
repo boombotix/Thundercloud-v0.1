@@ -1,5 +1,6 @@
 package boombotix.com.thundercloud.ui.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import com.canelmas.let.AskPermission;
+import com.canelmas.let.DeniedPermission;
+import com.canelmas.let.RuntimePermissionListener;
+import com.canelmas.let.RuntimePermissionRequest;
+
+import java.util.Arrays;
+import java.util.List;
+
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.controller.VoiceSearchController;
@@ -27,6 +36,8 @@ import boombotix.com.thundercloud.ui.fragment.QueueFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
+import timber.log.Timber;
 
 /*
 * Main activity attaches the main fragment view and the bottom player bar fragment upon search
@@ -35,7 +46,7 @@ import butterknife.ButterKnife;
 */
 public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        VoiceSearchController {
+        VoiceSearchController, RuntimePermissionListener {
 
     private FragmentManager fm;
 
@@ -48,10 +59,10 @@ public class TopLevelActivity extends BaseActivity
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
 
-
     @Bind(R.id.main_fragment)
     FrameLayout blur;
 
+    @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +109,7 @@ public class TopLevelActivity extends BaseActivity
         setQueueFragment();
     }
 
+    @AskPermission(Manifest.permission.RECORD_AUDIO)
     private void attachPlayerFragment() {
         Fragment playerFragment = fm.findFragmentById(R.id.player_fragment);
         if (playerFragment == null) {
@@ -108,6 +120,7 @@ public class TopLevelActivity extends BaseActivity
         }
     }
 
+    @AskPermission(Manifest.permission.RECORD_AUDIO)
     private void attachMainFragment() {
         fm = getSupportFragmentManager();
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
@@ -301,5 +314,15 @@ public class TopLevelActivity extends BaseActivity
             return ((Captureable) contentFragment).captureView();
         }
         return null;
+    }
+
+    @Override
+    public void onShowPermissionRationale(List<String> permissionList, RuntimePermissionRequest permissionRequest) {
+        Timber.d("permissions accepted for " + Arrays.toString(permissionList.toArray()));
+    }
+
+    @Override
+    public void onPermissionDenied(List<DeniedPermission> deniedPermissionList) {
+        Timber.d("Permissions denied for " + Arrays.toString(deniedPermissionList.toArray()));
     }
 }

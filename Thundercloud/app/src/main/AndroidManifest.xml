@@ -40,7 +40,7 @@
         <activity
             android:name=".ui.activity.MusicServiceSetupActivity"
             android:label="@string/title_activity_music_service_setup"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

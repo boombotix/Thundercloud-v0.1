@@ -1,5 +1,6 @@
 package boombotix.com.thundercloud.dependencyinjection.module;
 
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -7,8 +8,6 @@ import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
-import boombotix.com.thundercloud.authentication.AuthManager;
-import boombotix.com.thundercloud.houndify.HoundifyHelper;
 import dagger.Module;
 import dagger.Provides;
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -39,7 +38,13 @@ public class ApiModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient() {
-        return new OkHttpClient();
+        OkHttpClient client = new OkHttpClient();
+
+        if(BuildConfig.DEBUG){
+            client.networkInterceptors().add(new StethoInterceptor());
+        }
+        
+        return client;
     }
 
     @Provides
@@ -70,10 +75,4 @@ public class ApiModule {
         return spotifyApi.getService();
     }
 
-    @Provides
-    @Singleton
-    HoundifyHelper houndifyHelper(){
-        return new HoundifyHelper();
-
-    }
 }

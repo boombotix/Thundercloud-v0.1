@@ -1,10 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.jakewharton.hugo'
+apply plugin: 'com.fernandocejas.frodo'
+apply plugin: 'let'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "boombotix.com.thundercloud"
@@ -22,17 +25,24 @@ android {
         buildConfigField "String", "SPOTIFY_CLIENT_SECRET", SPOTIFY_CLIENT_SECRET
         buildConfigField "String", "HOUNDIFY_CLIENT_ID", HOUNDIFY_CLIENT_ID
         buildConfigField "String", "HOUNDIFY_CLIENT_KEY", HOUNDIFY_CLIENT_KEY
+
+        multiDexEnabled true
     }
 
     lintOptions {
         abortOnError false
     }
 
-
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    productFlavors {
+        dev {
+            minSdkVersion 21
+        }
+        production {}
     }
 
     buildTypes {
@@ -41,6 +51,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -60,7 +71,6 @@ android {
     }
 }
 
-
 repositories {
     flatDir {
         dirs 'libs'
@@ -70,49 +80,66 @@ repositories {
     maven {
         // The username and password for this repo is set below
         url 'https://houndify.com/maven/'
-        credentials {
-            username = HOUNDIFY_USERNAME
-            password = HOUNDIFY_PASSWORD
-        }
     }
-
-
 }
-
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    apt 'com.google.dagger:dagger-compiler:2.0.2'
 
     compile('com.wu-man:android-oauth-client:0.0.3') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
 
+    String supportLibraryVersion = "23.4.0"
+    String daggerVersion = "2.0.2"
+
     //Test dependencies
     testCompile 'junit:junit:4.12'
 
+    // support libraries
+    compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    compile "com.android.support:support-v4:$supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+
+    compile "com.android.support:multidex:1.0.1"
+
+    // rxjava
+    compile 'io.reactivex:rxjava:1.0.16'
+    compile 'io.reactivex:rxandroid:1.0.1'
+
+    // dependency injection
+    apt "com.google.dagger:dagger-compiler:$daggerVersion"
+    compile "com.google.dagger:dagger:$daggerVersion"
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    // datetime
+    compile 'net.danlew:android.joda:2.9.1'
+
+    // network requests
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+
+    // spotify
+    compile 'com.spotify.sdk:spotify-player:1.0.0-beta12@aar'
+    compile 'com.github.kaaes:spotify-web-api-android:0.2.0'
+
+    // sqlite orm
+    compile 'com.j256.ormlite:ormlite-android:4.48'
+
+    // UI
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.JesusM:HoloCircleSeekBar:v2.2.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    // houndify
+    compile 'hound.android:phrasespotter:1.4.0'
     compile('hound.android:hound-sdk:0.2.15@aar') {
         transitive = true
     }
 
-
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'io.reactivex:rxjava:1.0.16'
-    compile 'io.reactivex:rxandroid:1.0.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.google.dagger:dagger:2.0.2'
-    compile 'net.danlew:android.joda:2.9.1'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.spotify.sdk:spotify-player:1.0.0-beta12@aar'
-    compile 'com.github.kaaes:spotify-web-api-android:0.2.0'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.JesusM:HoloCircleSeekBar:v2.2.2'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'hound.android:phrasespotter:1.4.0'
+    // logging
+    compile 'com.jakewharton.timber:timber:4.1.2'
+    debugCompile 'com.facebook.stetho:stetho:1.3.1'
+    debugCompile 'com.facebook.stetho:stetho-okhttp:1.3.1'
 }

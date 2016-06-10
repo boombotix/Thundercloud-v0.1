@@ -2,7 +2,8 @@ package boombotix.com.thundercloud.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.fernandocejas.frodo.annotation.RxLogObservable;
 import com.hound.android.sdk.TextSearch;
 
 import javax.inject.Inject;
@@ -26,10 +27,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import hugo.weaving.DebugLog;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
+import timber.log.Timber;
 
 public class VoiceSearchResultFragment extends BaseFragment {
     public static final String TAG = "VoiceSearchResultFragment";
@@ -96,6 +98,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
         return view;
     }
 
+    @DebugLog
     @OnClick(R.id.voice_search_result_text)
     public void onVoiceSearchResultClick(View v) {
         timerHandler.removeCallbacks(timerRunnable);
@@ -113,8 +116,8 @@ public class VoiceSearchResultFragment extends BaseFragment {
         return false;
     }
 
-
-    private void doSearch(String q) {
+    @DebugLog
+    void doSearch(String q) {
        TextSearch textSearch = new TextSearch.Builder()
                             .setRequestInfo(houndifyHelper.getHoundRequestInfo(getContext()))
                             .setClientId(BuildConfig.HOUNDIFY_CLIENT_ID)
@@ -123,19 +126,31 @@ public class VoiceSearchResultFragment extends BaseFragment {
                             .build();
 
 
-        Observable.defer(() -> {
-            try {
-                return Observable.just(textSearch.search());
-            } catch (TextSearch.TextSearchException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }).subscribeOn(Schedulers.io())
+        Observable.defer(() -> createResultObservable(textSearch))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    HoundifyResponse houndifyResponse =  houndifyHelper.parseResponse(result.getResponse());
-                    Toast.makeText(getContext(),houndifyResponse.getTracks().get(0).getTrackName(), Toast.LENGTH_LONG).show();
-                });
+                .subscribe(
+                        result -> {
+                            Timber.d("Got back results from textSearch");
+
+                            HoundifyResponse houndifyResponse = houndifyHelper.parseResponse(result.getResponse());
+                            Snackbar.make(queryText, result.getResponse().getResults().get(0).getWrittenResponse(), Snackbar.LENGTH_LONG).show();
+                        },
+                        t -> {
+                            Timber.e(t.getMessage());
+                        });
+    }
+
+    @Nullable
+    @RxLogObservable
+    private Observable<TextSearch.Result> createResultObservable(TextSearch textSearch){
+        try {
+            Timber.d("Attempting to create voice search with houndify");
+            return Observable.just(textSearch.search());
+        } catch (TextSearch.TextSearchException e) {
+            Timber.e("Failed to start voice search");
+            return null;
+        }
     }
 
     public void updateText(String s){
