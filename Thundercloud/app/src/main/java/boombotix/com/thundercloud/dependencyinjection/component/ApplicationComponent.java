@@ -1,8 +1,8 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
-import com.google.gson.Gson;
-
 import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
@@ -17,7 +17,10 @@ import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.BluetoothModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
-import boombotix.com.thundercloud.houndify.HoundifyHelper;
+import boombotix.com.thundercloud.houndify.response.HoundifyDeserializer;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
+import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
+import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -79,5 +82,11 @@ public interface ApplicationComponent {
 
     MockAuthenticationEndpoint mockAuthenticationEndpoint();
 
-    HoundifyHelper houndifyHelper();
+    HoundifyResponseParser houndifyHelper();
+
+    HoundifyModelExtractor houndifyModelExtractor();
+
+    HoundifyDeserializer houndifyDeserializer();
+
+    HoundifyRequestAdapter houndifyRequestAdapter();
 }

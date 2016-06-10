@@ -3,7 +3,6 @@ package boombotix.com.thundercloud.ui.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,9 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.houndify.HoundifyHelper;
-import boombotix.com.thundercloud.houndify.model.HoundifyResponse;
+import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
+import boombotix.com.thundercloud.houndify.response.HoundifySubscriber;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
@@ -36,12 +36,22 @@ import timber.log.Timber;
 public class VoiceSearchResultFragment extends BaseFragment {
     public static final String TAG = "VoiceSearchResultFragment";
     private static final String QUERY_ARG = "query";
+
     @Inject
-    HoundifyHelper houndifyHelper;
+    HoundifyRequestAdapter houndifyRequestAdapter;
+
+    @Inject
+    HoundifyResponseParser houndifyResponseParser;
+
+    @Inject
+    HoundifySubscriber houndifySubscriber;
+
     @Bind(R.id.voice_search_result_tap_to_edit)
     TextView tapToEdit;
+
     @Bind(R.id.voice_search_result_text)
     TextView queryText;
+
     @Bind(R.id.voice_search_result_edit)
     EditText editText;
     // delay in ms before query happens automagically
@@ -119,9 +129,10 @@ public class VoiceSearchResultFragment extends BaseFragment {
     @DebugLog
     void doSearch(String q) {
        TextSearch textSearch = new TextSearch.Builder()
-                            .setRequestInfo(houndifyHelper.getHoundRequestInfo(getContext()))
+                            .setRequestInfo(houndifyRequestAdapter.getHoundRequestInfo(getContext()))
                             .setClientId(BuildConfig.HOUNDIFY_CLIENT_ID)
                             .setClientKey(BuildConfig.HOUNDIFY_CLIENT_KEY)
+                            .setDebug(BuildConfig.DEBUG)
                             .setQuery(q)
                             .build();
 
@@ -129,16 +140,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
         Observable.defer(() -> createResultObservable(textSearch))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        result -> {
-                            Timber.d("Got back results from textSearch");
-
-                            HoundifyResponse houndifyResponse = houndifyHelper.parseResponse(result.getResponse());
-                            Snackbar.make(queryText, result.getResponse().getResults().get(0).getWrittenResponse(), Snackbar.LENGTH_LONG).show();
-                        },
-                        t -> {
-                            Timber.e(t.getMessage());
-                        });
+                .subscribe(this.houndifySubscriber);
     }
 
     @Nullable

@@ -9,7 +9,7 @@ import java.util.List;
  *
  * Created by jsaucedo on 2/16/16.
  */
-public class HoundifyResponse {
+public class MusicResponse {
     @SerializedName("Tracks")
     private List<Track> tracks;
     @SerializedName("UserRequestedAutoPlay")

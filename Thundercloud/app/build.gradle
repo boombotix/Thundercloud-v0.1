@@ -91,7 +91,7 @@ dependencies {
     }
 
     String supportLibraryVersion = "23.4.0"
-    String daggerVersion = "2.0.2"
+    String daggerVersion = "2.2"
 
     //Test dependencies
     testCompile 'junit:junit:4.12'

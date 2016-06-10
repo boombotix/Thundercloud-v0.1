@@ -1,83 +1,313 @@
+
 package boombotix.com.thundercloud.houndify.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- *
- * Track from houndify
- *
- * Created by jsaucedo on 2/16/16.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Track {
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("TrackID")
-    private long trackId;
+    @Expose
+    private int trackID;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("AlbumID")
-    private long albumId;
+    @Expose
+    private int albumID;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("ArtistID")
-    private long artistId;
+    @Expose
+    private int artistID;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("TrackName")
+    @Expose
     private String trackName;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("AlbumName")
+    @Expose
     private String albumName;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("ArtistName")
+    @Expose
     private String artistName;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("AlbumDate")
+    @Expose
     private String albumDate;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @SerializedName("AutoPlayPreview")
+    @Expose
+    private boolean autoPlayPreview;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @SerializedName("MusicThirdPartyIds")
+    @Expose
+    private List<MusicThirdPartyId> musicThirdPartyIds = new ArrayList<MusicThirdPartyId>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @SerializedName("PreviewLinks")
+    @Expose
+    private List<PreviewLink> previewLinks = new ArrayList<PreviewLink>();
 
-    public long getTrackID() {
-        return trackId;
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The trackID
+     */
+    public int getTrackID() {
+        return trackID;
     }
 
-    public void setTrackId(long trackId) {
-        this.trackId = trackId;
+    /**
+     * 
+     * (Required)
+     * 
+     * @param trackID
+     *     The TrackID
+     */
+    public void setTrackID(int trackID) {
+        this.trackID = trackID;
     }
 
-    public long getAlbumId() {
-        return albumId;
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The albumID
+     */
+    public int getAlbumID() {
+        return albumID;
     }
 
-    public void setAlbumId(long albumId) {
-        this.albumId = albumId;
+    /**
+     * 
+     * (Required)
+     * 
+     * @param albumID
+     *     The AlbumID
+     */
+    public void setAlbumID(int albumID) {
+        this.albumID = albumID;
     }
 
-    public long getArtistId() {
-        return artistId;
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The artistID
+     */
+    public int getArtistID() {
+        return artistID;
     }
 
-    public void setArtistId(long artistId) {
-        this.artistId = artistId;
+    /**
+     * 
+     * (Required)
+     * 
+     * @param artistID
+     *     The ArtistID
+     */
+    public void setArtistID(int artistID) {
+        this.artistID = artistID;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The trackName
+     */
     public String getTrackName() {
         return trackName;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     * @param trackName
+     *     The TrackName
+     */
     public void setTrackName(String trackName) {
         this.trackName = trackName;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The albumName
+     */
     public String getAlbumName() {
         return albumName;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     * @param albumName
+     *     The AlbumName
+     */
     public void setAlbumName(String albumName) {
         this.albumName = albumName;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The artistName
+     */
     public String getArtistName() {
         return artistName;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     * @param artistName
+     *     The ArtistName
+     */
     public void setArtistName(String artistName) {
         this.artistName = artistName;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The albumDate
+     */
     public String getAlbumDate() {
         return albumDate;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     * @param albumDate
+     *     The AlbumDate
+     */
     public void setAlbumDate(String albumDate) {
         this.albumDate = albumDate;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The autoPlayPreview
+     */
+    public boolean isAutoPlayPreview() {
+        return autoPlayPreview;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     * @param autoPlayPreview
+     *     The AutoPlayPreview
+     */
+    public void setAutoPlayPreview(boolean autoPlayPreview) {
+        this.autoPlayPreview = autoPlayPreview;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The musicThirdPartyIds
+     */
+    public List<MusicThirdPartyId> getMusicThirdPartyIds() {
+        return musicThirdPartyIds;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     * @param musicThirdPartyIds
+     *     The MusicThirdPartyIds
+     */
+    public void setMusicThirdPartyIds(List<MusicThirdPartyId> musicThirdPartyIds) {
+        this.musicThirdPartyIds = musicThirdPartyIds;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     * @return
+     *     The previewLinks
+     */
+    public List<PreviewLink> getPreviewLinks() {
+        return previewLinks;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     * @param previewLinks
+     *     The PreviewLinks
+     */
+    public void setPreviewLinks(List<PreviewLink> previewLinks) {
+        this.previewLinks = previewLinks;
     }
 
 }

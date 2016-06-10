@@ -1,14 +1,5 @@
 package boombotix.com.thundercloud.ui.fragment;
 
-import com.hound.android.libphs.PhraseSpotterReader;
-import com.hound.android.sdk.VoiceSearch;
-import com.hound.android.sdk.VoiceSearchInfo;
-import com.hound.android.sdk.VoiceSearchListener;
-import com.hound.android.sdk.VoiceSearchState;
-import com.hound.android.sdk.audio.SimpleAudioByteStreamSource;
-import com.hound.core.model.sdk.HoundResponse;
-import com.hound.core.model.sdk.PartialTranscript;
-
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -21,11 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.hound.android.libphs.PhraseSpotterReader;
+import com.hound.android.sdk.VoiceSearch;
+import com.hound.android.sdk.VoiceSearchInfo;
+import com.hound.android.sdk.VoiceSearchListener;
+import com.hound.android.sdk.VoiceSearchState;
+import com.hound.android.sdk.audio.SimpleAudioByteStreamSource;
+import com.hound.core.model.sdk.HoundResponse;
+import com.hound.core.model.sdk.PartialTranscript;
+
 import javax.inject.Inject;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.houndify.HoundifyHelper;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
+import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
@@ -41,7 +42,10 @@ public class PlayerFragment extends BaseFragment
     public static final String TAG = "PlayerFragment";
 
     @Inject
-    HoundifyHelper houndifyHelper;
+    HoundifyRequestAdapter houndifyRequestAdapter;
+
+    @Inject
+    HoundifyResponseParser houndifyResponseParser;
 
     private TopLevelActivity activity;
 
@@ -179,7 +183,7 @@ public class PlayerFragment extends BaseFragment
         }
 
         voiceSearch = new VoiceSearch.Builder()
-                .setRequestInfo(houndifyHelper.getHoundRequestInfo(getContext()))
+                .setRequestInfo(houndifyRequestAdapter.getHoundRequestInfo(getContext()))
                 .setAudioSource(new SimpleAudioByteStreamSource())
                 .setClientId(CLIENT_ID)
                 .setClientKey(CLIENT_KEY)
@@ -224,8 +228,7 @@ public class PlayerFragment extends BaseFragment
     @Override
     public void onResponse(HoundResponse response, VoiceSearchInfo info) {
         voiceSearch = null;
-//            activity.setVoiceSearchResultFragmentQuery(response.getResults().get(0).getNativeData());
-//        HoundifyResponse houndifyResponse = houndifyHelper.parseResponse(response);
+
         setQuery(transcript);
         startPhraseSpotting();
     }

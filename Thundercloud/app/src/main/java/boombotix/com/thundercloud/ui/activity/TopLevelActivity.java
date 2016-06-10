@@ -238,7 +238,7 @@ public class TopLevelActivity extends BaseActivity
      * sets voice search fragment text to the query and allows editing via input box
      */
     public void setVoiceSearchResultFragmentQuery(String s) {
-        setAndGetVoiceSearchResultFragment().setQuery(s);
+            setAndGetVoiceSearchResultFragment().setQuery(s);
     }
 
     /**
