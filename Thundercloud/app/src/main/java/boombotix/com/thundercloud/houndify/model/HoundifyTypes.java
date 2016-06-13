@@ -3,7 +3,7 @@ package boombotix.com.thundercloud.houndify.model;
 /**
  * Created by kriedema on 6/10/16.
  */
-public class HoundifyType {
+public class HoundifyTypes {
     public enum ValidCommandTypes {
         MusicCommand,
         MusicPlayerCommand,
@@ -13,5 +13,11 @@ public class HoundifyType {
     public enum MusicCommandTypes {
         MusicSearchCommand,
         MusicChartsCommand
+    }
+
+    public enum ThirdPartyMusicServices {
+        Spotify,
+        Pandora,
+        AppleMusic
     }
 }

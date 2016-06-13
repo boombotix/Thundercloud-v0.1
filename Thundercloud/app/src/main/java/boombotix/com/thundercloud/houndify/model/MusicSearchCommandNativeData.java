@@ -13,7 +13,7 @@ public class MusicSearchCommandNativeData {
      */
     @SerializedName("NativeData")
     @Expose
-    private NativeData nativeData;
+    private MusicSearchResultsNativeData MusicSearchResultsNativeData;
 
     /**
      * 
@@ -22,19 +22,19 @@ public class MusicSearchCommandNativeData {
      * @return
      *     The nativeData
      */
-    public NativeData getNativeData() {
-        return nativeData;
+    public MusicSearchResultsNativeData getMusicSearchResultsNativeData() {
+        return MusicSearchResultsNativeData;
     }
 
     /**
      * 
      * (Required)
      * 
-     * @param nativeData
-     *     The NativeData
+     * @param MusicSearchResultsNativeData
+     *     The MusicSearchResultsNativeData
      */
-    public void setNativeData(NativeData nativeData) {
-        this.nativeData = nativeData;
+    public void setMusicSearchResultsNativeData(MusicSearchResultsNativeData MusicSearchResultsNativeData) {
+        this.MusicSearchResultsNativeData = MusicSearchResultsNativeData;
     }
 
 }

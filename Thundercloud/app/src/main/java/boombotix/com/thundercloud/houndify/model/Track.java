@@ -16,7 +16,7 @@ public class Track {
      */
     @SerializedName("TrackID")
     @Expose
-    private int trackID;
+    private long trackID;
     /**
      * 
      * (Required)
@@ -24,7 +24,7 @@ public class Track {
      */
     @SerializedName("AlbumID")
     @Expose
-    private int albumID;
+    private long albumID;
     /**
      * 
      * (Required)
@@ -32,7 +32,7 @@ public class Track {
      */
     @SerializedName("ArtistID")
     @Expose
-    private int artistID;
+    private long artistID;
     /**
      * 
      * (Required)
@@ -97,7 +97,7 @@ public class Track {
      * @return
      *     The trackID
      */
-    public int getTrackID() {
+    public long getTrackID() {
         return trackID;
     }
 
@@ -108,7 +108,7 @@ public class Track {
      * @param trackID
      *     The TrackID
      */
-    public void setTrackID(int trackID) {
+    public void setTrackID(long trackID) {
         this.trackID = trackID;
     }
 
@@ -119,7 +119,7 @@ public class Track {
      * @return
      *     The albumID
      */
-    public int getAlbumID() {
+    public long getAlbumID() {
         return albumID;
     }
 
@@ -130,7 +130,7 @@ public class Track {
      * @param albumID
      *     The AlbumID
      */
-    public void setAlbumID(int albumID) {
+    public void setAlbumID(long albumID) {
         this.albumID = albumID;
     }
 
@@ -141,7 +141,7 @@ public class Track {
      * @return
      *     The artistID
      */
-    public int getArtistID() {
+    public long getArtistID() {
         return artistID;
     }
 

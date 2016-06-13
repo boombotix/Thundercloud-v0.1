@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import boombotix.com.thundercloud.houndify.model.MusicResponse;
-import boombotix.com.thundercloud.houndify.model.MusicSearchCommandNativeData;
+import boombotix.com.thundercloud.houndify.model.MusicSearchResultsNativeData;
 import hugo.weaving.DebugLog;
 import timber.log.Timber;
 
@@ -34,9 +34,9 @@ public class HoundifyJsonDeserializer implements HoundifyDeserializer {
 
     @DebugLog
     @Override
-    public MusicSearchCommandNativeData parseMusicSearchCommandNativeData(@Nullable String serializedResponse) {
+    public MusicSearchResultsNativeData parseMusicSearchCommandNativeData(@Nullable String serializedResponse) {
         try {
-            return gson.fromJson(serializedResponse, MusicSearchCommandNativeData.class);
+            return gson.fromJson(serializedResponse, MusicSearchResultsNativeData.class);
         } catch (JsonSyntaxException exception){
             Timber.e(exception.getMessage());
             return null;

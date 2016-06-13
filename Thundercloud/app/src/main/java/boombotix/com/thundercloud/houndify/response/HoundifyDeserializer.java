@@ -3,7 +3,7 @@ package boombotix.com.thundercloud.houndify.response;
 import android.support.annotation.Nullable;
 
 import boombotix.com.thundercloud.houndify.model.MusicResponse;
-import boombotix.com.thundercloud.houndify.model.MusicSearchCommandNativeData;
+import boombotix.com.thundercloud.houndify.model.MusicSearchResultsNativeData;
 
 /**
  * Created by kriedema on 6/10/16.
@@ -14,5 +14,5 @@ public interface HoundifyDeserializer {
     MusicResponse parseMusicResponse(@Nullable String serializedResponse);
 
     @Nullable
-    MusicSearchCommandNativeData parseMusicSearchCommandNativeData(@Nullable String serializedResponse);
+    MusicSearchResultsNativeData parseMusicSearchCommandNativeData(@Nullable String serializedResponse);
 }

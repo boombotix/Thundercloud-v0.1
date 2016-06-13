@@ -7,61 +7,42 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NativeData {
+public class MusicSearchResultsNativeData {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @SerializedName("MusicCommandNativeDataKind")
     @Expose
     private String musicCommandNativeDataKind;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+
     @SerializedName("SearchParameters")
     @Expose
     private SearchParameters searchParameters;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+
+    @SerializedName("Artists")
+    @Expose
+    private List<Artist> artists = new ArrayList<>();
+
     @SerializedName("Tracks")
     @Expose
     private List<Track> tracks = new ArrayList<Track>();
-    /**
-     * 
-     * (Required)
-     * 
-     */
+
+    @SerializedName("Albums")
+    @Expose
+    private List<Album> albums = new ArrayList<Album>();
+
     @SerializedName("UserRequestedAutoPlay")
     @Expose
     private boolean userRequestedAutoPlay;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+
     @SerializedName("EntitySpecificationType")
     @Expose
     private String entitySpecificationType;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+
     @SerializedName("OrderToDisplay")
     @Expose
     private List<String> orderToDisplay = new ArrayList<String>();
 
     /**
-     * 
-     * (Required)
-     * 
+     *
      * @return
      *     The musicCommandNativeDataKind
      */
@@ -70,8 +51,6 @@ public class NativeData {
     }
 
     /**
-     * 
-     * (Required)
      * 
      * @param musicCommandNativeDataKind
      *     The MusicCommandNativeDataKind
@@ -82,8 +61,6 @@ public class NativeData {
 
     /**
      * 
-     * (Required)
-     * 
      * @return
      *     The searchParameters
      */
@@ -93,8 +70,6 @@ public class NativeData {
 
     /**
      * 
-     * (Required)
-     * 
      * @param searchParameters
      *     The SearchParameters
      */
@@ -103,8 +78,24 @@ public class NativeData {
     }
 
     /**
-     * 
-     * (Required)
+     *
+     * @return
+     *  The artists
+     */
+    public List<Artist> getArtists() {
+        return artists;
+    }
+
+    /**
+     *
+     * @param artists
+     *  The artists
+     */
+    public void setArtists(List<Artist> artists) {
+        this.artists = artists;
+    }
+
+    /**
      * 
      * @return
      *     The tracks
@@ -115,8 +106,6 @@ public class NativeData {
 
     /**
      * 
-     * (Required)
-     * 
      * @param tracks
      *     The Tracks
      */
@@ -125,8 +114,24 @@ public class NativeData {
     }
 
     /**
-     * 
-     * (Required)
+     *
+     * @return
+     *     The albums
+     */
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    /**
+     *
+     * @param albums
+     *     The Albums
+     */
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
+    }
+
+    /**
      * 
      * @return
      *     The userRequestedAutoPlay
@@ -137,8 +142,6 @@ public class NativeData {
 
     /**
      * 
-     * (Required)
-     * 
      * @param userRequestedAutoPlay
      *     The UserRequestedAutoPlay
      */
@@ -147,8 +150,6 @@ public class NativeData {
     }
 
     /**
-     * 
-     * (Required)
      * 
      * @return
      *     The entitySpecificationType
@@ -159,8 +160,6 @@ public class NativeData {
 
     /**
      * 
-     * (Required)
-     * 
      * @param entitySpecificationType
      *     The EntitySpecificationType
      */
@@ -170,8 +169,6 @@ public class NativeData {
 
     /**
      * 
-     * (Required)
-     * 
      * @return
      *     The orderToDisplay
      */
@@ -180,8 +177,6 @@ public class NativeData {
     }
 
     /**
-     * 
-     * (Required)
      * 
      * @param orderToDisplay
      *     The OrderToDisplay

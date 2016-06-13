@@ -16,8 +16,6 @@ import hugo.weaving.DebugLog;
  */
 public class HoundifySdkModelExtractor implements HoundifyModelExtractor {
 
-    private static final String NATIVE_DATA_NODE = "NativeData";
-
     @DebugLog
     @Override
     public JsonNode extractConversationState(@Nullable HoundResponse response) {
@@ -35,9 +33,9 @@ public class HoundifySdkModelExtractor implements HoundifyModelExtractor {
     public JsonNode extractNativeData(@Nullable HoundResponse response) {
         if(response == null) return null;
         if(response.getResults().size() == 0) return null;
-        if(response.getResults().get(0).getJsonNode() == null) return null;
+        if(response.getResults().get(0) == null) return null;
 
-        return response.getResults().get(0).getJsonNode().get(NATIVE_DATA_NODE);
+        return response.getResults().get(0).getNativeData();
     }
 
     @DebugLog

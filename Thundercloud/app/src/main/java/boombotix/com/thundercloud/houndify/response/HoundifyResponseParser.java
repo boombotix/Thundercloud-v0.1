@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.hound.core.model.sdk.HoundResponse;
 
 import boombotix.com.thundercloud.houndify.model.MusicResponse;
-import boombotix.com.thundercloud.houndify.model.MusicSearchCommandNativeData;
+import boombotix.com.thundercloud.houndify.model.MusicSearchResultsNativeData;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
 
 /**
@@ -37,7 +37,7 @@ public class HoundifyResponseParser {
     }
 
     @Nullable
-    public MusicSearchCommandNativeData parseMusicSearchResponse(@Nullable HoundResponse response){
+    public MusicSearchResultsNativeData parseMusicSearchResponse(@Nullable HoundResponse response){
 
         JsonNode nativeData = houndifyModelExtractor.extractNativeData(response);
 
