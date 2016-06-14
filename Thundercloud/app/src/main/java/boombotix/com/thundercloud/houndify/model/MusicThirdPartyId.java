@@ -1,6 +1,8 @@
 
 package boombotix.com.thundercloud.houndify.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -24,7 +26,7 @@ public class MusicThirdPartyId {
      */
     @SerializedName("Ids")
     @Expose
-    private List<Object> ids = new ArrayList<Object>();
+    private List<String> ids = new ArrayList<String>();
     /**
      * 
      * (Required)
@@ -63,7 +65,7 @@ public class MusicThirdPartyId {
      * @return
      *     The ids
      */
-    public List<Object> getIds() {
+    public List<String> getIds() {
         return ids;
     }
 
@@ -74,7 +76,7 @@ public class MusicThirdPartyId {
      * @param ids
      *     The Ids
      */
-    public void setIds(List<Object> ids) {
+    public void setIds(List<String> ids) {
         this.ids = ids;
     }
 
@@ -100,4 +102,21 @@ public class MusicThirdPartyId {
         this.deepLinks = deepLinks;
     }
 
+    public boolean isSpotifyId(){
+        return this.musicThirdParty.getName().equals(HoundifyTypes.ThirdPartyMusicServices.Spotify.toString());
+    }
+
+    @Nullable
+    public String spotifyId(){
+        if(ids.size() != 0)
+            return ids.get(0);
+        return null;
+    }
+
+    @Nullable
+    public String spotifyDeepLink(){
+        if(deepLinks.size() != 0)
+            return deepLinks.get(0);
+        return null;
+    }
 }

@@ -21,6 +21,7 @@ import boombotix.com.thundercloud.houndify.response.HoundifyDeserializer;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
+import boombotix.com.thundercloud.playback.PlaybackQueue;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -89,4 +90,6 @@ public interface ApplicationComponent {
     HoundifyDeserializer houndifyDeserializer();
 
     HoundifyRequestAdapter houndifyRequestAdapter();
+
+    PlaybackQueue playbackQueue();
 }

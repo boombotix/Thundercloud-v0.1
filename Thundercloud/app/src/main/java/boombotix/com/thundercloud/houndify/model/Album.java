@@ -1,11 +1,16 @@
 
 package boombotix.com.thundercloud.houndify.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import boombotix.com.thundercloud.model.music.MusicListItem;
+import boombotix.com.thundercloud.model.music.Service;
 
 public class Album {
 
@@ -199,4 +204,34 @@ public class Album {
         this.tracks = tracks;
     }
 
+    public MusicListItem convertToListItem(){
+        boombotix.com.thundercloud.model.music.Album album = new boombotix.com.thundercloud.model.music.Album();
+
+        album.name = this.albumName;
+        album.artist = this.artistName;
+        album.service = Service.Spotify;
+        album.uri = this.getSpotifyDeepLink();
+
+        return album;
+    }
+
+    @Nullable
+    public String getSpotifyId() {
+        for (MusicThirdPartyId thirdPartyId : this.musicThirdPartyIds) {
+            if (thirdPartyId.isSpotifyId())
+                return thirdPartyId.spotifyId();
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public String getSpotifyDeepLink() {
+        for (MusicThirdPartyId thirdPartyId : this.musicThirdPartyIds) {
+            if (thirdPartyId.isSpotifyId())
+                return thirdPartyId.spotifyDeepLink();
+        }
+
+        return null;
+    }
 }

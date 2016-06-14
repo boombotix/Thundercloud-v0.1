@@ -15,6 +15,8 @@ import boombotix.com.thundercloud.houndify.response.HoundifyJsonDeserializer;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
 import boombotix.com.thundercloud.houndify.response.HoundifySdkModelExtractor;
 import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
+import boombotix.com.thundercloud.playback.LocalPlaybackQueue;
+import boombotix.com.thundercloud.playback.PlaybackQueue;
 import dagger.Module;
 import dagger.Provides;
 
@@ -56,5 +58,11 @@ public class ApplicationModule {
     @Singleton
     HoundifyResponseParser provideHoundifyHelper(HoundifyDeserializer houndifyDeserializer, HoundifyModelExtractor houndifyModelExtractor, HoundifyRequestAdapter houndifyRequestAdapter){
         return new HoundifyResponseParser(houndifyDeserializer, houndifyModelExtractor, houndifyRequestAdapter);
+    }
+
+    @Provides
+    @Singleton
+    PlaybackQueue providesPlaybackQueue(){
+        return new LocalPlaybackQueue();
     }
 }

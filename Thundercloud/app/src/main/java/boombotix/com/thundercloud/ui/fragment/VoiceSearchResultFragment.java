@@ -18,9 +18,16 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
+import boombotix.com.thundercloud.base.RxTransformers;
+import boombotix.com.thundercloud.houndify.model.Album;
+import boombotix.com.thundercloud.houndify.model.Artist;
+import boombotix.com.thundercloud.houndify.model.MusicSearchResultsNativeData;
+import boombotix.com.thundercloud.houndify.model.Track;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
+import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.houndify.response.HoundifySubscriber;
+import boombotix.com.thundercloud.model.music.MusicListItem;
+import boombotix.com.thundercloud.playback.PlaybackQueue;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
@@ -29,13 +36,14 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import hugo.weaving.DebugLog;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class VoiceSearchResultFragment extends BaseFragment {
     public static final String TAG = "VoiceSearchResultFragment";
     private static final String QUERY_ARG = "query";
+
+    @Inject
+    PlaybackQueue playbackQueue;
 
     @Inject
     HoundifyRequestAdapter houndifyRequestAdapter;
@@ -128,19 +136,30 @@ public class VoiceSearchResultFragment extends BaseFragment {
 
     @DebugLog
     void doSearch(String q) {
-       TextSearch textSearch = new TextSearch.Builder()
-                            .setRequestInfo(houndifyRequestAdapter.getHoundRequestInfo(getContext()))
-                            .setClientId(BuildConfig.HOUNDIFY_CLIENT_ID)
-                            .setClientKey(BuildConfig.HOUNDIFY_CLIENT_KEY)
-                            .setDebug(BuildConfig.DEBUG)
-                            .setQuery(q)
-                            .build();
+        TextSearch textSearch = new TextSearch.Builder()
+                .setRequestInfo(houndifyRequestAdapter.getHoundRequestInfo(getContext()))
+                .setClientId(BuildConfig.HOUNDIFY_CLIENT_ID)
+                .setClientKey(BuildConfig.HOUNDIFY_CLIENT_KEY)
+                .setDebug(BuildConfig.DEBUG)
+                .setQuery(q)
+                .build();
 
 
         Observable.defer(() -> createResultObservable(textSearch))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this.houndifySubscriber);
+                .compose(RxTransformers.applySchedulers())
+                .map(result -> houndifyResponseParser.parseMusicSearchResponse(result.getResponse()))
+                .map(this::convertToListItems)
+                .flatMap(listItemObservable -> listItemObservable)
+                .subscribe(listItem -> {
+                    playbackQueue.addToQueue(listItem);
+                }, t -> Timber.e(t.getMessage()));
+    }
+
+    @RxLogObservable
+    private Observable<MusicListItem> convertToListItems(MusicSearchResultsNativeData data){
+        return  Observable.from(data.getTracks()).map(Track::convertToListItem)
+                .concatWith(Observable.from(data.getArtists()).map(Artist::convertToListItem))
+                .concatWith(Observable.from(data.getAlbums()).map(Album::convertToListItem));
     }
 
     @Nullable
@@ -151,6 +170,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
             return Observable.just(textSearch.search());
         } catch (TextSearch.TextSearchException e) {
             Timber.e("Failed to start voice search");
+            Timber.e(e.getMessage());
             return null;
         }
     }
@@ -165,5 +185,4 @@ public class VoiceSearchResultFragment extends BaseFragment {
         tapToEdit.setVisibility(View.VISIBLE);
         editText.setText(s);
     }
-
 }

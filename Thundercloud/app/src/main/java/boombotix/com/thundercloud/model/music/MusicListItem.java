@@ -7,8 +7,14 @@ package boombotix.com.thundercloud.model.music;
  */
 public interface MusicListItem {
     String getTitle();
+
     String getSubtitle();
+
     String getArtworkUrl();
 
+    Service getService();
+
     String getSubtitle2();
+
+    String getUri();
 }

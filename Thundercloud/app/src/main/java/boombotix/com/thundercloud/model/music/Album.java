@@ -9,6 +9,8 @@ public class Album implements MusicListItem{
     public String name;
     public String artist;
     public String artworkUrl;
+    public Service service;
+    public String uri;
 
     @Override
     public String getTitle() {
@@ -28,5 +30,15 @@ public class Album implements MusicListItem{
     @Override
     public String getSubtitle2() {
         return null;
+    }
+
+    @Override
+    public Service getService() {
+        return service;
+    }
+
+    @Override
+    public String getUri() {
+        return uri;
     }
 }

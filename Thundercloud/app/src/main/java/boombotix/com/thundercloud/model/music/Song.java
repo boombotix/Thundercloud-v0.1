@@ -10,6 +10,8 @@ public class Song implements MusicListItem{
     public String artist; //todo change to list of strings?
     public String artworkUrl;
     public String album;
+    public Service service;
+    public String uri;
 
     @Override
     public String getTitle() {
@@ -29,5 +31,15 @@ public class Song implements MusicListItem{
     @Override
     public String getSubtitle2() {
         return album;
+    }
+
+    @Override
+    public Service getService() {
+        return service;
+    }
+
+    @Override
+    public String getUri() {
+        return uri;
     }
 }

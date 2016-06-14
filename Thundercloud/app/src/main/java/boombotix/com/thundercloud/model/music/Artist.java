@@ -8,6 +8,8 @@ package boombotix.com.thundercloud.model.music;
 public class Artist implements MusicListItem{
     public String name;
     public String artworkUrl;
+    public Service service;
+    public String uri;
 
     @Override
     public String getTitle() {
@@ -27,5 +29,15 @@ public class Artist implements MusicListItem{
     @Override
     public String getSubtitle2() {
         return null;
+    }
+
+    @Override
+    public Service getService() {
+        return service;
+    }
+
+    @Override
+    public String getUri() {
+        return uri;
     }
 }
