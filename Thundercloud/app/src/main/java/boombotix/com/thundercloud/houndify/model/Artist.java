@@ -114,9 +114,9 @@ public class Artist {
     public MusicListItem convertToListItem(){
         boombotix.com.thundercloud.model.music.Artist artist = new boombotix.com.thundercloud.model.music.Artist();
 
-        artist.name = this.artistName;
-        artist.service = Service.Spotify;
-        artist.uri = this.getSpotifyDeepLink();
+        artist.setName(this.artistName);
+        artist.setService(Service.Spotify);
+        artist.setUri(this.getSpotifyDeepLink());
 
         return artist;
     }

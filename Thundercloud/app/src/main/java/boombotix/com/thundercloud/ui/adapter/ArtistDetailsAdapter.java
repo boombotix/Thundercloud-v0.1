@@ -29,7 +29,12 @@ public class ArtistDetailsAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(activity);
         View view = layoutInflater.inflate(R.layout.row_music_item, parent, false);
-        return new YourMusicViewHolder(view, activity);
+        return new YourMusicViewHolder(view, activity, new YourMusicAdapter.OnClickMusicListItemListener() {
+            @Override
+            public void onMusicListItemClicked(MusicListItem item) {
+
+            }
+        });
     }
 
     @Override

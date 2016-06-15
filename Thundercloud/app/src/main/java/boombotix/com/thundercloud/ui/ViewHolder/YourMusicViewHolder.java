@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.model.music.MusicListItem;
+import boombotix.com.thundercloud.ui.adapter.YourMusicAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -16,6 +18,7 @@ import butterknife.ButterKnife;
  * Created by jsaucedo on 2/1/16.
  */
 public class YourMusicViewHolder extends RecyclerView.ViewHolder{
+
     @Bind(R.id.item_title)
     TextView itemTitle;
     @Bind(R.id.item_subtitle)
@@ -24,12 +27,37 @@ public class YourMusicViewHolder extends RecyclerView.ViewHolder{
     TextView itemSubtitle2;
     @Bind(R.id.item_art)
     ImageView imageview;
-    Activity activity;
 
-    public YourMusicViewHolder(View view, Activity activity) {
+    private Activity activity;
+    private YourMusicAdapter.OnClickMusicListItemListener onClickListener;
+    private View rootView;
+
+    public YourMusicViewHolder(View view, Activity activity,
+                               YourMusicAdapter.OnClickMusicListItemListener onClickListener) {
         super(view);
         ButterKnife.bind(this, view);
         this.activity = activity;
+        this.onClickListener = onClickListener;
+        this.rootView = view;
+    }
+
+    public void bind(MusicListItem musicListItem) {
+        this.itemTitle.setText(musicListItem.getTitle());
+        this.itemSubtitle.setText(musicListItem.getSubtitle());
+        this.itemSubtitle2.setText(musicListItem.getSubtitle2());
+        Glide.with(activity)
+                .load(musicListItem.getArtworkUrl())
+                .fitCenter()
+                .into(imageview);
+
+
+        this.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YourMusicViewHolder.this.onClickListener.onMusicListItemClicked(musicListItem);
+            }
+        });
+
     }
 
     public void bindTitle(String title){

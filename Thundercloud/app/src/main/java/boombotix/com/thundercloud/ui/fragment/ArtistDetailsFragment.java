@@ -110,8 +110,8 @@ public class ArtistDetailsFragment extends BaseFragment {
         for(int i = 0; i < itemAmount && albums.get(i) != null; i++ ){
             MusicDetailListItem musicDetailListItem = new MusicDetailListItem();
             boombotix.com.thundercloud.model.music.Album album = new boombotix.com.thundercloud.model.music.Album();
-            album.name = albums.get(i).name;
-            album.artworkUrl = albums.get(i).images.get(0).url;
+            album.setName(albums.get(i).name);
+            album.setArtworkUrl(albums.get(i).images.get(0).url);
             musicDetailListItem.musicListItem = album;
             musicDetailListItem.type = MusicDetailListItem.TYPE_ALBUM;
             items.add(musicDetailListItem);
@@ -137,9 +137,9 @@ public class ArtistDetailsFragment extends BaseFragment {
         for(int i = 0; i < itemAmount && tracks.get(i) != null; i++ ){
             MusicDetailListItem musicDetailListItem = new MusicDetailListItem();
             Song song = new Song();
-            song.name = tracks.get(i).name;
-            song.artist = TextUtils.join(",", tracks.get(i).artists);
-            song.album = tracks.get(i).album.name;
+            song.setName(tracks.get(i).name);
+            song.setArtist(TextUtils.join(",", tracks.get(i).artists));
+            song.setAlbum(tracks.get(i).album.name);
             musicDetailListItem.musicListItem = song;
             musicDetailListItem.type = MusicDetailListItem.TYPE_SONG;
             items.add(musicDetailListItem);

@@ -3,7 +3,9 @@ package boombotix.com.thundercloud.ui.activity;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -24,26 +26,31 @@ import com.canelmas.let.RuntimePermissionRequest;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.controller.VoiceSearchController;
 import boombotix.com.thundercloud.ui.filter.Captureable;
+import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.QueueFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
+import boombotix.com.thundercloud.ui.view.CropImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hugo.weaving.DebugLog;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
 import timber.log.Timber;
 
-/*
-* Main activity attaches the main fragment view and the bottom player bar fragment upon search
-* through the player fragment, it also attaches the result fragment as an overlay. Communication
-* between the player bar and result fragment is controlled through this activity.
-*/
 public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         VoiceSearchController, RuntimePermissionListener {
@@ -53,14 +60,24 @@ public class TopLevelActivity extends BaseActivity
     @Bind(R.id.searchText)
     EditText searchText;
 
+    @Bind(R.id.tabs)
+    TabLayout yourMusicTabs;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.drawer_layout)
-    DrawerLayout drawer;
+    @Bind(R.id.toolbar_background)
+    CropImageView toolbarBackground;
 
     @Bind(R.id.main_fragment)
     FrameLayout blur;
+    @Bind(R.id.app_bar)
+    AppBarLayout appBarLayout;
+
+    @Inject
+    ScreenBlurUiFilter screenBlurUiFilter;
+
+    private Subject<Boolean, Boolean> screenCreatedObservable;
 
     @DebugLog
     @Override
@@ -68,8 +85,10 @@ public class TopLevelActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_level);
         ButterKnife.bind(this);
+        getActivityComponent().inject(this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        screenCreatedObservable = PublishSubject.create();
+        setupDelayedToolbarBlurEffect();
         setSupportActionBar(toolbar);
 
         fm = getSupportFragmentManager();
@@ -77,7 +96,7 @@ public class TopLevelActivity extends BaseActivity
         if (mainFragment == null) {
 
             // TODO actually have  a main fragment
-            mainFragment = new NowPlayingFragment();
+            mainFragment = NowPlayingFragment.newInstance();
             fm.beginTransaction()
                     .add(R.id.main_fragment, mainFragment)
                     .commit();
@@ -91,15 +110,10 @@ public class TopLevelActivity extends BaseActivity
                     .commit();
         }
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        setSupportActionBar(toolbar);
-
-        attachMainFragment();
-        attachPlayerFragment();
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -107,6 +121,7 @@ public class TopLevelActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         setQueueFragment();
+
     }
 
     @AskPermission(Manifest.permission.RECORD_AUDIO)
@@ -120,6 +135,14 @@ public class TopLevelActivity extends BaseActivity
         }
     }
 
+    public Observable<Boolean> getMainViewCreatedObservable() {
+        return this.screenCreatedObservable;
+    }
+
+    public void alertMainViewCreated() {
+        this.screenCreatedObservable.onNext(true);
+    }
+
     @AskPermission(Manifest.permission.RECORD_AUDIO)
     private void attachMainFragment() {
         fm = getSupportFragmentManager();
@@ -130,6 +153,19 @@ public class TopLevelActivity extends BaseActivity
                     .add(R.id.main_fragment, mainFragment, NowPlayingFragment.TAG)
                     .commit();
         }
+    }
+
+    private void setupDelayedToolbarBlurEffect() {
+        getMainViewCreatedObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> blurToolbar());
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -159,16 +195,14 @@ public class TopLevelActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_nowplaying) {
-
+        if(id == R.id.nav_nowplaying) {
             fm.beginTransaction()
-                    .replace(R.id.main_fragment,
-                            NowPlayingFragment.newInstance(),
-                            NowPlayingFragment.TAG)
+                    .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
                     .commit();
         } else if (id == R.id.nav_playlists) {
             changeMusicPagerPage(MusicListFragment.PLAYLIST_SECTION);
@@ -180,24 +214,30 @@ public class TopLevelActivity extends BaseActivity
             changeMusicPagerPage(MusicListFragment.ARTISTS_SECTION);
         }
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-
     /**
-     * Helper method to open music pager fragment to a certain page
+     * Applies blur effect to toolbar background.
      */
-    private void changeMusicPagerPage(int page) {
+    private void blurToolbar() {
+        View toBlur = getCaptureableView();
+        if (toBlur != null) {
+            this.toolbarBackground.setImageBitmap(this.screenBlurUiFilter.blurView(getCaptureableView()));
+            this.toolbarBackground.setOffset(0, 0);
+        }
+    }
 
-        Fragment musicPagerFragment = MusicPagerFragment.newInstance(page);
-
+    private void changeMusicPagerPage(int page){
+        Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
         fm.beginTransaction()
                 .replace(R.id.main_fragment, musicPagerFragment)
                 .commit();
     }
 
-    private void setQueueFragment() {
+    private void setQueueFragment(){
         Fragment queueFragment = QueueFragment.newInstance();
         fm.beginTransaction()
                 .replace(R.id.queue_container, queueFragment)
@@ -277,44 +317,58 @@ public class TopLevelActivity extends BaseActivity
 
     /**
      * Hides search input from toolbar
+     *
      */
-    public void hideSearch() {
+    public void hideSearch(){
         searchText.setVisibility(View.GONE);
+        this.toolbarBackground.getLayoutParams().height = Math.round(50 * getResources()
+                .getDisplayMetrics().density);
     }
 
-
-    /**
-     * Shows search input in toolbar
-     */
-    public void showSearch() {
+    public void showSearch(){
         searchText.setVisibility(View.VISIBLE);
+        this.toolbarBackground.getLayoutParams().height = Math.round(70 * getResources()
+                .getDisplayMetrics().density);
     }
 
-    /**
-     * Sets title of toolbar...hmm
-     */
+    public TabLayout getTabs() {
+        return this.yourMusicTabs;
+    }
+
+    public void showTabs() {
+        this.yourMusicTabs.setVisibility(View.VISIBLE);
+    }
+
+    public void hideTabs() {
+        this.yourMusicTabs.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.searchText)
+    protected void onClickSearch() {
+        blurToolbar();
+    }
+
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
     }
 
     /**
-     * Callthrough to return the captureable view of the main content fragment, if it implements
-     * {@link Captureable}
+     * Callthrough to return the captureable view of the main content fragment,
+     * if it implements {@link Captureable}
      *
      * May return null.
      *
-     * @return Captureable view of content fragment, OR null.
+     * @return
+     *          Captureable view of content fragment, OR null.
      */
-    public
-    @Nullable
-    View getCaptureableView() {
-        Fragment contentFragment = getSupportFragmentManager()
-                .findFragmentById(R.id.main_fragment);
+    public @Nullable View getCaptureableView() {
+        Fragment contentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         if (contentFragment != null && contentFragment instanceof Captureable) {
             return ((Captureable) contentFragment).captureView();
         }
         return null;
     }
+
 
     @Override
     public void onShowPermissionRationale(List<String> permissionList, RuntimePermissionRequest permissionRequest) {
