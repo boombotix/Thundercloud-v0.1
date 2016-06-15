@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.model.WifiCredentials;
-import boombotix.com.thundercloud.model.WifiNetwork;
+import boombotix.com.thundercloud.model.wifi.WifiCredentials;
+import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 
 /**
  * Dialog for showing wifi credentials options to user

@@ -1,7 +1,9 @@
 package boombotix.com.thundercloud.model.music;
 
 /**
- * Created by Theo Kanning on 2/11/2016.
+ * Generic song object to which all api responses are mapped
+ *
+ * @author Theo Kanning
  */
 public class Song implements MusicListItem{
 

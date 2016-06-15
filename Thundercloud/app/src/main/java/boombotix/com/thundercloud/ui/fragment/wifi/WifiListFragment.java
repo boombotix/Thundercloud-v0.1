@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.model.WifiNetwork;
+import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import boombotix.com.thundercloud.ui.adapter.WifiListAdapter;
 import boombotix.com.thundercloud.ui.dialog.WifiCredentialsDialog;
 import butterknife.Bind;

@@ -1,4 +1,4 @@
-package boombotix.com.thundercloud.model;
+package boombotix.com.thundercloud.model.authentication;
 
 import com.google.gson.annotations.SerializedName;
 

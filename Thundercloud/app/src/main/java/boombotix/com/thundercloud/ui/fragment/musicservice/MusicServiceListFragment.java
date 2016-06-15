@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.model.MusicService;
+import boombotix.com.thundercloud.model.authentication.MusicService;
 import boombotix.com.thundercloud.ui.adapter.MusicServiceListAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;

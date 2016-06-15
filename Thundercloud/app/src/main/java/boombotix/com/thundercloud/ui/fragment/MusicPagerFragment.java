@@ -77,6 +77,12 @@ public class MusicPagerFragment extends BaseFragment implements Captureable {
         return LayoutInflater.from(getActivity()).inflate(R.layout.blank_black, null, false);
     }
 
+    @Override
+    public void onDestroyView() {
+        ButterKnife.unbind(this);
+        super.onDestroyView();
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {

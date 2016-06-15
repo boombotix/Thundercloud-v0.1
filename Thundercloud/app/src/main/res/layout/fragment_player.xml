@@ -82,10 +82,10 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="@dimen/default_margin_4x"
-        android:layout_height="@dimen/default_margin_4x"
-        android:layout_centerHorizontal="true"
-        android:background="@android:drawable/sym_def_app_icon" />
-
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/okhound_button"
+        android:background="@android:drawable/sym_def_app_icon"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

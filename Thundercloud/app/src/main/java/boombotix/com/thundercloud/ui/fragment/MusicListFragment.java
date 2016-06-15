@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
-import boombotix.com.thundercloud.model.AuthRefreshResponse;
+import boombotix.com.thundercloud.model.authentication.AuthRefreshResponse;
 import boombotix.com.thundercloud.model.music.Album;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 import boombotix.com.thundercloud.model.music.Playlist;

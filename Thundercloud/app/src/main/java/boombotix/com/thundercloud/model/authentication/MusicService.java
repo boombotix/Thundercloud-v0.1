@@ -1,4 +1,4 @@
-package boombotix.com.thundercloud.model;
+package boombotix.com.thundercloud.model.authentication;
 
 import boombotix.com.thundercloud.R;
 
