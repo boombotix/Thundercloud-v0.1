@@ -9,6 +9,7 @@ public interface MusicListItem {
     String getTitle();
     String getSubtitle();
     String getArtworkUrl();
+    String getUri();
 
     String getSubtitle2();
 }

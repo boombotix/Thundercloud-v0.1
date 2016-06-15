@@ -2,7 +2,9 @@ package boombotix.com.thundercloud.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -13,39 +15,62 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+
+import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.filter.Captureable;
+import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.QueueFragment;
+import boombotix.com.thundercloud.ui.view.CropImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
 
 public class TopLevelActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     private FragmentManager fm;
 
     @Bind(R.id.searchText)
     EditText searchText;
+
+    @Bind(R.id.tabs)
+    TabLayout yourMusicTabs;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.toolbar_background)
+    CropImageView toolbarBackground;
 
-    @Bind(R.id.main_fragment)
-    FrameLayout blur;
+    @Bind(R.id.app_bar)
+    AppBarLayout appBarLayout;
+
+    @Inject
+    ScreenBlurUiFilter screenBlurUiFilter;
+
+    private Subject<Boolean, Boolean> screenCreatedObservable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_top_level);
         ButterKnife.bind(this);
+        getActivityComponent().inject(this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        screenCreatedObservable = PublishSubject.create();
+        setupDelayedToolbarBlurEffect();
         setSupportActionBar(toolbar);
 
         fm = getSupportFragmentManager();
@@ -78,6 +103,28 @@ public class TopLevelActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         setQueueFragment();
+
+    }
+
+    public Observable<Boolean> getMainViewCreatedObservable() {
+        return this.screenCreatedObservable;
+    }
+
+    public void alertMainViewCreated() {
+        this.screenCreatedObservable.onNext(true);
+    }
+
+    private void setupDelayedToolbarBlurEffect() {
+        getMainViewCreatedObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> blurToolbar());
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -112,7 +159,7 @@ public class TopLevelActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.nav_nowplaying){
+        if(id == R.id.nav_nowplaying) {
             fm.beginTransaction()
                     .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
                     .commit();
@@ -129,6 +176,17 @@ public class TopLevelActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Applies blur effect to toolbar background.
+     */
+    private void blurToolbar() {
+        View toBlur = getCaptureableView();
+        if (toBlur != null) {
+            this.toolbarBackground.setImageBitmap(this.screenBlurUiFilter.blurView(getCaptureableView()));
+            this.toolbarBackground.setOffset(0, 0);
+        }
     }
 
     private void changeMusicPagerPage(int page){
@@ -151,12 +209,32 @@ public class TopLevelActivity extends BaseActivity
      */
     public void hideSearch(){
         searchText.setVisibility(View.GONE);
+        this.toolbarBackground.getLayoutParams().height = Math.round(50 * getResources()
+                .getDisplayMetrics().density);
     }
 
     public void showSearch(){
         searchText.setVisibility(View.VISIBLE);
+        this.toolbarBackground.getLayoutParams().height = Math.round(70 * getResources()
+                .getDisplayMetrics().density);
     }
 
+    public TabLayout getTabs() {
+        return this.yourMusicTabs;
+    }
+
+    public void showTabs() {
+        this.yourMusicTabs.setVisibility(View.VISIBLE);
+    }
+
+    public void hideTabs() {
+        this.yourMusicTabs.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.searchText)
+    protected void onClickSearch() {
+        blurToolbar();
+    }
 
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
@@ -178,4 +256,5 @@ public class TopLevelActivity extends BaseActivity
         }
         return null;
     }
+
 }

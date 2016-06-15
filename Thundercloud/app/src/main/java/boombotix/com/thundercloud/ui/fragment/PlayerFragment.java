@@ -1,5 +1,6 @@
 package boombotix.com.thundercloud.ui.fragment;
 
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -17,6 +18,9 @@ import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
 import boombotix.com.thundercloud.ui.view.CropImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class PlayerFragment extends BaseFragment {
@@ -50,9 +54,21 @@ public class PlayerFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         getSupportActivity().getActivityComponent().inject(this);
 
-        setupBlurredBackground();
-
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setupDelayedBlurredBackgroundInit(((TopLevelActivity) context)
+                .getMainViewCreatedObservable());
+    }
+
+    private void setupDelayedBlurredBackgroundInit(Observable<Boolean> viewCreatedObservable) {
+        viewCreatedObservable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(aBoolean -> setupBlurredBackground());
     }
 
     private void setupBlurredBackground() {
@@ -61,10 +77,10 @@ public class PlayerFragment extends BaseFragment {
         if (toBlur != null) {
 
             this.blurredBackround.setImageDrawable(new BitmapDrawable(getResources(),
-                    this.screenBlurUiFilter.blurView(toBlur)));
+                    this.screenBlurUiFilter.blurView(toBlur)).mutate());
             this.blurredBackround.setColorFilter(ContextCompat.getColor(getActivity(), R.color.playerBarTransparent),
                     PorterDuff.Mode.DARKEN);
-            this.blurredBackround.setOffset(0, 1);
+            this.blurredBackround.setOffset(0.5f, 1);
         }
     }
 

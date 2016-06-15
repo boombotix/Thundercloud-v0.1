@@ -10,6 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.spotify.sdk.android.player.Config;
+import com.spotify.sdk.android.player.ConnectionStateCallback;
+import com.spotify.sdk.android.player.Player;
+import com.spotify.sdk.android.player.PlayerNotificationCallback;
+import com.spotify.sdk.android.player.PlayerState;
+import com.spotify.sdk.android.player.Spotify;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -48,7 +55,8 @@ import rx.schedulers.Schedulers;
  */
 public class MusicListFragment extends BaseFragment implements AuthManager.AuthRefreshRespCallback,
         PlaylistsSubscriber.PlaylistsSubscriberCallback, SongsSubscriber.SongsSubscriberCallback,
-        AlbumsSubscriber.AlbumsSubscriberCallback, ArtistsSubscriber.ArtistsSubscriberCallback {
+        AlbumsSubscriber.AlbumsSubscriberCallback, ArtistsSubscriber.ArtistsSubscriberCallback,
+        YourMusicAdapter.OnClickMusicListItemListener, PlayerNotificationCallback, ConnectionStateCallback{
 
     private final String TAG = "MusicListFragment";
 
@@ -74,8 +82,7 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     @Inject
     SpotifyApi spotifyApi;
 
-    public MusicListFragment() {
-    }
+    private Player spotifyPlayer;
 
     public static MusicListFragment newInstance(int sectionNumber) {
         MusicListFragment fragment = new MusicListFragment();
@@ -90,15 +97,19 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         super.onActivityCreated(savedInstanceState);
         getSupportActivity().getActivityComponent().inject(this);
         if (authManager.getUserId() != null) {
-            initView();
+            authenticate();
         } else {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
     }
 
+    private void authenticate() {
+        this.authManager.getValidAccessToken().subscribe(this::onValidAccessToken);
+    }
+
     private void initView() {
         spotifyApi.setAccessToken(authManager.getAccessToken());
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<>(), 0));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), new ArrayList<>(), 0, this));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         switch (getArguments().getInt(ARG_SECTION)) {
             case PLAYLIST_SECTION:
@@ -116,6 +127,33 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         }
     }
 
+    private void initApi(AuthRefreshResponse authRefreshResponse) {
+        this.spotifyApi.setAccessToken(authRefreshResponse.getAccessToken());
+    }
+
+    private void initPlayer(AuthRefreshResponse authRefreshResponse) {
+        Config playerConfig = new Config(getActivity(),
+                authRefreshResponse.getAccessToken(),"360b88aed9a443b1a1ae03efe5288b23");
+        this.spotifyPlayer = Spotify.getPlayer(playerConfig, authRefreshResponse.getAccessToken(), new Player.InitializationObserver() {
+            @Override
+            public void onInitialized(Player player) {
+                spotifyPlayer.play("spotify:track:3XWZ7PNB3ei50bTPzHhqA6");
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+        });
+        this.spotifyPlayer.addConnectionStateCallback(this);
+        this.spotifyPlayer.addPlayerNotificationCallback(this);
+    }
+
+    private void onValidAccessToken(AuthRefreshResponse refreshResponse) {
+        initPlayer(refreshResponse);
+        initApi(refreshResponse);
+        initView();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -129,6 +167,12 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
     public void onDestroyView() {
         ButterKnife.unbind(this);
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        Spotify.destroyPlayer(this.spotifyPlayer);
+        super.onDestroy();
     }
 
     private void displayArtistsContent() {
@@ -203,12 +247,12 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         ArrayList<MusicListItem> items = new ArrayList<>();
         for (PlaylistSimple playlistSimple : playlistSimplePager.items) {
             Playlist playlist = new Playlist();
-            playlist.name = playlistSimple.name;
-            playlist.artworkUrl = playlistSimple.images.get(0).url;
+            playlist.setName(playlistSimple.name);
+            playlist.setArtworkUrl(playlistSimple.images.get(0).url);
             items.add(playlist);
         }
 
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, PLAYLIST_SECTION));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, PLAYLIST_SECTION, this));
     }
 
     @Override
@@ -217,14 +261,15 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         ArrayList<MusicListItem> items = new ArrayList<>();
         for (SavedTrack savedTrack : savedTrackPager.items) {
             Song song = new Song();
-            song.name = savedTrack.track.name;
-            song.artist = savedTrack.track.artists.get(0).name; //todo show all artists
-            song.album = savedTrack.track.album.name;
-            song.artworkUrl = savedTrack.track.album.images.get(0).url;
+            song.setName(savedTrack.track.name);
+            song.setArtist(savedTrack.track.artists.get(0).name); //todo show all artists
+            song.setAlbum(savedTrack.track.album.name);
+            song.setArtworkUrl(savedTrack.track.album.images.get(0).url);
+            song.setUri(savedTrack.track.uri);
             items.add(song);
         }
 
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, SONGS_SECTION));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, SONGS_SECTION, this));
     }
 
     @Override
@@ -234,18 +279,19 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         for (SavedAlbum savedAlbum : savedAlbumPager.items) {
             //todo adapter from spotify to model
             Album album = new Album();
-            album.name = savedAlbum.album.name;
+            album.setName( savedAlbum.album.name);
 
             ArrayList<String> artistNames = new ArrayList<>();
             for(ArtistSimple artistSimple: savedAlbum.album.artists){
                 artistNames.add(artistSimple.name);
             }
-            album.artist = TextUtils.join(",", artistNames);
-            album.artworkUrl = savedAlbum.album.images.get(0).url;
+            album.setArtist(TextUtils.join(",", artistNames));
+            album.setArtworkUrl(savedAlbum.album.images.get(0).url);
+            album.setUri(savedAlbum.album.uri);
             items.add(album);
         }
 
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, ALBUMS_SECTION));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, ALBUMS_SECTION, this));
     }
 
     @Override
@@ -254,10 +300,51 @@ public class MusicListFragment extends BaseFragment implements AuthManager.AuthR
         ArrayList<MusicListItem> items = new ArrayList<>();
         for (Artist savedArtist : artistsCursorPager.artists.items) {
             boombotix.com.thundercloud.model.music.Artist artist = new boombotix.com.thundercloud.model.music.Artist();
-            artist.name = savedArtist.name;
-            artist.artworkUrl = savedArtist.images.get(0).url;
+            artist.setName(savedArtist.name);
+            artist.setArtworkUrl(savedArtist.images.get(0).url);
+            artist.setUri(savedArtist.uri);
             items.add(artist);
         }
-        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, ARTISTS_SECTION));
+        recyclerView.setAdapter(new YourMusicAdapter(getActivity(), items, ARTISTS_SECTION, this));
+    }
+
+    @Override
+    public void onMusicListItemClicked(MusicListItem item) {
+            this.spotifyPlayer.play(item.getUri());
+    }
+
+    @Override
+    public void onLoggedIn() {
+
+    }
+
+    @Override
+    public void onLoggedOut() {
+
+    }
+
+    @Override
+    public void onLoginFailed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTemporaryError() {
+
+    }
+
+    @Override
+    public void onConnectionMessage(String s) {
+
+    }
+
+    @Override
+    public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
+
+    }
+
+    @Override
+    public void onPlaybackError(ErrorType errorType, String s) {
+
     }
 }

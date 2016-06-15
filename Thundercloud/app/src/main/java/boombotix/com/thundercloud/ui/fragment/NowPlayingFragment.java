@@ -1,6 +1,8 @@
 package boombotix.com.thundercloud.ui.fragment;
 
 
+import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,13 @@ import android.widget.TextView;
 
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 
+import javax.inject.Inject;
+
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.filter.Captureable;
+import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
+import boombotix.com.thundercloud.ui.view.CropImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -29,6 +34,13 @@ public class NowPlayingFragment extends BaseFragment implements
 
     @Bind(R.id.play_button)
     ImageButton playButton;
+
+    @Bind(R.id.now_playing_album_art)
+    CropImageView albumArt;
+
+    @Inject
+    ScreenBlurUiFilter screenBlurUiFilter;
+
 
     public NowPlayingFragment() {
         // Required empty public constructor
@@ -61,8 +73,29 @@ public class NowPlayingFragment extends BaseFragment implements
             progressText.setVisibility(View.VISIBLE);
             playButton.setVisibility(View.GONE);
         });
-        ((TopLevelActivity) getActivity()).showSearch();
+        super.showSearch();
+        super.hideTabs();
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getSupportActivity().getActivityComponent().inject(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //TODO: this whole bit will need to be redone when we're getting actual album art
+        albumArt.setImageBitmap(this.screenBlurUiFilter.cropToScreenSize(BitmapFactory
+                .decodeResource(getResources(), R.drawable.ic_album_art_test)));
+        super.alertActivityMainViewCreated();
     }
 
     @Override
@@ -81,7 +114,8 @@ public class NowPlayingFragment extends BaseFragment implements
 
     @Override
     public View captureView() {
-        View layout = getActivity().findViewById(R.id.now_playing_layout);
-        return layout;
+        View view = getActivity().findViewById(R.id.now_playing_layout);
+
+        return view;
     }
 }

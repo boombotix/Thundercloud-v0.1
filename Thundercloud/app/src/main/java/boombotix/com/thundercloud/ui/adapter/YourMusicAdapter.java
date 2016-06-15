@@ -16,30 +16,38 @@ import boombotix.com.thundercloud.ui.viewholder.YourMusicViewHolder;
  * Created by jsaucedo on 2/1/16.
  */
 public class YourMusicAdapter extends RecyclerView.Adapter<YourMusicViewHolder> {
+
     Activity activity;
     ArrayList<MusicListItem> items;
     int type;
-    public YourMusicAdapter(Activity activity, ArrayList<MusicListItem> items, int type) {
+    private OnClickMusicListItemListener onClickMusicListItemListener;
+
+    public interface OnClickMusicListItemListener {
+        void onMusicListItemClicked(MusicListItem item);
+    }
+
+    public YourMusicAdapter(Activity activity, ArrayList<MusicListItem> items, int type,
+                            OnClickMusicListItemListener onClickMusicListItemListener) {
         this.activity = activity;
         this.items = items;
         this.type = type;
+        this.onClickMusicListItemListener = onClickMusicListItemListener;
     }
 
     @Override
-    public YourMusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public boombotix.com.thundercloud.ui.viewholder.YourMusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //todo inflate from parent and remove call to activity
         LayoutInflater layoutInflater = LayoutInflater.from(activity);
         View view = layoutInflater.inflate(R.layout.row_music_item, parent, false);
-        return new YourMusicViewHolder(view, activity);
+        return new boombotix.com.thundercloud.ui.viewholder.YourMusicViewHolder(view, this.activity,
+                this.onClickMusicListItemListener);
     }
 
     @Override
-    public void onBindViewHolder(YourMusicViewHolder holder, int position) {
+    public void onBindViewHolder(boombotix.com.thundercloud.ui.viewholder.YourMusicViewHolder holder, int position) {
         MusicListItem item = items.get(position);
-        holder.bindTitle(item.getTitle());
-        holder.bindSubtitle(item.getSubtitle());
-        holder.bindSubtitle2(item.getSubtitle2());
-        holder.bindImage(item.getArtworkUrl());
+        holder.bind(item);
+
     }
 
     @Override

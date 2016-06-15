@@ -2,9 +2,13 @@
     android:id="@+id/now_playing_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/sample_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <boombotix.com.thundercloud.ui.view.CropImageView
+        android:id="@+id/now_playing_album_art"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar
         android:id="@+id/picker"
@@ -46,6 +50,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
         android:src="@android:drawable/ic_media_next" />
 
     <ImageView

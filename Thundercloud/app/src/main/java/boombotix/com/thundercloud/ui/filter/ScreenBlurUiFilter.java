@@ -3,12 +3,13 @@ package boombotix.com.thundercloud.ui.filter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.media.ThumbnailUtils;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
@@ -22,16 +23,11 @@ import javax.inject.Inject;
  */
 public class ScreenBlurUiFilter {
 
-    private static final int BLUR_IN_SAMPLE_SIZE = 8;
-
-    private final BitmapFactory.Options blurOptions;
     private Context context;
 
     @Inject
     public ScreenBlurUiFilter(Activity activity) {
         this.context = activity;
-        this.blurOptions = new BitmapFactory.Options();
-        this.blurOptions.inSampleSize = BLUR_IN_SAMPLE_SIZE;
     }
 
     public Bitmap blurView(View viewToBlur) {
@@ -46,9 +42,11 @@ public class ScreenBlurUiFilter {
             bitmapOfView = captureBitmapFromDrawingCache(viewToBlur);
         }
 
+        Bitmap croppedBitmap = cropToScreenSize(bitmapOfView);
+
         //Apply blur
         RenderScript renderScript = RenderScript.create(this.context);
-        final Allocation input = Allocation.createFromBitmap(renderScript, bitmapOfView);
+        final Allocation input = Allocation.createFromBitmap(renderScript, croppedBitmap);
         final Allocation output = Allocation.createTyped(renderScript, input.getType());
         final ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(renderScript,
                 Element.U8_4(renderScript));
@@ -56,9 +54,27 @@ public class ScreenBlurUiFilter {
         blurScript.setRadius(24f);
         blurScript.setInput(input);
         blurScript.forEach(output);
-        output.copyTo(bitmapOfView);
+        output.copyTo(croppedBitmap);
 
-        return bitmapOfView;
+        return croppedBitmap;
+    }
+
+    public Bitmap cropToScreenSize(Bitmap bitmap) {
+        return ThumbnailUtils.extractThumbnail(bitmap, getScreenWidth(), getScreenHeight());
+    }
+
+    private int getScreenWidth() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        return displayMetrics.widthPixels;
+    }
+
+    private int getScreenHeight() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        return displayMetrics.heightPixels;
     }
 
     /**
@@ -94,7 +110,13 @@ public class ScreenBlurUiFilter {
      */
     private Bitmap captureBitmapFromDrawingCache(View view) {
         view.setDrawingCacheEnabled(true);
-        Bitmap bitmap = view.getDrawingCache().copy(Bitmap.Config.ARGB_8888, false);
+        Bitmap bitmap;
+        try {
+            bitmap = view.getDrawingCache().copy(Bitmap.Config.ARGB_8888, false);
+        } catch (NullPointerException ex) {
+            bitmap = Bitmap.createBitmap(getScreenWidth(), getScreenHeight(),
+                    Bitmap.Config.ARGB_8888);
+        }
         view.destroyDrawingCache();
         return bitmap;
     }

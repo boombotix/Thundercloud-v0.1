@@ -2,7 +2,6 @@ package boombotix.com.thundercloud.ui.fragment;
 
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.filter.Captureable;
 import butterknife.Bind;
@@ -28,8 +26,6 @@ public class MusicPagerFragment extends BaseFragment implements Captureable {
     private static final String ARG_PAGE = "page";
     @Bind(R.id.container)
     ViewPager viewPager;
-    @Bind(R.id.tabs)
-    TabLayout tabLayout;
 
     private View inflatedView;
 
@@ -56,15 +52,17 @@ public class MusicPagerFragment extends BaseFragment implements Captureable {
         this.inflatedView = inflater.inflate(R.layout.fragment_music_pager, container, false);
         ButterKnife.bind(this, this.inflatedView);
 
-        ((TopLevelActivity) getActivity()).hideSearch();
-        ((TopLevelActivity) getActivity()).setToolbarTitle("Your Music");
+        super.hideSearch();
+        super.showTabs();
+        super.setToolbarTitle("Your Music");
 
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         viewPager.setAdapter(sectionsPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        super.getTabs().setupWithViewPager(viewPager);
 
         viewPager.setCurrentItem(getArguments().getInt(ARG_PAGE));
+        super.alertActivityMainViewCreated();
 
         return this.inflatedView;
     }
@@ -76,7 +74,7 @@ public class MusicPagerFragment extends BaseFragment implements Captureable {
 
     @Override
     public View captureView() {
-        return inflatedView;
+        return LayoutInflater.from(getActivity()).inflate(R.layout.blank_black, null, false);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
