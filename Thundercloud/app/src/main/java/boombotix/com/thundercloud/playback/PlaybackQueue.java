@@ -1,5 +1,7 @@
 package boombotix.com.thundercloud.playback;
 
+import android.support.annotation.Nullable;
+
 import java.util.List;
 
 import boombotix.com.thundercloud.model.music.MusicListItem;
@@ -14,6 +16,15 @@ public interface PlaybackQueue {
     void setQueue(List<MusicListItem> items);
 
     void addToQueue(MusicListItem item);
+
+    @Nullable
+    MusicListItem getCurrentTrack();
+
+    @Nullable
+    MusicListItem getNextTrack();
+
+    @Nullable
+    MusicListItem getPreviousTrack();
 
     void clearQueue();
 }

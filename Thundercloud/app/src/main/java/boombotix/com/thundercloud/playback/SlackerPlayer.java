@@ -1,0 +1,28 @@
+package boombotix.com.thundercloud.playback;
+
+import boombotix.com.thundercloud.model.music.MusicListItem;
+
+/**
+ * Created by kriedema on 6/14/16.
+ */
+public class SlackerPlayer implements MusicPlayer {
+    @Override
+    public void play(MusicListItem item) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+}
