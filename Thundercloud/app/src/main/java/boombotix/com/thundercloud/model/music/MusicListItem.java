@@ -12,9 +12,9 @@ public interface MusicListItem {
 
     String getArtworkUrl();
 
+    String getUri();
+
     Service getService();
 
     String getSubtitle2();
-
-    String getUri();
 }

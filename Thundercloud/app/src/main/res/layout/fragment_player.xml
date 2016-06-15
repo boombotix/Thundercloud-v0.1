@@ -8,6 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/player_bar_inner_height"
+        android:background="@android:color/black"
         android:layout_alignParentBottom="true">
 
         <boombotix.com.thundercloud.ui.view.CropImageView

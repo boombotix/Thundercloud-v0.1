@@ -29,6 +29,11 @@ public class MusicServiceListAdapter extends RecyclerView.Adapter<MusicServiceVi
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
+    @Override
     public MusicServiceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_music_service, parent, false);

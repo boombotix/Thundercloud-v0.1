@@ -207,10 +207,10 @@ public class Album {
     public MusicListItem convertToListItem(){
         boombotix.com.thundercloud.model.music.Album album = new boombotix.com.thundercloud.model.music.Album();
 
-        album.name = this.albumName;
-        album.artist = this.artistName;
-        album.service = Service.Spotify;
-        album.uri = this.getSpotifyDeepLink();
+        album.setName(this.albumName);
+        album.setArtist(this.artistName);
+        album.setService(Service.Spotify);
+        album.setUri(this.getSpotifyDeepLink());
 
         return album;
     }

@@ -6,10 +6,10 @@ package boombotix.com.thundercloud.model.music;
  * @author Theo Kanning
  */
 public class Artist implements MusicListItem{
-    public String name;
-    public String artworkUrl;
-    public Service service;
-    public String uri;
+    private String name;
+    private String artworkUrl;
+    private String uri;
+    private Service service;
 
     @Override
     public String getTitle() {
@@ -27,8 +27,25 @@ public class Artist implements MusicListItem{
     }
 
     @Override
+    public String getUri() {
+        return uri;
+    }
+
+    @Override
     public String getSubtitle2() {
         return null;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setArtworkUrl(String artworkUrl) {
+        this.artworkUrl = artworkUrl;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     @Override
@@ -36,8 +53,11 @@ public class Artist implements MusicListItem{
         return service;
     }
 
-    @Override
-    public String getUri() {
-        return uri;
+    public String getName() {
+        return name;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
     }
 }

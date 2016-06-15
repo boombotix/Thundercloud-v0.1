@@ -16,11 +16,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.LoginActivity" />
+        <activity
+            android:name=".ui.activity.LoginActivity" />
         <activity
             android:name=".ui.activity.TopLevelActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,16 +29,13 @@
         </activity>
         <activity
             android:name=".ui.activity.SpeakerPairingActivity"
-            android:label="@string/title_activity_speaker_pairing"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_speaker_pairing" />
         <activity
             android:name=".ui.activity.SpeakerWifiActivity"
-            android:label="@string/title_activity_speaker_wifi"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_speaker_wifi" />
         <activity
             android:name=".ui.activity.FirstTimeSetupActivity"
-            android:label="@string/title_activity_first_time_setup"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_first_time_setup"/>
         <activity
             android:name=".ui.activity.MusicServiceSetupActivity"
             android:label="@string/title_activity_music_service_setup"
@@ -50,4 +47,5 @@
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

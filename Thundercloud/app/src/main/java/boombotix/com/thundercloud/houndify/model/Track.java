@@ -9,9 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import boombotix.com.thundercloud.model.music.MusicListItem;
-import boombotix.com.thundercloud.model.music.Service;
-import boombotix.com.thundercloud.model.music.Song;
+import boombotix.com.thundercloud.model.music.*;
 
 public class Track {
 
@@ -319,11 +317,11 @@ public class Track {
     public MusicListItem convertToListItem(){
         Song song = new Song();
 
-        song.artist = this.artistName;
-        song.album = this.albumName;
-        song.name = this.trackName;
-        song.service = Service.Spotify;
-        song.uri = this.getSpotifyDeepLink();
+        song.setName(this.trackName);
+        song.setAlbum(this.albumName);
+        song.setArtist(this.artistName);
+        song.setService(Service.Spotify);
+        song.setUri(this.getSpotifyDeepLink());
 
         return song;
     }

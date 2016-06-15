@@ -102,7 +102,6 @@ public class VoiceSearchResultFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         ButterKnife.unbind(this);
-        ((TopLevelActivity) getActivity()).stopPlayerSearch();
         super.onDestroyView();
     }
 

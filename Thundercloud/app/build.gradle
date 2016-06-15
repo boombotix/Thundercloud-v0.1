@@ -78,7 +78,6 @@ repositories {
     mavenCentral()
     maven { url "https://jitpack.io" }
     maven {
-        // The username and password for this repo is set below
         url 'https://houndify.com/maven/'
     }
 }

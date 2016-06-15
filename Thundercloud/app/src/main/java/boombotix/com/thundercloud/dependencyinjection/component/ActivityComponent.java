@@ -9,6 +9,8 @@ import boombotix.com.thundercloud.ui.fragment.ArtistDetailsFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
+import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
+import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
 import dagger.Component;
 
@@ -38,7 +40,7 @@ public interface ActivityComponent {
         }
     }
 
-    void inject(TopLevelActivity topLevelActivity);
+    void inject(TopLevelActivity mainActivity);
     void inject(LoginActivity loginActivity);
     void inject(MusicListFragment musicListFragment);
     void inject(MusicPagerFragment musicPagerFragment);
@@ -46,4 +48,5 @@ public interface ActivityComponent {
     void inject(ArtistDetailsFragment artistDetailsFragment);
     void inject(VoiceSearchResultFragment voiceSearchResultFragment);
     void inject(HoundifySubscriber houndifySubscriber);
+    void inject(NowPlayingFragment nowPlayingFragment);
 }
