@@ -52,6 +52,7 @@ public class ApiModule {
     RestAdapter provideRestAdapter(Client client, Gson gson) {
         return new RestAdapter.Builder()
                 .setEndpoint(BuildConfig.SPOTIFY_API_BASE)
+                .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                 .setClient(client)
                 .setConverter(new GsonConverter(gson))
                 .build();

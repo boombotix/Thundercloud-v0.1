@@ -28,7 +28,6 @@ import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.houndify.response.HoundifySubscriber;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 import boombotix.com.thundercloud.playback.PlaybackQueue;
-import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -149,9 +148,9 @@ public class VoiceSearchResultFragment extends BaseFragment {
                 .map(result -> houndifyResponseParser.parseMusicSearchResponse(result.getResponse()))
                 .map(this::convertToListItems)
                 .flatMap(listItemObservable -> listItemObservable)
-                .subscribe(listItem -> {
-                    playbackQueue.addToQueue(listItem);
-                }, t -> Timber.e(t.getMessage()));
+                .subscribe(
+                        listItem -> playbackQueue.addToQueue(listItem),
+                        t -> Timber.e(t.getMessage()));
     }
 
     @RxLogObservable

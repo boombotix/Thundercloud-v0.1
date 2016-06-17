@@ -1,5 +1,6 @@
 package boombotix.com.thundercloud.bluetooth.authentication;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -54,7 +55,7 @@ public class MockAuthenticationEndpoint implements AuthenticationBluetoothEndpoi
         SpotifyAuthResponseMapper mapper = new SpotifyAuthResponseMapper();
 
         Observable<OAuthCredentials> observable = spotifyAuthenticationEndpoint
-                .getToken("Basic " + getEncodedAuthHeader(), "refresh_token", refreshToken)
+                .getToken("Basic " + getEncodedAuthHeader(), "refresh_token", refreshToken, new ArrayList<>())
                 .map((authRefreshResponse) -> mapper.transform(authRefreshResponse, refreshToken));
 
         return observable;

@@ -321,7 +321,7 @@ public class Track {
         song.setAlbum(this.albumName);
         song.setArtist(this.artistName);
         song.setService(Service.Spotify);
-        song.setUri(this.getSpotifyDeepLink());
+        song.setUri(this.getSpotifyId());
 
         return song;
     }

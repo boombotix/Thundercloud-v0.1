@@ -9,6 +9,7 @@ import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.pairing.EnableBluetoothFragment;
 import boombotix.com.thundercloud.ui.fragment.pairing.SpeakerSearchFragment;
+import hugo.weaving.DebugLog;
 
 /**
  * Shows fragment asking user to start bluetooth search, then shows a list of available Boombots.
@@ -22,6 +23,7 @@ public class SpeakerPairingActivity extends BaseActivity implements
 
     public static final int SUCCESS = 0;
 
+    @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class SpeakerPairingActivity extends BaseActivity implements
         finish();
     }
 
+    @DebugLog
     private void showConnectBluetoothFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -52,6 +55,7 @@ public class SpeakerPairingActivity extends BaseActivity implements
                 .commit();
     }
 
+    @DebugLog
     private void showSpeakerSearchFragment() {
         getSupportFragmentManager()
                 .beginTransaction()

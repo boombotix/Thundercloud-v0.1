@@ -3,12 +3,12 @@ package boombotix.com.thundercloud.dependencyinjection.component;
 import boombotix.com.thundercloud.dependencyinjection.module.ActivityModule;
 import boombotix.com.thundercloud.houndify.response.HoundifySubscriber;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
+import boombotix.com.thundercloud.ui.activity.MusicServiceSetupActivity;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.ArtistDetailsFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
 import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
-import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
@@ -49,4 +49,5 @@ public interface ActivityComponent {
     void inject(VoiceSearchResultFragment voiceSearchResultFragment);
     void inject(HoundifySubscriber houndifySubscriber);
     void inject(NowPlayingFragment nowPlayingFragment);
+    void inject(MusicServiceSetupActivity musicServiceSetupActivity);
 }

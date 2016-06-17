@@ -1,10 +1,12 @@
 package boombotix.com.thundercloud.authentication;
 
-import org.joda.time.DateTime;
-
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.util.Log;
+
+import org.joda.time.DateTime;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,12 +14,12 @@ import javax.inject.Singleton;
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
+import boombotix.com.thundercloud.base.RxTransformers;
 import boombotix.com.thundercloud.model.authentication.AuthRefreshResponse;
+import hugo.weaving.DebugLog;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by jsaucedo on 1/28/16.
@@ -59,6 +61,7 @@ public class AuthManager {
         void onError(Throwable error);
     }
 
+    @DebugLog
     public String getAccessToken() {
         if (sharedPreferences.contains(application.getString(R.string.access_token))) {
             accessToken = sharedPreferences
@@ -67,13 +70,13 @@ public class AuthManager {
         return accessToken;
     }
 
+    @DebugLog
     public void setAccessToken(String accessToken) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(application.getString(R.string.access_token), accessToken);
         editor.commit();
         this.accessToken = accessToken;
     }
-
 
     public String getRefreshToken() {
         if (sharedPreferences.contains(application.getString(R.string.refresh_token))) {
@@ -105,6 +108,7 @@ public class AuthManager {
         this.userId = userId;
     }
 
+    @DebugLog
     public DateTime getExpires() {
         if (sharedPreferences.contains(application.getString(R.string.expires))) {
             expires = new DateTime(
@@ -120,6 +124,7 @@ public class AuthManager {
         this.expires = expires;
     }
 
+    @DebugLog
     public boolean isExpired() {
         if (getExpires() == null) {
             return true;
@@ -134,19 +139,21 @@ public class AuthManager {
      *
      * @return returns observable for authtoken request
      */
+    @DebugLog
     public Observable<AuthRefreshResponse> getValidAccessToken() {
 
         if (isExpired()) {
-            Observable observable = spotifyAuthenticationEndpoint
-                    .getToken("Basic " + getEncodedAuthHeader(), GRANT_TYPE, getRefreshToken());
+            Observable<AuthRefreshResponse> observable = spotifyAuthenticationEndpoint
+                    .getToken("Basic " + getEncodedAuthHeader(), GRANT_TYPE, getRefreshToken(), getScopes());
 
-            observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+            observable.compose(RxTransformers.applySchedulers())
                     .share()
-                    .subscribe((Action1) o -> {
-                        Log.e("AuthManager", "Token expired!");
-                        handleRefreshResponse((AuthRefreshResponse) o);
-                    });
+                    .subscribe(
+                            response -> {
+                                Timber.e("Token expired!");
+                                handleRefreshResponse(response);
+                            },
+                            throwable -> Timber.e(throwable.getMessage()));
 
             return observable;
         }
@@ -157,17 +164,19 @@ public class AuthManager {
 
     public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback) {
         spotifyAuthenticationEndpoint
-                .getToken("Basic " + getEncodedAuthHeader(), "refresh_token", getRefreshToken())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .getToken("Basic " + getEncodedAuthHeader(), "refresh_token", getRefreshToken(), getScopes())
+                .compose(RxTransformers.applySchedulers())
                 .subscribe(authRefreshResponse -> {
                     handleRefreshResponse(authRefreshResponse);
                     authRefreshRespCallback.onSuccess(authRefreshResponse);
-                }, throwable -> {
-                    authRefreshRespCallback.onError(throwable);
-                });
+                }, authRefreshRespCallback::onError);
     }
 
+    private List<String> getScopes(){
+        return Arrays.asList("streaming", "user-library-read", "user-read-private", "user-follow-read", "playlist-modify-public", "user-library-modify", "user-follow-modify");
+    }
+
+    @DebugLog
     private void handleRefreshResponse(AuthRefreshResponse authRefreshResponse) {
         spotifyApi.setAccessToken(authRefreshResponse.getAccessToken());
         setAccessToken(authRefreshResponse.getAccessToken());

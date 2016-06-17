@@ -1,6 +1,5 @@
 package boombotix.com.thundercloud.playback;
 
-import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 
 /**
@@ -19,8 +18,8 @@ public class MusicPlayerProvider {
     }
 
     public MusicPlayer getMusicPlayer(MusicListItem musicListItem){
-        if(BuildConfig.DEBUG)
-            return mockPlayer;
+//        if(BuildConfig.DEBUG)
+//            return mockPlayer;
 
         switch (musicListItem.getService()){
             case Spotify:

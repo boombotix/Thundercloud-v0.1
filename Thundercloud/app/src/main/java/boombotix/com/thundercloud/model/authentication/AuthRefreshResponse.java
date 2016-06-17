@@ -2,12 +2,15 @@ package boombotix.com.thundercloud.model.authentication;
 
 import com.google.gson.annotations.SerializedName;
 
+import hugo.weaving.DebugLog;
+
 /**
  * Response returned by Spotify when we request a new token using the refresh token
  *
  * Created by jsaucedo on 1/28/16.
  */
 public class AuthRefreshResponse {
+    @DebugLog
     public String getAccessToken() {
         return accessToken;
     }

@@ -121,6 +121,7 @@ dependencies {
 
     // spotify
     compile 'com.spotify.sdk:spotify-player:1.0.0-beta12@aar'
+    compile 'com.spotify.sdk:spotify-auth:1.0.0-beta12@aar'
     compile 'com.github.kaaes:spotify-web-api-android:0.2.0'
 
     // sqlite orm

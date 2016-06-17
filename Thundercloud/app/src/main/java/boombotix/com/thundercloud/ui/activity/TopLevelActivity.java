@@ -1,6 +1,5 @@
 package boombotix.com.thundercloud.ui.activity;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
-import com.canelmas.let.AskPermission;
 import com.canelmas.let.DeniedPermission;
 import com.canelmas.let.RuntimePermissionListener;
 import com.canelmas.let.RuntimePermissionRequest;
@@ -124,7 +122,6 @@ public class TopLevelActivity extends BaseActivity
 
     }
 
-    @AskPermission(Manifest.permission.RECORD_AUDIO)
     private void attachPlayerFragment() {
         Fragment playerFragment = fm.findFragmentById(R.id.player_fragment);
         if (playerFragment == null) {
@@ -143,7 +140,6 @@ public class TopLevelActivity extends BaseActivity
         this.screenCreatedObservable.onNext(true);
     }
 
-    @AskPermission(Manifest.permission.RECORD_AUDIO)
     private void attachMainFragment() {
         fm = getSupportFragmentManager();
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);

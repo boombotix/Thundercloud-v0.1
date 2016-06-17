@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.houndify.response.HoundifyDeserializer;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.houndify.response.HoundifyJsonDeserializer;
@@ -16,7 +17,13 @@ import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
 import boombotix.com.thundercloud.houndify.response.HoundifySdkModelExtractor;
 import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
 import boombotix.com.thundercloud.playback.LocalPlaybackQueue;
+import boombotix.com.thundercloud.playback.LocalQueueControls;
+import boombotix.com.thundercloud.playback.MockPlayer;
+import boombotix.com.thundercloud.playback.MusicControls;
+import boombotix.com.thundercloud.playback.MusicPlayerProvider;
 import boombotix.com.thundercloud.playback.PlaybackQueue;
+import boombotix.com.thundercloud.playback.SlackerPlayer;
+import boombotix.com.thundercloud.playback.SpotifyPlayer;
 import dagger.Module;
 import dagger.Provides;
 
@@ -64,5 +71,35 @@ public class ApplicationModule {
     @Singleton
     PlaybackQueue providesPlaybackQueue(){
         return new LocalPlaybackQueue();
+    }
+
+    @Provides
+    @Singleton
+    MusicControls providesMusicControls(PlaybackQueue playbackQueue, MusicPlayerProvider musicPlayerProvider) {
+        return new LocalQueueControls(playbackQueue, musicPlayerProvider);
+    }
+
+    @Provides
+    @Singleton
+    MusicPlayerProvider providesMusicPlayer(SpotifyPlayer spotifyPlayer, SlackerPlayer slackerPlayer, MockPlayer mockPlayer){
+        return new MusicPlayerProvider(spotifyPlayer, slackerPlayer, mockPlayer);
+    }
+
+    @Provides
+    @Singleton
+    SpotifyPlayer providesSpotifyPlayer(Application application, AuthManager authManager){
+        return new SpotifyPlayer(application, authManager);
+    }
+
+    @Provides
+    @Singleton
+    SlackerPlayer providesSlackerPlayer(){
+        return new SlackerPlayer();
+    }
+
+    @Provides
+    @Singleton
+    MockPlayer providesMockplayer(){
+        return new MockPlayer();
     }
 }

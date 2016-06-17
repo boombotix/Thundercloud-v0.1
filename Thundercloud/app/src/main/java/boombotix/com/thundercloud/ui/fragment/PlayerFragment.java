@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
+import boombotix.com.thundercloud.playback.MusicControls;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
@@ -35,6 +37,7 @@ import boombotix.com.thundercloud.ui.view.CropImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import hugo.weaving.DebugLog;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -44,6 +47,15 @@ public class PlayerFragment extends BaseFragment
         implements PhraseSpotterReader.Listener, VoiceSearchListener {
 
     public static final String TAG = "PlayerFragment";
+    public final String CLIENT_ID = BuildConfig.HOUNDIFY_CLIENT_ID;
+    public final String CLIENT_KEY = BuildConfig.HOUNDIFY_CLIENT_KEY;
+
+    private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+    private PhraseSpotterReader phraseSpotterReader;
+    private VoiceSearch voiceSearch;
+
+    @Inject
+    MusicControls musicControls;
 
     @Inject
     HoundifyRequestAdapter houndifyRequestAdapter;
@@ -51,28 +63,19 @@ public class PlayerFragment extends BaseFragment
     @Inject
     HoundifyResponseParser houndifyResponseParser;
 
-    private TopLevelActivity activity;
-
-    @Bind(R.id.okhound_button)
-    ImageButton okhoundButton;
-
-    String transcript;
-
-    private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
-
-    public final String CLIENT_ID = BuildConfig.HOUNDIFY_CLIENT_ID;
-
-    public final String CLIENT_KEY = BuildConfig.HOUNDIFY_CLIENT_KEY;
-
-    private PhraseSpotterReader phraseSpotterReader;
-
-    private VoiceSearch voiceSearch;
+    @Inject
+    ScreenBlurUiFilter screenBlurUiFilter;
 
     @Bind(R.id.player_blurred_background)
     CropImageView blurredBackround;
 
-    @Inject
-    ScreenBlurUiFilter screenBlurUiFilter;
+    @Bind(R.id.okhound_button)
+    ImageButton okhoundButton;
+
+    @Bind(R.id.play_button)
+    AppCompatImageView playButton;
+
+    String transcript;
 
     public PlayerFragment() {
         // Required empty public constructor
@@ -127,6 +130,7 @@ public class PlayerFragment extends BaseFragment
         }
     }
 
+    @DebugLog
     @OnClick(R.id.okhound_button)
     public void okHoundClick(View v) {
         Log.v("PlayerFragment", "Clicky click");
@@ -142,6 +146,12 @@ public class PlayerFragment extends BaseFragment
                 voiceSearch.abort();
             }
         }
+    }
+
+    @DebugLog
+    @OnClick(R.id.play_button)
+    public void playButtonOnClick(View v){
+        musicControls.play();
     }
 
     @Override
@@ -257,12 +267,7 @@ public class PlayerFragment extends BaseFragment
         // It's important to note that when the phrase spotter detects "Ok Hound" it closes
         // the input stream it was provided.
 
-        mainThreadHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                startSearch();
-            }
-        });
+        mainThreadHandler.post(this::startSearch);
     }
 
     @Override
