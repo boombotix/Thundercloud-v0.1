@@ -49,7 +49,9 @@ public class SpotifyPlayer implements MusicPlayer, Player.InitializationObserver
     @DebugLog
     @Override
     public void pause() {
-
+        if(player != null){
+            player.pause();
+        }
     }
 
     @DebugLog
@@ -113,7 +115,7 @@ public class SpotifyPlayer implements MusicPlayer, Player.InitializationObserver
 
     @Override
     public void onLoggedOut() {
-        Timber.d("Spotify user logged out");
+
     }
 
     @Override
@@ -133,8 +135,7 @@ public class SpotifyPlayer implements MusicPlayer, Player.InitializationObserver
 
     @Override
     public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
-        Timber.d("Spotify PlaybackEvent: " + eventType.toString());
-        Timber.d("Spotify is playing: " + playerState.playing);
+
     }
 
     @Override

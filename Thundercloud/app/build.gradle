@@ -18,7 +18,7 @@ android {
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
 
-        buildConfigField "String", "SPOTIFY_API_BASE", "\"https://accounts.spotify.com/api\""
+        buildConfigField "String", "SPOTIFY_API_BASE", SPOTIFY_BASE_URL
         buildConfigField "String", "SPOTIFY_TOKEN_URL", SPOTIFY_TOKEN_URL
         buildConfigField "String", "SPOTIFY_AUTH_URL", SPOTIFY_AUTH_URL
         buildConfigField "String", "SPOTIFY_CLIENT_ID", SPOTIFY_CLIENT_ID

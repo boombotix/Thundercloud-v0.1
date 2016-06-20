@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.hound.android.libphs.PhraseSpotterReader;
 import com.hound.android.sdk.VoiceSearch;
@@ -29,6 +30,7 @@ import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
+import boombotix.com.thundercloud.model.music.MusicListItem;
 import boombotix.com.thundercloud.playback.MusicControls;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
@@ -72,8 +74,14 @@ public class PlayerFragment extends BaseFragment
     @Bind(R.id.okhound_button)
     ImageButton okhoundButton;
 
-    @Bind(R.id.play_button)
+    @Bind(R.id.player_play_pause_button)
     AppCompatImageView playButton;
+
+    @Bind(R.id.player_artist_label)
+    TextView artistLabel;
+
+    @Bind(R.id.player_track_label)
+    TextView trackLabel;
 
     String transcript;
 
@@ -149,15 +157,27 @@ public class PlayerFragment extends BaseFragment
     }
 
     @DebugLog
-    @OnClick(R.id.play_button)
+    @OnClick(R.id.player_play_pause_button)
     public void playButtonOnClick(View v){
-        musicControls.play();
+        if(musicControls.isPlaying()){
+            musicControls.pause();
+            v.setBackground(getResources().getDrawable(android.R.drawable.ic_media_play));
+        } else {
+            musicControls.play();
+            v.setBackground(getResources().getDrawable(android.R.drawable.ic_media_pause));
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
         startPhraseSpotting();
+        compositeSubscription.add(musicControls.trackChangedObservable().subscribe(this::onTrackChange));
+    }
+
+    private void onTrackChange(MusicListItem musicListItem){
+        artistLabel.setText(musicListItem.getTitle());
+        trackLabel.setText(musicListItem.getSubtitle());
     }
 
     private void startPhraseSpotting() {

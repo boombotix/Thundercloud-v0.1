@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
+import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.bluetooth.BluetoothMessageWrapper;
 import boombotix.com.thundercloud.bluetooth.authentication.BoombotAuthenticationBluetoothEndpoint;
@@ -98,4 +100,8 @@ public interface ApplicationComponent {
     MusicControls musicControls();
 
     SpotifyPlayer spotifyPlayer();
+
+    SpotifyTrackEndpoint trackEndpoint();
+
+    SpotifyAuthenticationEndpoint authenticationEndpoint();
 }

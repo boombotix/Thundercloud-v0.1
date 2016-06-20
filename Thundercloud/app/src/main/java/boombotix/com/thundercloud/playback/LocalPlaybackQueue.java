@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import boombotix.com.thundercloud.model.music.MusicListItem;
-import rx.Observable;
 import timber.log.Timber;
 
 /**
@@ -15,11 +14,6 @@ public class LocalPlaybackQueue implements PlaybackQueue {
 
     List<MusicListItem> items = new ArrayList<>();
     int currentTrack = NO_CURRENT_TRACK;
-
-    @Override
-    public Observable<MusicListItem> getObservableQueue() {
-        return Observable.from(items);
-    }
 
     @Override
     public void setQueue(List<MusicListItem> items) {
@@ -49,27 +43,21 @@ public class LocalPlaybackQueue implements PlaybackQueue {
     }
 
     @Override
-    public MusicListItem getNextTrack() {
-        if(currentTrack == NO_CURRENT_TRACK) return null;
+    public void changeTrackToNext() {
+        if(currentTrack == NO_CURRENT_TRACK) return;
 
         if(currentTrack + 1 <= items.size() - 1)
         {
             currentTrack++;
-            return this.getCurrentTrack();
         }
-
-        return null;
     }
 
     @Override
-    public MusicListItem getPreviousTrack() {
-        if(currentTrack == NO_CURRENT_TRACK) return null;
+    public void changeTrackToPrevious() {
+        if(currentTrack == NO_CURRENT_TRACK) return;
 
         if(currentTrack - 1 >= 0){
             currentTrack--;
-            return this.getCurrentTrack();
         }
-
-        return null;
     }
 }
