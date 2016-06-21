@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 
 /**
+ * Concrete implementation designed to handle the bluetooth connectivity to a Boombotix speaker
+ *
  * Created by kriedema on 6/14/16.
  */
 public class BoombotixBluetoothStateHandler implements BluetoothStateHandler {

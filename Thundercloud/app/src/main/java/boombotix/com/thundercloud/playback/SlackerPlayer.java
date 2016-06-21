@@ -3,6 +3,8 @@ package boombotix.com.thundercloud.playback;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 
 /**
+ * MusicPlayer implementation to handle slacker station playback
+ *
  * Created by kriedema on 6/14/16.
  */
 public class SlackerPlayer implements MusicPlayer {

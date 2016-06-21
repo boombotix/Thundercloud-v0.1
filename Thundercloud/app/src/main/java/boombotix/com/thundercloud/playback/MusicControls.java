@@ -4,6 +4,8 @@ import boombotix.com.thundercloud.model.music.MusicListItem;
 import rx.Observable;
 
 /**
+ * Interface defining the actions the UI can take on a playback queue
+ *
  * Created by kriedema on 6/14/16.
  */
 public interface MusicControls {

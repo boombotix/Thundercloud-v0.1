@@ -10,10 +10,10 @@ import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.authentication.AuthManager;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyDeserializer;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.houndify.response.HoundifyJsonDeserializer;
-import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
 import boombotix.com.thundercloud.houndify.response.HoundifySdkModelExtractor;
 import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
 import boombotix.com.thundercloud.playback.LocalPlaybackQueue;
@@ -51,7 +51,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    HoundifyRequestAdapter provideHoundifyRequestAdapter() { return new HoundifyRequestAdapter(); }
+    HoundifyRequestTransformer provideHoundifyRequestAdapter() { return new HoundifyRequestTransformer(); }
 
     @Provides
     @Singleton
@@ -63,8 +63,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    HoundifyResponseParser provideHoundifyHelper(HoundifyDeserializer houndifyDeserializer, HoundifyModelExtractor houndifyModelExtractor, HoundifyRequestAdapter houndifyRequestAdapter){
-        return new HoundifyResponseParser(houndifyDeserializer, houndifyModelExtractor, houndifyRequestAdapter);
+    HoundifyResponseParser provideHoundifyHelper(HoundifyDeserializer houndifyDeserializer, HoundifyModelExtractor houndifyModelExtractor, HoundifyRequestTransformer houndifyRequestTransformer){
+        return new HoundifyResponseParser(houndifyDeserializer, houndifyModelExtractor, houndifyRequestTransformer);
     }
 
     @Provides

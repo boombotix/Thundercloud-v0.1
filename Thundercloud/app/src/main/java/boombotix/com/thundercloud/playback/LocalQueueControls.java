@@ -11,6 +11,8 @@ import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
 /**
+ * QueueControls to handle playback from the LocalPlaybackQueue
+ *
  * Created by kriedema on 6/14/16.
  */
 public class LocalQueueControls implements MusicControls {

@@ -29,9 +29,6 @@ public class Album {
     @SerializedName("ArtistID")
     @Expose
     private long artistID;
-    @SerializedName("BuyLinks")
-    @Expose
-    private List<BuyLink> buyLinks = new ArrayList<BuyLink>();
     @SerializedName("MusicThirdPartyIds")
     @Expose
     private List<MusicThirdPartyId> musicThirdPartyIds = new ArrayList<MusicThirdPartyId>();
@@ -130,24 +127,6 @@ public class Album {
      */
     public void setArtistID(long artistID) {
         this.artistID = artistID;
-    }
-
-    /**
-     * 
-     * @return
-     *     The buyLinks
-     */
-    public List<BuyLink> getBuyLinks() {
-        return buyLinks;
-    }
-
-    /**
-     * 
-     * @param buyLinks
-     *     The BuyLinks
-     */
-    public void setBuyLinks(List<BuyLink> buyLinks) {
-        this.buyLinks = buyLinks;
     }
 
     /**

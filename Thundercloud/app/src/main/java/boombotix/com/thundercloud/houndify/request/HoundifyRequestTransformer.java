@@ -11,9 +11,11 @@ import java.util.UUID;
 import timber.log.Timber;
 
 /**
+ * Class responsible for adding a conversation state and UUID to a houndify request
+ *
  * Created by kriedema on 6/10/16.
  */
-public class HoundifyRequestAdapter {
+public class HoundifyRequestTransformer {
 
     private JsonNode conversationState;
 

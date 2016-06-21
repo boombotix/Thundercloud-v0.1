@@ -28,7 +28,7 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
-import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 import boombotix.com.thundercloud.playback.MusicControls;
@@ -60,7 +60,7 @@ public class PlayerFragment extends BaseFragment
     MusicControls musicControls;
 
     @Inject
-    HoundifyRequestAdapter houndifyRequestAdapter;
+    HoundifyRequestTransformer houndifyRequestTransformer;
 
     @Inject
     HoundifyResponseParser houndifyResponseParser;
@@ -215,7 +215,7 @@ public class PlayerFragment extends BaseFragment
         }
 
         voiceSearch = new VoiceSearch.Builder()
-                .setRequestInfo(houndifyRequestAdapter.getHoundRequestInfo(getContext()))
+                .setRequestInfo(houndifyRequestTransformer.getHoundRequestInfo(getContext()))
                 .setAudioSource(new SimpleAudioByteStreamSource())
                 .setClientId(CLIENT_ID)
                 .setClientKey(CLIENT_KEY)

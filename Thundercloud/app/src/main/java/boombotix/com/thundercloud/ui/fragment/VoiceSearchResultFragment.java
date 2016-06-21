@@ -23,9 +23,8 @@ import boombotix.com.thundercloud.houndify.model.Album;
 import boombotix.com.thundercloud.houndify.model.Artist;
 import boombotix.com.thundercloud.houndify.model.MusicSearchResultsNativeData;
 import boombotix.com.thundercloud.houndify.model.Track;
-import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
-import boombotix.com.thundercloud.houndify.response.HoundifySubscriber;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 import boombotix.com.thundercloud.playback.PlaybackQueue;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
@@ -45,13 +44,10 @@ public class VoiceSearchResultFragment extends BaseFragment {
     PlaybackQueue playbackQueue;
 
     @Inject
-    HoundifyRequestAdapter houndifyRequestAdapter;
+    HoundifyRequestTransformer houndifyRequestTransformer;
 
     @Inject
     HoundifyResponseParser houndifyResponseParser;
-
-    @Inject
-    HoundifySubscriber houndifySubscriber;
 
     @Bind(R.id.voice_search_result_tap_to_edit)
     TextView tapToEdit;
@@ -135,7 +131,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
     @DebugLog
     void doSearch(String q) {
         TextSearch textSearch = new TextSearch.Builder()
-                .setRequestInfo(houndifyRequestAdapter.getHoundRequestInfo(getContext()))
+                .setRequestInfo(houndifyRequestTransformer.getHoundRequestInfo(getContext()))
                 .setClientId(BuildConfig.HOUNDIFY_CLIENT_ID)
                 .setClientKey(BuildConfig.HOUNDIFY_CLIENT_KEY)
                 .setDebug(BuildConfig.DEBUG)

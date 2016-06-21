@@ -7,6 +7,8 @@ import java.util.List;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 
 /**
+ * Interface defining the behavior of a queue that holds music items
+ *
  * Created by kriedema on 6/14/16.
  */
 public interface PlaybackQueue {

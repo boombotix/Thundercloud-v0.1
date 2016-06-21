@@ -3,6 +3,8 @@ package boombotix.com.thundercloud.playback;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 
 /**
+ * Returns a music player based on the musicListItem we are attempting to play
+ *
  * Created by kriedema on 6/14/16.
  */
 public class MusicPlayerProvider {
@@ -18,16 +20,13 @@ public class MusicPlayerProvider {
     }
 
     public MusicPlayer getMusicPlayer(MusicListItem musicListItem){
-//        if(BuildConfig.DEBUG)
-//            return mockPlayer;
-
         switch (musicListItem.getService()){
             case Spotify:
                 return this.spotifyPlayer;
             case Slacker:
                 return this.slackerPlayer;
             default:
-                throw new RuntimeException("Player not implimented");
+                throw new RuntimeException("Player not implemented");
         }
     }
 }

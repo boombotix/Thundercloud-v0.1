@@ -28,6 +28,7 @@ import timber.log.Timber;
 public class AuthManager {
 
     public static final String GRANT_TYPE = "refresh_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
 
     private String accessToken;
 
@@ -135,7 +136,7 @@ public class AuthManager {
 
     /**
      * This function is designed to be flatmapped into any call that requires user authentication It
-     * will cehck if the token is expired and renew it.
+     * will check if the token is expired and renew it.
      *
      * @return returns observable for authtoken request
      */
@@ -161,10 +162,9 @@ public class AuthManager {
         return Observable.just(new AuthRefreshResponse());
     }
 
-
     public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback) {
         spotifyAuthenticationEndpoint
-                .getToken("Basic " + getEncodedAuthHeader(), "refresh_token", getRefreshToken(), getScopes())
+                .getToken(getEncodedAuthHeader(), REFRESH_TOKEN, getRefreshToken(), getScopes())
                 .compose(RxTransformers.applySchedulers())
                 .subscribe(authRefreshResponse -> {
                     handleRefreshResponse(authRefreshResponse);
@@ -172,8 +172,21 @@ public class AuthManager {
                 }, authRefreshRespCallback::onError);
     }
 
+    /**
+     * returns the list of all Spotify scopes that are needed for authentication and playback
+     *
+     * @return
+     *  List<String> list of string representations of scopes to be passed to the Spotify endpoint
+     */
     private List<String> getScopes(){
-        return Arrays.asList("streaming", "user-library-read", "user-read-private", "user-follow-read", "playlist-modify-public", "user-library-modify", "user-follow-modify");
+        return Arrays.asList(
+                "streaming",
+                "user-library-read",
+                "user-read-private",
+                "user-follow-read",
+                "playlist-modify-public",
+                "user-library-modify",
+                "user-follow-modify");
     }
 
     @DebugLog
@@ -186,6 +199,7 @@ public class AuthManager {
 
     private String getEncodedAuthHeader() {
         StringBuilder sb = new StringBuilder();
+        sb.append("Basic ");
         sb.append(BuildConfig.SPOTIFY_CLIENT_ID);
         sb.append(":");
         sb.append(BuildConfig.SPOTIFY_CLIENT_SECRET);

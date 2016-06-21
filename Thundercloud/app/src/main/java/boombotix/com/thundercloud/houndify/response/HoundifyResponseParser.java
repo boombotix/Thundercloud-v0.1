@@ -7,7 +7,7 @@ import com.hound.core.model.sdk.HoundResponse;
 
 import boombotix.com.thundercloud.houndify.model.MusicResponse;
 import boombotix.com.thundercloud.houndify.model.MusicSearchResultsNativeData;
-import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 
 /**
  * Created by jsaucedo on 2/16/16.
@@ -16,12 +16,12 @@ public class HoundifyResponseParser {
 
     HoundifyDeserializer houndifyDeserializer;
     HoundifyModelExtractor houndifyModelExtractor;
-    HoundifyRequestAdapter houndifyRequestAdapter;
+    HoundifyRequestTransformer houndifyRequestTransformer;
 
-    public HoundifyResponseParser(HoundifyDeserializer houndifyDeserializer, HoundifyModelExtractor houndifyModelExtractor, HoundifyRequestAdapter houndifyRequestAdapter) {
+    public HoundifyResponseParser(HoundifyDeserializer houndifyDeserializer, HoundifyModelExtractor houndifyModelExtractor, HoundifyRequestTransformer houndifyRequestTransformer) {
         this.houndifyDeserializer = houndifyDeserializer;
         this.houndifyModelExtractor = houndifyModelExtractor;
-        this.houndifyRequestAdapter = houndifyRequestAdapter;
+        this.houndifyRequestTransformer = houndifyRequestTransformer;
     }
 
     @Nullable
@@ -31,7 +31,7 @@ public class HoundifyResponseParser {
 
         if(nativeData == null) return null;
 
-        houndifyRequestAdapter.setConversationState(houndifyModelExtractor.extractConversationState(response));
+        houndifyRequestTransformer.setConversationState(houndifyModelExtractor.extractConversationState(response));
 
         return houndifyDeserializer.parseMusicResponse(nativeData.toString());
     }
@@ -43,7 +43,7 @@ public class HoundifyResponseParser {
 
         if(nativeData == null) return null;
 
-        houndifyRequestAdapter.setConversationState(houndifyModelExtractor.extractConversationState(response));
+        houndifyRequestTransformer.setConversationState(houndifyModelExtractor.extractConversationState(response));
 
         return houndifyDeserializer.parseMusicSearchCommandNativeData(nativeData.toString());
     }

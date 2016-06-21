@@ -8,6 +8,9 @@ import retrofit.http.Path;
 import rx.Observable;
 
 /**
+ * Endpoint used to get information about a specific track. In this project it's mostly
+ * used to get album artwork.
+ *
  * Created by kriedema on 6/17/16.
  */
 public interface SpotifyTrackEndpoint {

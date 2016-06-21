@@ -1,5 +1,7 @@
 package boombotix.com.thundercloud.bluetooth.authentication;
 
+import com.fernandocejas.frodo.annotation.RxLogObservable;
+
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +26,8 @@ import rx.Observable;
 public class MockAuthenticationEndpoint implements AuthenticationBluetoothEndpoint {
 
     private static final int DELAY_MS = 500;
+    public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String HTTP_HEADER = "Basic ";
 
     private SpotifyAuthenticationEndpoint spotifyAuthenticationEndpoint;
     //todo replace with class used by speaker
@@ -45,6 +49,7 @@ public class MockAuthenticationEndpoint implements AuthenticationBluetoothEndpoi
                 .delay(DELAY_MS, TimeUnit.MILLISECONDS);
     }
 
+    @RxLogObservable
     @Override
     public Observable<OAuthCredentials> refreshService(MusicService service) {
         if (service != MusicService.SPOTIFY) {
@@ -54,11 +59,9 @@ public class MockAuthenticationEndpoint implements AuthenticationBluetoothEndpoi
         String refreshToken = authManager.getRefreshToken();
         SpotifyAuthResponseMapper mapper = new SpotifyAuthResponseMapper();
 
-        Observable<OAuthCredentials> observable = spotifyAuthenticationEndpoint
-                .getToken("Basic " + getEncodedAuthHeader(), "refresh_token", refreshToken, new ArrayList<>())
+        return spotifyAuthenticationEndpoint
+                .getToken(HTTP_HEADER + getEncodedAuthHeader(), REFRESH_TOKEN, refreshToken, new ArrayList<>())
                 .map((authRefreshResponse) -> mapper.transform(authRefreshResponse, refreshToken));
-
-        return observable;
     }
 
     @Override

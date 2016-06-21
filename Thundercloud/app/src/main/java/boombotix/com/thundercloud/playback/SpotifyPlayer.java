@@ -19,6 +19,8 @@ import hugo.weaving.DebugLog;
 import timber.log.Timber;
 
 /**
+ * MusicPlayer implementation to handle Spotify track and playlist playback
+ *
  * Created by kriedema on 6/14/16.
  */
 public class SpotifyPlayer implements MusicPlayer, Player.InitializationObserver,

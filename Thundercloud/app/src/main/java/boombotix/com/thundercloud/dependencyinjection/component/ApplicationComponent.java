@@ -19,8 +19,8 @@ import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.BluetoothModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyDeserializer;
-import boombotix.com.thundercloud.houndify.request.HoundifyRequestAdapter;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
 import boombotix.com.thundercloud.playback.MusicControls;
@@ -93,7 +93,7 @@ public interface ApplicationComponent {
 
     HoundifyDeserializer houndifyDeserializer();
 
-    HoundifyRequestAdapter houndifyRequestAdapter();
+    HoundifyRequestTransformer houndifyRequestAdapter();
 
     PlaybackQueue playbackQueue();
 

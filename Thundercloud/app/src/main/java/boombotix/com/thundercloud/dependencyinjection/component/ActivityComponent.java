@@ -1,7 +1,6 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
 import boombotix.com.thundercloud.dependencyinjection.module.ActivityModule;
-import boombotix.com.thundercloud.houndify.response.HoundifySubscriber;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.activity.MusicServiceSetupActivity;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
@@ -47,7 +46,6 @@ public interface ActivityComponent {
     void inject(PlayerFragment playerFragment);
     void inject(ArtistDetailsFragment artistDetailsFragment);
     void inject(VoiceSearchResultFragment voiceSearchResultFragment);
-    void inject(HoundifySubscriber houndifySubscriber);
     void inject(NowPlayingFragment nowPlayingFragment);
     void inject(MusicServiceSetupActivity musicServiceSetupActivity);
 }

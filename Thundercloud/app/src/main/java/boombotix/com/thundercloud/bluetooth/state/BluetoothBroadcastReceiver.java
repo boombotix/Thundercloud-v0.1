@@ -10,14 +10,24 @@ import android.os.Bundle;
 import timber.log.Timber;
 
 /**
+ * BroadcastReciver that handles changes in bluetooth state or connectivity.
+ *
  * Created by kriedema on 6/14/16.
  */
 public class BluetoothBroadcastReceiver extends BroadcastReceiver {
+    private final int COULDNT_GET_STATE_FROM_EXTRAS = -1;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        final int COULDNT_GET_STATE_FROM_EXTRAS = -1;
+        logState(intent);
 
+        int state = getState(intent);
+
+        actOnState(state);
+    }
+
+    private void logState(Intent intent){
         Timber.d("Intent action " + intent.getAction());
 
         Timber.d("Previous Connection State " + intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_CONNECTION_STATE, COULDNT_GET_STATE_FROM_EXTRAS));
@@ -34,13 +44,22 @@ public class BluetoothBroadcastReceiver extends BroadcastReceiver {
             if(value == null) continue;
             Timber.v(String.format("%s %s (%s)", key, value.toString(), value.getClass().getName()));
         }
+    }
 
-        int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, COULDNT_GET_STATE_FROM_EXTRAS);
+    private int getState(Intent intent){
+        int state;
 
-        if(state == COULDNT_GET_STATE_FROM_EXTRAS)
+        state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, COULDNT_GET_STATE_FROM_EXTRAS);
+
+        if(state == COULDNT_GET_STATE_FROM_EXTRAS){
             state = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, COULDNT_GET_STATE_FROM_EXTRAS);
+        }
 
-        switch (state) {
+        return state;
+    }
+
+    private void actOnState(int bluetoothState){
+        switch (bluetoothState) {
             case BluetoothAdapter.STATE_CONNECTED:
                 Timber.d("STATE_CONNECTED");
                 break;
@@ -69,7 +88,7 @@ public class BluetoothBroadcastReceiver extends BroadcastReceiver {
                 Timber.d("Failed to get state from extras");
                 break;
             default:
-                Timber.d("We don't handle this bluetooth state: " + state);
+                Timber.d("We don't handle this bluetooth state: " + bluetoothState);
                 break;
         }
     }

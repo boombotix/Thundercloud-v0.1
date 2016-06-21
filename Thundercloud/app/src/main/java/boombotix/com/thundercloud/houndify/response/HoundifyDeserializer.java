@@ -6,6 +6,8 @@ import boombotix.com.thundercloud.houndify.model.MusicResponse;
 import boombotix.com.thundercloud.houndify.model.MusicSearchResultsNativeData;
 
 /**
+ * An interface defining behavior for deserializing data from the houndify sdk
+ *
  * Created by kriedema on 6/10/16.
  */
 public interface HoundifyDeserializer {

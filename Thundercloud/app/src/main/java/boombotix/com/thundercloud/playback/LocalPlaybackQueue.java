@@ -7,6 +7,8 @@ import boombotix.com.thundercloud.model.music.MusicListItem;
 import timber.log.Timber;
 
 /**
+ * Playback queue to handle local device playback
+ *
  * Created by kriedema on 6/14/16.
  */
 public class LocalPlaybackQueue implements PlaybackQueue {
