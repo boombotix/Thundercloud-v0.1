@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import butterknife.ButterKnife;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Base Fragment which should be implemented by any Fragment.
@@ -15,14 +16,29 @@ import butterknife.ButterKnife;
  */
 public class BaseFragment extends Fragment {
 
+    protected CompositeSubscription compositeSubscription = new CompositeSubscription();
+
     public BaseActivity getSupportActivity(){
         return (BaseActivity) getActivity();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if(compositeSubscription.isUnsubscribed()){
+            compositeSubscription = new CompositeSubscription();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+
+        if(!compositeSubscription.isUnsubscribed()){
+            compositeSubscription.unsubscribe();
+        }
     }
 
     /**

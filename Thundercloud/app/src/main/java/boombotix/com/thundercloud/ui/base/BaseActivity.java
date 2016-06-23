@@ -42,9 +42,4 @@ public class BaseActivity extends AppCompatActivity {
     private void buildComponent() {
         this.activityComponent = ActivityComponent.Initializer.init(this);
     }
-
-
-
-
-
 }

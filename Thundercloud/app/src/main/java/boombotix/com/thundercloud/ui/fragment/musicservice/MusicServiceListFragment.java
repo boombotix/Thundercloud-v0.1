@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.model.authentication.MusicService;
+import boombotix.com.thundercloud.model.music.Service;
 import boombotix.com.thundercloud.ui.adapter.MusicServiceListAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -122,13 +123,13 @@ public class MusicServiceListFragment extends Fragment
 
     @Override
     public void onMusicServiceSelected(MusicService service) {
-        listener.onMusicServiceSelected(service.getName());
+        listener.onMusicServiceSelected(service.getService());
     }
 
     public interface OnMusicServiceSelectedListener {
 
         //todo replace with music service model object?
-        void onMusicServiceSelected(String name);
+        void onMusicServiceSelected(Service service);
 
         void onMusicServiceFinished();
     }

@@ -24,7 +24,7 @@
         app:wheel_unactive_color="#000000" />
 
     <ImageButton
-        android:id="@+id/play_button"
+        android:id="@+id/player_play_pause_button"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"

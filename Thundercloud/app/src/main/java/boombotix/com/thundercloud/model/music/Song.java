@@ -12,6 +12,7 @@ public class Song implements MusicListItem{
     private String artworkUrl;
     private String album;
     private String uri;
+    private Service service;
 
 
     @Override
@@ -39,6 +40,11 @@ public class Song implements MusicListItem{
         return album;
     }
 
+    @Override
+    public Service getService() {
+        return service;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -57,5 +63,21 @@ public class Song implements MusicListItem{
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
     }
 }

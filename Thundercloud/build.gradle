@@ -5,12 +5,17 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.1.2'
 
         classpath 'me.tatarka:gradle-retrolambda:3.2.3'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
 
+        classpath 'com.canelmas.let:let-plugin:0.1.11'
+
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
+
+        classpath "com.fernandocejas.frodo:frodo-plugin:0.8.3"
     }
 }
 

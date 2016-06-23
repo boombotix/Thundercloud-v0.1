@@ -87,8 +87,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="voice_search_result_waiting">Go head... I\'m listening</string>
+    <string name="voice_search_result_waiting">Go head&#8230; I\'m listening</string>
     <string name="voice_search_result_tap_to_edit">Tap to edit</string>
 
+    <string-array name="spotify_scopes">
+        <item>streaming</item>
+        <item>user-library-read</item>
+        <item>user-read-private</item>
+        <item>user-follow-read</item>
+        <item>playlist-modify-public</item>
+        <item>user-library-modify</item>
+        <item>user-follow-modify</item>
+    </string-array>
 
 </resources>

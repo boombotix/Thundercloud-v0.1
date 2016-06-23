@@ -19,6 +19,7 @@ import boombotix.com.thundercloud.ui.activity.SpeakerPairingActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 
 /**
  * Fragment that scans for boombots and presents a list of them to the user, reports selected device
@@ -74,6 +75,7 @@ public class SpeakerSearchFragment extends BaseFragment {
      * Creates a subscription to add a speaker to the list whenever one is returned by the ble
      * manager. Clears stored devices.
      */
+    @DebugLog
     private void startSpeakerBleScan() {
         speakers = new ArrayList<>();
         showScanView();

@@ -1,6 +1,7 @@
 package boombotix.com.thundercloud.model.authentication;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.model.music.Service;
 
 /**
  * Enum of all available music services, used for display purposes
@@ -8,20 +9,24 @@ import boombotix.com.thundercloud.R;
  * @author Theo Kanning
  */
 public enum MusicService {
-    SPOTIFY("Spotify", R.mipmap.ic_launcher),
-    SOUND_CLOUD("Sound Cloud", R.mipmap.ic_launcher);
+    SPOTIFY(Service.Spotify, R.mipmap.ic_launcher),
+    SLACKER(Service.Slacker, R.mipmap.ic_launcher);
 
-    private String name;
+    private Service service;
 
     private int logoId;
 
-    MusicService(String name, int logoId) {
-        this.name = name;
+    MusicService(Service service, int logoId) {
+        this.service = service;
         this.logoId = logoId;
     }
 
-    public String getName() {
-        return name;
+    public Service getService() {
+        return service;
+    }
+
+    public String getName(){
+        return service.toString();
     }
 
     public int getLogoId() {

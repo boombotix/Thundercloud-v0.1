@@ -10,6 +10,7 @@ public class Album implements MusicListItem{
     private String artist;
     private String artworkUrl;
     private String uri;
+    private Service service;
 
     @Override
     public String getTitle() {
@@ -24,11 +25,6 @@ public class Album implements MusicListItem{
     @Override
     public String getArtworkUrl() {
         return artworkUrl;
-    }
-
-    @Override
-    public String getUri() {
-        return uri;
     }
 
     @Override
@@ -50,5 +46,27 @@ public class Album implements MusicListItem{
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    @Override
+    public Service getService() {
+        return service;
+    }
+
+    @Override
+    public String getUri() {
+        return uri;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
     }
 }

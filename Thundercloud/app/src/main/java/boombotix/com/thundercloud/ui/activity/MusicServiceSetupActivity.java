@@ -1,27 +1,52 @@
 package boombotix.com.thundercloud.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
+
+import javax.inject.Inject;
+
+import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.authentication.AuthManager;
+import boombotix.com.thundercloud.model.music.Service;
+import boombotix.com.thundercloud.playback.SpotifyPlayer;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.musicservice.MusicServiceListFragment;
+import hugo.weaving.DebugLog;
+import timber.log.Timber;
 
 public class MusicServiceSetupActivity extends BaseActivity
         implements MusicServiceListFragment.OnMusicServiceSelectedListener {
 
     public static final String FIRST_TIME_SETUP_KEY = "firstTimeSetup";
+    public static final String REDIRECT_URI = "boombotix.thundercloud://callback";
+
+    // Request code that will be used to verify if the result comes from correct activity
+    // Can be any integer
+    private static final int REQUEST_CODE = 666;
+
+    @Inject
+    AuthManager authManager;
+
+    @Inject
+    SpotifyPlayer spotifyPlayer;
 
     private boolean firstTime;
 
-
+    @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_service_setup);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getActivityComponent().inject(this);
 
         getFirstTimeExtra();
         showMusicServiceListFragment();
@@ -44,13 +69,55 @@ public class MusicServiceSetupActivity extends BaseActivity
     }
 
     @Override
-    public void onMusicServiceSelected(String name) {
-        //todo navigate to info fragment
-        Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+    public void onMusicServiceSelected(Service service) {
+        switch (service){
+            case Spotify:
+                spotifyAuthentication();
+                break;
+            case Slacker:
+                break;
+            default:
+                throw new RuntimeException("Service not supported");
+        }
     }
 
     @Override
     public void onMusicServiceFinished() {
         finish();
+    }
+
+    @DebugLog
+    private void spotifyAuthentication(){
+        AuthenticationRequest.Builder builder =
+                new AuthenticationRequest.Builder(BuildConfig.SPOTIFY_CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+
+        String[] scopes = getResources().getStringArray(R.array.spotify_scopes);
+
+        builder.setScopes(scopes);
+        AuthenticationRequest request = builder.build();
+
+        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+    }
+
+    @DebugLog
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
+            switch (response.getType()) {
+                case TOKEN:
+                    Timber.d(response.getAccessToken());
+                    authManager.setAccessToken(response.getAccessToken());
+                    spotifyPlayer.initializePlayerWithToken(response.getAccessToken());
+                    break;
+                case ERROR:
+                    Timber.e(response.getError());
+                    break;
+                default:
+                    Timber.d("Login canceled");
+            }
+        }
     }
 }

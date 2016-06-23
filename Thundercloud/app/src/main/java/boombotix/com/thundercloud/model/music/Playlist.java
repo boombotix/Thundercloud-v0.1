@@ -10,6 +10,7 @@ public class Playlist implements MusicListItem {
     private String name;
     private String artworkUrl;
     private String uri;
+    private Service service;
 
     @Override
     public String getTitle() {
@@ -34,6 +35,11 @@ public class Playlist implements MusicListItem {
     @Override
     public String getSubtitle2() {
         return null;
+    }
+
+    @Override
+    public Service getService() {
+        return service;
     }
 
     public void setName(String name) {

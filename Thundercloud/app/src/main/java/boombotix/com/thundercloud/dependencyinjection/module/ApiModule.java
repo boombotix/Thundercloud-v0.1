@@ -1,14 +1,15 @@
 package boombotix.com.thundercloud.dependencyinjection.module;
 
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
-import boombotix.com.thundercloud.authentication.AuthManager;
-import boombotix.com.thundercloud.houndify.HoundifyHelper;
+import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import dagger.Module;
 import dagger.Provides;
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -39,14 +40,33 @@ public class ApiModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient() {
-        return new OkHttpClient();
+        OkHttpClient client = new OkHttpClient();
+
+        if(BuildConfig.DEBUG){
+            client.networkInterceptors().add(new StethoInterceptor());
+        }
+        
+        return client;
     }
 
     @Provides
     @Singleton
-    RestAdapter provideRestAdapter(Client client, Gson gson) {
+    @Named("SpotifyApiRestAdapter")
+    RestAdapter provideApiRestAdapter(Client client, Gson gson) {
+        return restAdapterWithUrl(client, gson, BuildConfig.SPOTIFY_API_BASE);
+    }
+
+    @Provides
+    @Singleton
+    @Named("SpotifyAuthRestAdapter")
+    RestAdapter provideAuthRestAdapter(Client client, Gson gson) {
+        return restAdapterWithUrl(client, gson, BuildConfig.SPOTIFY_AUTH_URL);
+    }
+
+    private RestAdapter restAdapterWithUrl(Client client, Gson gson, String baseUrl){
         return new RestAdapter.Builder()
-                .setEndpoint(BuildConfig.SPOTIFY_API_BASE)
+                .setEndpoint(baseUrl)
+                .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                 .setClient(client)
                 .setConverter(new GsonConverter(gson))
                 .build();
@@ -54,8 +74,14 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    SpotifyAuthenticationEndpoint provideSpotifyEndpoint(RestAdapter restAdapter) {
+    SpotifyAuthenticationEndpoint provideSpotifyAuthEndpoint(@Named("SpotifyAuthRestAdapter") RestAdapter restAdapter) {
         return restAdapter.create(SpotifyAuthenticationEndpoint.class);
+    }
+
+    @Provides
+    @Singleton
+    SpotifyTrackEndpoint providesSpotifyTrackEndpoint(@Named("SpotifyApiRestAdapter") RestAdapter restAdapter){
+        return restAdapter.create(SpotifyTrackEndpoint.class);
     }
 
     @Provides
@@ -68,12 +94,5 @@ public class ApiModule {
     @Singleton
     SpotifyService provideSpotifyService(SpotifyApi spotifyApi) {
         return spotifyApi.getService();
-    }
-
-    @Provides
-    @Singleton
-    HoundifyHelper houndifyHelper(){
-        return new HoundifyHelper();
-
     }
 }

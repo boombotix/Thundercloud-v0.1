@@ -2,9 +2,12 @@ package boombotix.com.thundercloud;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import boombotix.com.thundercloud.dependencyinjection.component.ApplicationComponent;
+import timber.log.Timber;
 
 /**
  * Application extension for Thundercloud app. Responsible for global initializations.
@@ -19,6 +22,12 @@ public class ThundercloudApplication extends Application {
     public void onCreate() {
         super.onCreate();
         JodaTimeAndroid.init(this);
+
+        if(BuildConfig.DEBUG){
+            Timber.plant(new Timber.DebugTree());
+            Stetho.initializeWithDefaults(this);
+        }
+
         buildComponent();
     }
 

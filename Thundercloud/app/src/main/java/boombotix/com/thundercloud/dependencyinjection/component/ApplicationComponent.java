@@ -1,12 +1,14 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
-import com.google.gson.Gson;
-
 import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
+import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.bluetooth.BluetoothMessageWrapper;
 import boombotix.com.thundercloud.bluetooth.authentication.BoombotAuthenticationBluetoothEndpoint;
@@ -17,7 +19,13 @@ import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.BluetoothModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
-import boombotix.com.thundercloud.houndify.HoundifyHelper;
+import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
+import boombotix.com.thundercloud.houndify.response.HoundifyDeserializer;
+import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
+import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
+import boombotix.com.thundercloud.playback.MusicControls;
+import boombotix.com.thundercloud.playback.PlaybackQueue;
+import boombotix.com.thundercloud.playback.SpotifyPlayer;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -79,5 +87,21 @@ public interface ApplicationComponent {
 
     MockAuthenticationEndpoint mockAuthenticationEndpoint();
 
-    HoundifyHelper houndifyHelper();
+    HoundifyResponseParser houndifyHelper();
+
+    HoundifyModelExtractor houndifyModelExtractor();
+
+    HoundifyDeserializer houndifyDeserializer();
+
+    HoundifyRequestTransformer houndifyRequestAdapter();
+
+    PlaybackQueue playbackQueue();
+
+    MusicControls musicControls();
+
+    SpotifyPlayer spotifyPlayer();
+
+    SpotifyTrackEndpoint trackEndpoint();
+
+    SpotifyAuthenticationEndpoint authenticationEndpoint();
 }
