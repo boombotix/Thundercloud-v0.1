@@ -16,11 +16,15 @@ import timber.log.Timber;
  */
 public class ThundercloudApplication extends Application {
 
+    private static ThundercloudApplication application;
     ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        application = this;
+
         JodaTimeAndroid.init(this);
 
         if(BuildConfig.DEBUG){
@@ -29,6 +33,10 @@ public class ThundercloudApplication extends Application {
         }
 
         buildComponent();
+    }
+
+    public static ThundercloudApplication instance(){
+        return application;
     }
 
     public ApplicationComponent getApplicationComponent() {

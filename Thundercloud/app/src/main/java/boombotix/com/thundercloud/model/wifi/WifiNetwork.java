@@ -1,6 +1,6 @@
 package boombotix.com.thundercloud.model.wifi;
 
-import boombotix.com.thundercloud.model.wifi.WifiCredentials;
+import hugo.weaving.DebugLog;
 
 /**
  * Class containing wif network data retrieved from speaker.
@@ -54,5 +54,35 @@ public class WifiNetwork {
 
     public void setCredentials(WifiCredentials credentials) {
         this.credentials = credentials;
+    }
+
+    @Override
+    @DebugLog
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        return this.equals((WifiNetwork)o);
+    }
+
+    private boolean equals(WifiNetwork wifiNetwork){
+        return this.ssid.equals(wifiNetwork.getSsid());
+    }
+
+    @Override
+    @DebugLog
+    public int hashCode() {
+        return ssid != null ? ssid.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "WifiNetwork{" +
+                "ssid='" + ssid + '\'' +
+                ", strength=" + strength +
+                ", securityType='" + securityType + '\'' +
+                ", credentials=" + credentials +
+                ", hashCode=" + hashCode() +
+                '}';
     }
 }

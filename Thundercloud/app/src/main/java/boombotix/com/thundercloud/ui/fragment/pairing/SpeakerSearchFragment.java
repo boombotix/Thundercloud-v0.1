@@ -1,10 +1,13 @@
 package boombotix.com.thundercloud.ui.fragment.pairing;
 
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.ParcelUuid;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.UUID;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ui.activity.SpeakerPairingActivity;
@@ -20,6 +27,7 @@ import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
+import timber.log.Timber;
 
 /**
  * Fragment that scans for boombots and presents a list of them to the user, reports selected device
@@ -34,6 +42,8 @@ public class SpeakerSearchFragment extends BaseFragment {
 
         void onSpeakerSelected(BluetoothDevice device);
     }
+
+    static final UUID SPP_STANDARD_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
     @Bind(R.id.speaker_list)
     ListView speakerListView;
@@ -52,7 +62,7 @@ public class SpeakerSearchFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_speaker_search, container, false);
         ButterKnife.bind(this, view);
 
@@ -67,6 +77,7 @@ public class SpeakerSearchFragment extends BaseFragment {
      */
     private void initSpeakerList() {
         speakerAdapter = new ArrayAdapter<>(getContext(), R.layout.row_speaker, R.id.speaker_name, new ArrayList<>());
+        speakers = new ArrayList<>();
         speakerListView.setAdapter(speakerAdapter);
         speakerListView.setOnItemClickListener(speakerClickListener);
     }
@@ -77,19 +88,18 @@ public class SpeakerSearchFragment extends BaseFragment {
      */
     @DebugLog
     private void startSpeakerBleScan() {
-        speakers = new ArrayList<>();
-        showScanView();
-        //todo start ble scan
-        //todo subscribe to ble results
-        //todo on each ble result, add to adapter and speakers
-        Handler handler = new Handler();
-        Runnable runnable = () -> {
-            speakerAdapter.add("Boombot 1");
-            speakerAdapter.add("Boombot 2");
-            speakerAdapter.add("Boombot 3");
-            speakerAdapter.add("Boombot 4");
-        };
-        handler.postDelayed(runnable, 1000);
+        Set<BluetoothDevice> devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+
+        for (BluetoothDevice device : devices) {
+            Log.d(this.getClass().getName(), String.format("Name: %s, Address: %s, Type: %s, Class: %s",
+                    device.getName(), device.getAddress(), device.getType(),
+                    device.getBluetoothClass() != null ? device.getBluetoothClass().getDeviceClass() : ""));
+
+            if (device.getName() != null) {
+                speakerAdapter.add(device.getName());
+                speakers.add(device);
+            }
+        }
     }
 
     /**
@@ -122,8 +132,41 @@ public class SpeakerSearchFragment extends BaseFragment {
      */
     private AdapterView.OnItemClickListener speakerClickListener = (parent, view, position, id) -> {
         //todo stop scan
-        //BluetoothDevice selectedDevice = speakers.get(position);
-        onSpeakerSelectedListener.onSpeakerSelected(null);
+        BluetoothDevice selectedDevice = speakers.get(position);
+        onSpeakerSelectedListener.onSpeakerSelected(speakers.get(position));
+
+        try {
+
+            for (ParcelUuid uuid : selectedDevice.getUuids()) {
+                if (uuid.getUuid().equals(SPP_STANDARD_UUID)) {
+                    Timber.d("Found SPP service");
+                }
+            }
+
+            selectedDevice.setPin("0000".getBytes(Charset.forName("ASCII").displayName()));
+
+            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+            BluetoothSocket socket = selectedDevice.createRfcommSocketToServiceRecord(SPP_STANDARD_UUID);
+
+            socket = (BluetoothSocket) selectedDevice.getClass().getMethod("createRfcommSocket", new Class[]{int.class}).invoke(selectedDevice, 2);
+            socket.connect();
+
+            Timber.d("Is connected: " + socket.isConnected() + " on UUID " + SPP_STANDARD_UUID);
+
+            byte[] buffer = ("WIFI: WPA:Hyperfighting" + Character.toString((char) 7) + "happytrail219\0").getBytes(Charset.forName("ASCII").displayName());
+            OutputStream stream = socket.getOutputStream();
+
+            stream.write(buffer);
+            stream.flush();
+
+            // todo get result back from speaker before closing
+            stream.close();
+        } catch (Throwable t) {
+            Timber.e(t.getMessage());
+            t.printStackTrace();
+        }
+
+        Timber.d(String.format("Clicked %s", speakers.get(position)));
     };
 
     @Override

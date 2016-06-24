@@ -26,6 +26,8 @@ import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
 import boombotix.com.thundercloud.playback.MusicControls;
 import boombotix.com.thundercloud.playback.PlaybackQueue;
 import boombotix.com.thundercloud.playback.SpotifyPlayer;
+import boombotix.com.thundercloud.wifi.WifiScanResultsBroadcastReciever;
+import boombotix.com.thundercloud.wifi.WifiScanResultsObservableContract;
 import dagger.Component;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -67,6 +69,8 @@ public interface ApplicationComponent {
         }
     }
 
+    void inject(WifiScanResultsBroadcastReciever reciever);
+
     Gson gson();
 
     SpotifyApi spotifyApi();
@@ -104,4 +108,6 @@ public interface ApplicationComponent {
     SpotifyTrackEndpoint trackEndpoint();
 
     SpotifyAuthenticationEndpoint authenticationEndpoint();
+
+    WifiScanResultsObservableContract wifiScanResultObservable();
 }

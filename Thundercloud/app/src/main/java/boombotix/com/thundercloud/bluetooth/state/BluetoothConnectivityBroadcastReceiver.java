@@ -14,7 +14,7 @@ import timber.log.Timber;
  *
  * Created by kriedema on 6/14/16.
  */
-public class BluetoothBroadcastReceiver extends BroadcastReceiver {
+public class BluetoothConnectivityBroadcastReceiver extends BroadcastReceiver {
     private final int COULDNT_GET_STATE_FROM_EXTRAS = -1;
 
     @Override

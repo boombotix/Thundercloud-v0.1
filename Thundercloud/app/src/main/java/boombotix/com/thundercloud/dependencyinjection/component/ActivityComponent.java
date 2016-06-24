@@ -11,6 +11,7 @@ import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
+import boombotix.com.thundercloud.ui.fragment.wifi.WifiListFragment;
 import dagger.Component;
 
 /**
@@ -48,4 +49,5 @@ public interface ActivityComponent {
     void inject(VoiceSearchResultFragment voiceSearchResultFragment);
     void inject(NowPlayingFragment nowPlayingFragment);
     void inject(MusicServiceSetupActivity musicServiceSetupActivity);
+    void inject(WifiListFragment wifiListFragment);
 }
