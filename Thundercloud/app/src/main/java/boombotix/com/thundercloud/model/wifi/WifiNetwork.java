@@ -1,7 +1,5 @@
 package boombotix.com.thundercloud.model.wifi;
 
-import hugo.weaving.DebugLog;
-
 /**
  * Class containing wif network data retrieved from speaker.
  *
@@ -57,7 +55,6 @@ public class WifiNetwork {
     }
 
     @Override
-    @DebugLog
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -70,7 +67,6 @@ public class WifiNetwork {
     }
 
     @Override
-    @DebugLog
     public int hashCode() {
         return ssid != null ? ssid.hashCode() : 0;
     }

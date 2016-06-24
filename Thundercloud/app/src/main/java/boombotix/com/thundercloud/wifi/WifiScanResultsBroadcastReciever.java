@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.dependencyinjection.component.ApplicationComponent;
 import boombotix.com.thundercloud.model.wifi.WifiNetwork;
-import hugo.weaving.DebugLog;
 import rx.Observable;
 
 /**
@@ -81,7 +80,6 @@ public class WifiScanResultsBroadcastReciever extends BroadcastReceiver {
      * @return
      *      The WifiNetwork object containing a subset of the data from the ScanResult
      */
-    @DebugLog
     private WifiNetwork mapScanResult(ScanResult scanResult) {
         if(scanResult.SSID.equals("")) scanResult.SSID = "[Unknown Network]";
 

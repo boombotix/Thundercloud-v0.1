@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.ParcelUuid;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,10 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.UUID;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.model.constants.BluetoothConstants;
 import boombotix.com.thundercloud.ui.activity.SpeakerPairingActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
@@ -42,8 +44,6 @@ public class SpeakerSearchFragment extends BaseFragment {
 
         void onSpeakerSelected(BluetoothDevice device);
     }
-
-    static final UUID SPP_STANDARD_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
     @Bind(R.id.speaker_list)
     ListView speakerListView;
@@ -95,7 +95,10 @@ public class SpeakerSearchFragment extends BaseFragment {
                     device.getName(), device.getAddress(), device.getType(),
                     device.getBluetoothClass() != null ? device.getBluetoothClass().getDeviceClass() : ""));
 
-            if (device.getName() != null) {
+            if (device.getName() != null &&
+                    (device.getName().contains(BluetoothConstants.BOOMBOT_BASE_NAME) ||
+                            device.getName().contains(BluetoothConstants.TEST_HARDWARE_BASE_NAME))) {
+
                 speakerAdapter.add(device.getName());
                 speakers.add(device);
             }
@@ -138,20 +141,19 @@ public class SpeakerSearchFragment extends BaseFragment {
         try {
 
             for (ParcelUuid uuid : selectedDevice.getUuids()) {
-                if (uuid.getUuid().equals(SPP_STANDARD_UUID)) {
+                if (uuid.getUuid().equals(BluetoothConstants.SPP_STANDARD_UUID)) {
                     Timber.d("Found SPP service");
+                    PreferenceManager.getDefaultSharedPreferences(ThundercloudApplication.instance())
+                            .edit().putString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, selectedDevice.getAddress());
                 }
             }
 
-            selectedDevice.setPin("0000".getBytes(Charset.forName("ASCII").displayName()));
-
+            // system can start discovery at any time, it's good practice to cancel before using bluetooth
             BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-            BluetoothSocket socket = selectedDevice.createRfcommSocketToServiceRecord(SPP_STANDARD_UUID);
-
-            socket = (BluetoothSocket) selectedDevice.getClass().getMethod("createRfcommSocket", new Class[]{int.class}).invoke(selectedDevice, 2);
+            BluetoothSocket socket = selectedDevice.createRfcommSocketToServiceRecord(BluetoothConstants.SPP_STANDARD_UUID);
             socket.connect();
 
-            Timber.d("Is connected: " + socket.isConnected() + " on UUID " + SPP_STANDARD_UUID);
+            Timber.d("Is connected: " + socket.isConnected() + " on UUID " + BluetoothConstants.SPP_STANDARD_UUID);
 
             byte[] buffer = ("WIFI: WPA:Hyperfighting" + Character.toString((char) 7) + "happytrail219\0").getBytes(Charset.forName("ASCII").displayName());
             OutputStream stream = socket.getOutputStream();

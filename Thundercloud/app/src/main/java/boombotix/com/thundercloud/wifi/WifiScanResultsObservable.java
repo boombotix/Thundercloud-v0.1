@@ -7,7 +7,6 @@ import java.util.List;
 import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.model.wifi.WifiNetwork;
-import hugo.weaving.DebugLog;
 import rx.Observable;
 import rx.subjects.ReplaySubject;
 import rx.subjects.Subject;
@@ -27,14 +26,12 @@ public class WifiScanResultsObservable implements WifiScanResultsObservableContr
     }
 
     @Override
-    @DebugLog
     @RxLogObservable
     public Observable<List<WifiNetwork>> getScanResults() {
         return subject.asObservable();
     }
 
     @Override
-    @DebugLog
     @RxLogObservable
     public Subject<List<WifiNetwork>, List<WifiNetwork>> getScanResultsSubject() {
         return subject;

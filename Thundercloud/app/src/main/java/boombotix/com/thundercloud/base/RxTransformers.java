@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
  */
 public class RxTransformers {
     static final Observable.Transformer schedulersTransformer =
-            observable -> observable.subscribeOn(Schedulers.io())
+            observable -> ((Observable<Object>)observable).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
     @SuppressWarnings("unchecked")
