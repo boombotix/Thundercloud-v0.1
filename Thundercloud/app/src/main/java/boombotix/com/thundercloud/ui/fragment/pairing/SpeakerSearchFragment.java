@@ -3,7 +3,6 @@ package boombotix.com.thundercloud.ui.fragment.pairing;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.ParcelUuid;
@@ -16,8 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -144,31 +141,19 @@ public class SpeakerSearchFragment extends BaseFragment {
                 if (uuid.getUuid().equals(BluetoothConstants.SPP_STANDARD_UUID)) {
                     Timber.d("Found SPP service");
                     PreferenceManager.getDefaultSharedPreferences(ThundercloudApplication.instance())
-                            .edit().putString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, selectedDevice.getAddress());
+                            .edit().putString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, selectedDevice.getAddress())
+                            .apply();
+
+                    return;
                 }
             }
 
-            // system can start discovery at any time, it's good practice to cancel before using bluetooth
-            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-            BluetoothSocket socket = selectedDevice.createRfcommSocketToServiceRecord(BluetoothConstants.SPP_STANDARD_UUID);
-            socket.connect();
+            throw new RuntimeException("No bluetooth devices are supported");
 
-            Timber.d("Is connected: " + socket.isConnected() + " on UUID " + BluetoothConstants.SPP_STANDARD_UUID);
-
-            byte[] buffer = ("WIFI: WPA:Hyperfighting" + Character.toString((char) 7) + "happytrail219\0").getBytes(Charset.forName("ASCII").displayName());
-            OutputStream stream = socket.getOutputStream();
-
-            stream.write(buffer);
-            stream.flush();
-
-            // todo get result back from speaker before closing
-            stream.close();
         } catch (Throwable t) {
             Timber.e(t.getMessage());
             t.printStackTrace();
         }
-
-        Timber.d(String.format("Clicked %s", speakers.get(position)));
     };
 
     @Override

@@ -10,11 +10,8 @@ import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
 import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import boombotix.com.thundercloud.authentication.AuthManager;
-import boombotix.com.thundercloud.bluetooth.BluetoothMessageWrapper;
-import boombotix.com.thundercloud.bluetooth.authentication.BoombotAuthenticationBluetoothEndpoint;
-import boombotix.com.thundercloud.bluetooth.authentication.MockAuthenticationEndpoint;
-import boombotix.com.thundercloud.bluetooth.playback.BoombotMusicPlaybackBluetoothEndpoint;
-import boombotix.com.thundercloud.bluetooth.wifi.BoombotWifiBluetoothEndpoint;
+import boombotix.com.thundercloud.bluetooth.connection.BluetoothClassicConnection;
+import boombotix.com.thundercloud.bluetooth.wifi.CredentialsFormatter;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.BluetoothModule;
@@ -81,16 +78,6 @@ public interface ApplicationComponent {
 
     SpotifyService spotifyService();
 
-    BoombotAuthenticationBluetoothEndpoint authenticationBoombotBluetoothEndpoint();
-
-    BoombotMusicPlaybackBluetoothEndpoint musicPlaybackBoombotBluetoothEndpoint();
-
-    BoombotWifiBluetoothEndpoint wifiBoombotBluetoothEndpoint();
-
-    BluetoothMessageWrapper bluetoothMessageWrapper();
-
-    MockAuthenticationEndpoint mockAuthenticationEndpoint();
-
     HoundifyResponseParser houndifyHelper();
 
     HoundifyModelExtractor houndifyModelExtractor();
@@ -110,4 +97,8 @@ public interface ApplicationComponent {
     SpotifyAuthenticationEndpoint authenticationEndpoint();
 
     WifiScanResultsObservableContract wifiScanResultObservable();
+
+    BluetoothClassicConnection bluetoothClassicConnection();
+
+    CredentialsFormatter credentialsFormatter();
 }

@@ -45,7 +45,7 @@
         <activity
             android:name=".ui.activity.MusicServiceSetupActivity"
             android:label="@string/title_activity_music_service_setup" />
-        <receiver android:name=".bluetooth.state.BluetoothConnectivityBroadcastReceiver">
+        <receiver android:name=".bluetooth.state.state.BluetoothConnectivityBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
                 <action android:name="android.bluetooth.adapter.action.CONNECTION_STATE_CHANGED" />
