@@ -13,6 +13,8 @@ import okio.BufferedSource;
 import okio.Okio;
 
 /**
+ * Creates a BluetoothSocket with a given speaker and returns the stream wrapped in an okio buffer
+ *
  * Created by kriedema on 6/24/16.
  */
 public class SpeakerBluetoothConnection implements BluetoothClassicConnection {

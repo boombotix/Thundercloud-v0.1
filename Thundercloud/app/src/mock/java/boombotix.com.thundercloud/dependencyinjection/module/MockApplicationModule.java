@@ -32,12 +32,12 @@ import dagger.Provides;
 /**
  * Created by kenton on 1/25/16.
  */
-@Module(includes = BluetoothModule.class)
-public class ApplicationModule {
+@Module(includes = MockBluetoothModule.class)
+public class MockApplicationModule {
     private static final String PREFNAME = "boombotix.com.thundercloud";
     private Application application;
 
-    public ApplicationModule(ThundercloudApplication application) {
+    public MockApplicationModule(ThundercloudApplication application) {
         this.application = application;
     }
 

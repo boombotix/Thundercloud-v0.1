@@ -10,4 +10,8 @@ public class BluetoothConstants {
     public static final String BOOMBOT_BASE_NAME = "Boombot";
     public static final String TEST_HARDWARE_BASE_NAME = "beaglebone";
     public static final String BOOMBOT_SHAREDPREF_KEY = "PairedDevice";
+
+    public static final byte SUCCESS = 0x1;
+    public static final byte ERROR = 0x2;
+    public static final byte TIMEOUT = 0x4;
 }

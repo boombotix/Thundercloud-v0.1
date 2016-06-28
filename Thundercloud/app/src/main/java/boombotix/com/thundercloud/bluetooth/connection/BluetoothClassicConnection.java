@@ -7,6 +7,8 @@ import okio.BufferedSink;
 import okio.BufferedSource;
 
 /**
+ * Wrapper around out Bluetooth connection that returns okio buffers.
+ *
  * Created by kriedema on 6/24/16.
  */
 public interface BluetoothClassicConnection {

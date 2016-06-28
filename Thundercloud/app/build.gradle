@@ -41,8 +41,16 @@ android {
     productFlavors {
         dev {
             minSdkVersion 21
+            ndk {
+                abiFilter "armeabi-v7a"
+            }
         }
-        production {}
+        production {
+            ndk {
+                abiFilter "armeabi-v7a"
+            }
+        }
+        mock { }
     }
 
     buildTypes {
@@ -63,11 +71,6 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
-    }
-
-    productFlavors {
-        armv7 { ndk { abiFilter "armeabi-v7a" } }
-        fat
     }
 }
 

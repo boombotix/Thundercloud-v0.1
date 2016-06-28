@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,7 +149,7 @@ public class SpeakerSearchFragment extends BaseFragment {
                 }
             }
 
-            throw new RuntimeException("No bluetooth devices are supported");
+            Snackbar.make(view, "Bluetooth device is not supported", Snackbar.LENGTH_LONG).show();
 
         } catch (Throwable t) {
             Timber.e(t.getMessage());

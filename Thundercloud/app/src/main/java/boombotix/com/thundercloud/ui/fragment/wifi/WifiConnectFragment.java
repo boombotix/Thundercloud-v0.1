@@ -22,6 +22,10 @@ import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import okio.BufferedSink;
+import okio.BufferedSource;
+import rx.Observable;
+import rx.exceptions.Exceptions;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
@@ -48,6 +52,8 @@ public class WifiConnectFragment extends BaseFragment {
     private String speakerName;
 
     private String password;
+
+    private String macAddress;
 
     private WifiConnectFragmentCallbacks listener;
 
@@ -79,6 +85,10 @@ public class WifiConnectFragment extends BaseFragment {
             speakerName = getArguments().getString(ARG_SPEAKER_NAME);
             password = getArguments().getString(ARG_PASSWORD);
         }
+
+        this.macAddress = PreferenceManager
+                .getDefaultSharedPreferences(ThundercloudApplication.instance())
+                .getString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, "");
     }
 
     @Override
@@ -113,11 +123,8 @@ public class WifiConnectFragment extends BaseFragment {
      * WifiConnectFragmentCallbacks} after completion.
      */
     private void connectSpeakerToNetwork() {
+        subscribeToSpeakerResult();
         byte[] binaryCredentials = credentialsFormatter.prepareCredentialsForSpeaker(networkName, password);
-
-        String macAddress = PreferenceManager
-                .getDefaultSharedPreferences(ThundercloudApplication.instance())
-                .getString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, "");
 
         try {
             BufferedSink bufferedSink = speakerConnection.outputBuffer(macAddress);
@@ -129,6 +136,50 @@ public class WifiConnectFragment extends BaseFragment {
             e.printStackTrace();
             listener.onWifiConnectFailure();
         }
+    }
+
+    private void subscribeToSpeakerResult(){
+        compositeSubscription.add(
+            Observable.just(macAddress)
+                .map(input -> {
+                    try {
+                        BufferedSource source = speakerConnection.inputBuffer(macAddress);
+                        return source.readByte();
+                    } catch (Throwable t){
+                        throw Exceptions.propagate(t);
+                    }
+                })
+                .subscribe(this::readInput, this::logError));
+    }
+
+    private void readInput(byte output){
+        switch (output){
+            case BluetoothConstants.SUCCESS:
+                communicationSuccess();
+                break;
+            case BluetoothConstants.ERROR:
+                communicationError();
+                break;
+            case BluetoothConstants.TIMEOUT:
+                communicationTimeout();
+                break;
+        }
+    }
+
+    private void communicationSuccess(){
+
+    }
+
+    private void communicationError(){
+
+    }
+
+    private void communicationTimeout(){
+
+    }
+
+    private void logError(Throwable throwable){
+        Timber.e(throwable, throwable.getMessage());
     }
 
     @Override
