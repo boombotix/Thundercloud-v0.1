@@ -2,8 +2,6 @@ package boombotix.com.thundercloud;
 
 import android.app.Application;
 
-import com.facebook.stetho.Stetho;
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import boombotix.com.thundercloud.dependencyinjection.component.ApplicationComponent;
@@ -25,7 +23,7 @@ public class ThundercloudApplication extends Application {
 
         if(BuildConfig.DEBUG){
             Timber.plant(new Timber.DebugTree());
-            Stetho.initializeWithDefaults(this);
+//            Stetho.initializeWithDefaults(this);
         }
 
         buildComponent();
