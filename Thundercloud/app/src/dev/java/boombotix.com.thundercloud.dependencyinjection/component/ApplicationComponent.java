@@ -7,6 +7,7 @@ import boombotix.com.thundercloud.dependencyinjection.ThundercloudGraph;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
 import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.BluetoothModule;
+import boombotix.com.thundercloud.dependencyinjection.module.OverrideBluetoothModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
 import dagger.Component;
 
@@ -37,7 +38,7 @@ public interface ApplicationComponent extends ThundercloudGraph {
             return DaggerApplicationComponent.builder()
                     .applicationModule(new ApplicationModule(application))
                     .apiModule(new ApiModule())
-                    .bluetoothModule(new BluetoothModule())
+                    .bluetoothModule(new OverrideBluetoothModule())
                     .repositoryModule(new RepositoryModule(application))
                     .build();
         }
