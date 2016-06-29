@@ -24,7 +24,8 @@ import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 
 /**
- * Created by kriedema on 6/27/16.
+ * General contract for all of our application level dagger components to implement.
+ * This lets us have a different application component per build variant
  */
 public interface ThundercloudGraph {
 

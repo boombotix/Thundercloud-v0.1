@@ -11,7 +11,7 @@ public abstract class ApplicationInitializer {
     void init(Application application){
         JodaTimeAndroid.init(application);
 
-
+        variantSpecificInitialization(application);
     }
 
     abstract void variantSpecificInitialization(Application application);

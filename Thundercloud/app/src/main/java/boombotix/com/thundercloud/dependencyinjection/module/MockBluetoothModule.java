@@ -4,7 +4,10 @@ import boombotix.com.thundercloud.bluetooth.connection.BluetoothClassicConnectio
 import boombotix.com.thundercloud.bluetooth.connection.MockBluetoothConnection;
 
 /**
- * Created by kriedema on 6/28/16.
+ * Overrides the BluetoothClassicConection provider from the BluetoothModule.
+ *
+ * The MockBluetoothConnection returns random results in the absense of an actual connection,
+ * so we can continue UI development while the bluetooth spec is being solidified
  */
 public class MockBluetoothModule extends BluetoothModule {
     @Override

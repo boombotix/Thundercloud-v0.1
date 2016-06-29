@@ -66,6 +66,14 @@ public class WifiNetwork {
         return this.ssid.equals(wifiNetwork.getSsid());
     }
 
+    /**
+     * Returns the has code of the SSID. For our purposes, we need to ignore signal stentgh and credentials
+     * when checking equality of networks. Otherwise we show duplicate SSIDs to the user that make
+     * up a larger network.
+     *
+     * @return
+     *  the hash code of the object
+     */
     @Override
     public int hashCode() {
         return ssid != null ? ssid.hashCode() : 0;

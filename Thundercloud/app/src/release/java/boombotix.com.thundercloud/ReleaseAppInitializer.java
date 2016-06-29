@@ -5,7 +5,9 @@ import android.app.Application;
 import javax.inject.Inject;
 
 /**
- * Created by kriedema on 6/28/16.
+ * ApplicationInitializer that does anything specific to release builds.
+ *
+ * Empty right now, but it doesn't bring in all of our debug dependencies
  */
 public class ReleaseAppInitializer extends ApplicationInitializer {
     @Inject

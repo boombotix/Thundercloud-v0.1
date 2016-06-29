@@ -20,6 +20,8 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
+ * Returns all of our API dependencies with more verbose log levels, and Stetho and stuff
+ *
  * Created by kenton on 1/24/16.
  */
 @Module
@@ -42,9 +44,9 @@ public class ApiModule {
     OkHttpClient provideOkHttpClient() {
         OkHttpClient client = new OkHttpClient();
 
-        if(BuildConfig.DEBUG){
-            client.networkInterceptors().add(new StethoInterceptor());
-        }
+        // this version of stetho is marked deprecated, but it's stable and it's the last release
+        // that supports OkHttp version 2
+        client.networkInterceptors().add(new StethoInterceptor());
         
         return client;
     }
@@ -66,7 +68,7 @@ public class ApiModule {
     private RestAdapter restAdapterWithUrl(Client client, Gson gson, String baseUrl){
         return new RestAdapter.Builder()
                 .setEndpoint(baseUrl)
-                .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setClient(client)
                 .setConverter(new GsonConverter(gson))
                 .build();

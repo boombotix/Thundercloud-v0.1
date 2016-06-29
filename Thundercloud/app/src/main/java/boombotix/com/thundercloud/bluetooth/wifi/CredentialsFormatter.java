@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import hugo.weaving.DebugLog;
 
 /**
- * Created by kriedema on 6/24/16.
+ * Class that takes an SSID and a WPA password and formats them in a way that we can send to a speaker
  */
 public class CredentialsFormatter {
     static final String formattableString = "WIFI: WPA:%s%s%s\0";

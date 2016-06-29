@@ -8,9 +8,6 @@ import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import rx.Observable;
 import rx.subjects.Subject;
 
-/**
- * Created by kriedema on 6/23/16.
- */
 @Singleton
 public interface WifiScanResultsObservableContract {
     Observable<List<WifiNetwork>> getScanResults();

@@ -27,6 +27,8 @@ public class ThundercloudApplication extends Application {
         application = this;
 
         buildComponentAndInject();
+
+        applicationInitializer.init(this);
     }
 
     public static ThundercloudApplication instance(){

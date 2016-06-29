@@ -9,6 +9,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * ApplicationModule that doesn't bring in any debugging dependencies
+ *
  * Created by kriedema on 6/29/16.
  */
 @Module(includes = BluetoothModule.class)

@@ -19,6 +19,8 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
+ * API module that doesn't add logging interceptors
+ *
  * Created by kenton on 1/24/16.
  */
 @Module
