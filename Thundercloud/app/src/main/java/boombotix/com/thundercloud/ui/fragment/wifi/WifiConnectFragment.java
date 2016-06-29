@@ -3,6 +3,7 @@ package boombotix.com.thundercloud.ui.fragment.wifi;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,15 +168,15 @@ public class WifiConnectFragment extends BaseFragment {
     }
 
     private void communicationSuccess(){
-
+        Snackbar.make(message, "Connection successful", Snackbar.LENGTH_LONG).show();
     }
 
     private void communicationError(){
-
+        Snackbar.make(message, "Connection error", Snackbar.LENGTH_LONG).show();
     }
 
     private void communicationTimeout(){
-
+        Snackbar.make(message, "Connection timeout", Snackbar.LENGTH_LONG).show();
     }
 
     private void logError(Throwable throwable){
