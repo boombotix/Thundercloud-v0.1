@@ -41,6 +41,7 @@ public class SpeakerSearchFragment extends BaseFragment {
     public interface OnSpeakerSelectedListener {
 
         void onSpeakerSelected(BluetoothDevice device);
+        void onSelectionSkipped();
     }
 
     @Bind(R.id.speaker_list)
@@ -93,13 +94,13 @@ public class SpeakerSearchFragment extends BaseFragment {
                     device.getName(), device.getAddress(), device.getType(),
                     device.getBluetoothClass() != null ? device.getBluetoothClass().getDeviceClass() : ""));
 
-            if (device.getName() != null &&
-                    (device.getName().contains(BluetoothConstants.BOOMBOT_BASE_NAME) ||
-                            device.getName().contains(BluetoothConstants.TEST_HARDWARE_BASE_NAME))) {
+//            if (device.getName() != null &&
+//                    (device.getName().contains(BluetoothConstants.BOOMBOT_BASE_NAME) ||
+//                            device.getName().contains(BluetoothConstants.TEST_HARDWARE_BASE_NAME))) {
 
                 speakerAdapter.add(device.getName());
                 speakers.add(device);
-            }
+//            }
         }
     }
 
@@ -134,7 +135,6 @@ public class SpeakerSearchFragment extends BaseFragment {
     private AdapterView.OnItemClickListener speakerClickListener = (parent, view, position, id) -> {
         //todo stop scan
         BluetoothDevice selectedDevice = speakers.get(position);
-        onSpeakerSelectedListener.onSpeakerSelected(speakers.get(position));
 
         try {
 
@@ -145,11 +145,13 @@ public class SpeakerSearchFragment extends BaseFragment {
                             .edit().putString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, selectedDevice.getAddress())
                             .apply();
 
+                    onSpeakerSelectedListener.onSpeakerSelected(speakers.get(position));
                     return;
                 }
             }
 
-            Snackbar.make(view, "Bluetooth device is not supported", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, "Bluetooth device is not supported", Snackbar.LENGTH_LONG)
+                    .setAction("Skip", t -> onSpeakerSelectedListener.onSelectionSkipped()).show();
 
         } catch (Throwable t) {
             Timber.e(t.getMessage());

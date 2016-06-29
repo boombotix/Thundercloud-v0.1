@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.dependencyinjection.ThundercloudGraph;
 import boombotix.com.thundercloud.dependencyinjection.component.ActivityComponent;
-import boombotix.com.thundercloud.dependencyinjection.component.ApplicationComponent;
 
 /**
  * Created by kenton on 1/24/16.
@@ -25,8 +25,8 @@ public class BaseActivity extends AppCompatActivity {
         return this.activityComponent;
     }
 
-    public ApplicationComponent getApplicationComponent() {
-        return ((ThundercloudApplication) getApplication()).getApplicationComponent();
+    public ThundercloudGraph getThundercloudGraph() {
+        return ThundercloudApplication.instance().getThundercloudGraph();
     }
 
     /**

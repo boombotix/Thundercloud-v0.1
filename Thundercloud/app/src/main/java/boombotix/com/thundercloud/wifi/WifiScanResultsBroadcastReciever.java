@@ -13,7 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import boombotix.com.thundercloud.ThundercloudApplication;
-import boombotix.com.thundercloud.dependencyinjection.component.ApplicationComponent;
+import boombotix.com.thundercloud.dependencyinjection.ThundercloudGraph;
 import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import rx.Observable;
 
@@ -37,7 +37,7 @@ public class WifiScanResultsBroadcastReciever extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        ApplicationComponent component = ThundercloudApplication.instance().getApplicationComponent();
+        ThundercloudGraph component = ThundercloudApplication.instance().getThundercloudGraph();
         component.inject(this);
 
         WifiManager wifiManager = (WifiManager) ThundercloudApplication.instance().getSystemService(Context.WIFI_SERVICE);

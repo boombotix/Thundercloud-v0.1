@@ -22,6 +22,7 @@ public class SpeakerPairingActivity extends BaseActivity implements
         SpeakerSearchFragment.OnSpeakerSelectedListener {
 
     public static final int SUCCESS = 0;
+    public static final int SKIPPED = 1;
 
     @DebugLog
     @Override
@@ -44,6 +45,12 @@ public class SpeakerPairingActivity extends BaseActivity implements
     public void onSpeakerSelected(BluetoothDevice device) {
         //todo connect/store
         setResult(SUCCESS);
+        finish();
+    }
+
+    @Override
+    public void onSelectionSkipped() {
+        setResult(SKIPPED);
         finish();
     }
 

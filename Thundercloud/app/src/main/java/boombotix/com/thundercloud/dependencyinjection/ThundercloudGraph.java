@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import boombotix.com.thundercloud.ApplicationInitializer;
+import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
 import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import boombotix.com.thundercloud.authentication.AuthManager;
@@ -26,7 +28,11 @@ import kaaes.spotify.webapi.android.SpotifyService;
  */
 public interface ThundercloudGraph {
 
+    void inject(ThundercloudApplication thundercloudApplication);
+
     void inject(WifiScanResultsBroadcastReciever reciever);
+
+    ApplicationInitializer applicationInitializer();
 
     Gson gson();
 

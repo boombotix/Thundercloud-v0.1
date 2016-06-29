@@ -1,5 +1,6 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
+import boombotix.com.thundercloud.dependencyinjection.ThundercloudGraph;
 import boombotix.com.thundercloud.dependencyinjection.module.ActivityModule;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.activity.MusicServiceSetupActivity;
@@ -25,13 +26,13 @@ import dagger.Component;
  * Created by kenton on 1/24/16.
  */
 @PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
+@Component(dependencies = ThundercloudGraph.class, modules = ActivityModule.class)
 public interface ActivityComponent {
 
     final class Initializer {
         public static ActivityComponent init(BaseActivity activity) {
             return DaggerActivityComponent.builder()
-                    .applicationComponent(activity.getApplicationComponent())
+                    .thundercloudGraph(activity.getThundercloudGraph())
                     .activityModule(new ActivityModule(activity))
                     .build();
         }

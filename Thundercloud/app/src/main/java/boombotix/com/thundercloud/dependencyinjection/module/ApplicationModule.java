@@ -32,7 +32,7 @@ import dagger.Provides;
 /**
  * Created by kenton on 1/25/16.
  */
-@Module(includes = BluetoothModule.class)
+@Module
 public class ApplicationModule {
     private static final String PREFNAME = "boombotix.com.thundercloud";
     private Application application;

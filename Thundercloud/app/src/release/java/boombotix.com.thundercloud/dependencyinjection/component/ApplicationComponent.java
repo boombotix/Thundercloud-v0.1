@@ -5,9 +5,8 @@ import javax.inject.Singleton;
 import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.dependencyinjection.ThundercloudGraph;
 import boombotix.com.thundercloud.dependencyinjection.module.ApiModule;
-import boombotix.com.thundercloud.dependencyinjection.module.ApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.BluetoothModule;
-import boombotix.com.thundercloud.dependencyinjection.module.OverrideBluetoothModule;
+import boombotix.com.thundercloud.dependencyinjection.module.ProductionApplicationModule;
 import boombotix.com.thundercloud.dependencyinjection.module.RepositoryModule;
 import dagger.Component;
 
@@ -23,10 +22,9 @@ import dagger.Component;
 @Singleton
 @Component(modules =
         {
-                ApplicationModule.class,
+                ProductionApplicationModule.class,
                 RepositoryModule.class,
-                ApiModule.class,
-                BluetoothModule.class
+                ApiModule.class
         }
 )
 public interface ApplicationComponent extends ThundercloudGraph {
@@ -34,11 +32,11 @@ public interface ApplicationComponent extends ThundercloudGraph {
 
     final class Initializer {
 
-        public static ApplicationComponent init(ThundercloudApplication application) {
+        public static ThundercloudGraph init(ThundercloudApplication application) {
             return DaggerApplicationComponent.builder()
-                    .applicationModule(new ApplicationModule(application))
+                    .productionApplicationModule(new ProductionApplicationModule(application))
                     .apiModule(new ApiModule())
-                    .bluetoothModule(new OverrideBluetoothModule())
+                    .bluetoothModule(new BluetoothModule())
                     .repositoryModule(new RepositoryModule(application))
                     .build();
         }
