@@ -1,5 +1,6 @@
 package boombotix.com.thundercloud.dependencyinjection.component;
 
+import boombotix.com.thundercloud.dependencyinjection.ThundercloudGraph;
 import boombotix.com.thundercloud.dependencyinjection.module.ActivityModule;
 import boombotix.com.thundercloud.ui.activity.LoginActivity;
 import boombotix.com.thundercloud.ui.activity.MusicServiceSetupActivity;
@@ -11,6 +12,8 @@ import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
+import boombotix.com.thundercloud.ui.fragment.wifi.WifiConnectFragment;
+import boombotix.com.thundercloud.ui.fragment.wifi.WifiListFragment;
 import dagger.Component;
 
 /**
@@ -23,13 +26,13 @@ import dagger.Component;
  * Created by kenton on 1/24/16.
  */
 @PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
+@Component(dependencies = ThundercloudGraph.class, modules = ActivityModule.class)
 public interface ActivityComponent {
 
     final class Initializer {
         public static ActivityComponent init(BaseActivity activity) {
             return DaggerActivityComponent.builder()
-                    .applicationComponent(activity.getApplicationComponent())
+                    .thundercloudGraph(activity.getThundercloudGraph())
                     .activityModule(new ActivityModule(activity))
                     .build();
         }
@@ -48,4 +51,6 @@ public interface ActivityComponent {
     void inject(VoiceSearchResultFragment voiceSearchResultFragment);
     void inject(NowPlayingFragment nowPlayingFragment);
     void inject(MusicServiceSetupActivity musicServiceSetupActivity);
+    void inject(WifiListFragment wifiListFragment);
+    void inject(WifiConnectFragment wifiConnectFragment);
 }

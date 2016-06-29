@@ -1,9 +1,13 @@
 package boombotix.com.thundercloud.ui.activity;
 
+import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.model.constants.BluetoothConstants;
 import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.wifi.WifiConnectFragment;
@@ -56,8 +60,13 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
     }
 
     private String getSpeakerName() {
-        //todo get speaker name
-        return "Boombot";
+        String macAddress = PreferenceManager
+                .getDefaultSharedPreferences(ThundercloudApplication.instance())
+                .getString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, null);
+
+        if(macAddress == null) return "Boombot";
+
+        return BluetoothAdapter.getDefaultAdapter().getRemoteDevice(macAddress).getName();
     }
 
     /**
@@ -77,8 +86,8 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
      *
      * @param networkName the wifi network that the speaker should use
      */
-    private void showWifiConnectFragment(String networkName) {
-        WifiConnectFragment fragment = WifiConnectFragment.newInstance(networkName, getSpeakerName());
+    private void showWifiConnectFragment(String networkName, String password) {
+        WifiConnectFragment fragment = WifiConnectFragment.newInstance(networkName, getSpeakerName(), password);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -100,7 +109,7 @@ public class SpeakerWifiActivity extends BaseActivity implements WifiListFragmen
     @Override
     public void onWifiNetworkChosen(WifiNetwork network) {
         //todo send credentials to fragment
-        showWifiConnectFragment(network.getSsid());
+        showWifiConnectFragment(network.getSsid(), network.getCredentials().getPassword());
     }
 
     @Override

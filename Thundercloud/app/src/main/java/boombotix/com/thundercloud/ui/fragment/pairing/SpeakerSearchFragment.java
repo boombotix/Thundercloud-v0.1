@@ -1,10 +1,14 @@
 package boombotix.com.thundercloud.ui.fragment.pairing;
 
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.ParcelUuid;
+import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +17,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.model.constants.BluetoothConstants;
 import boombotix.com.thundercloud.ui.activity.SpeakerPairingActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
+import timber.log.Timber;
 
 /**
  * Fragment that scans for boombots and presents a list of them to the user, reports selected device
@@ -33,6 +41,7 @@ public class SpeakerSearchFragment extends BaseFragment {
     public interface OnSpeakerSelectedListener {
 
         void onSpeakerSelected(BluetoothDevice device);
+        void onSelectionSkipped();
     }
 
     @Bind(R.id.speaker_list)
@@ -52,7 +61,7 @@ public class SpeakerSearchFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_speaker_search, container, false);
         ButterKnife.bind(this, view);
 
@@ -67,6 +76,7 @@ public class SpeakerSearchFragment extends BaseFragment {
      */
     private void initSpeakerList() {
         speakerAdapter = new ArrayAdapter<>(getContext(), R.layout.row_speaker, R.id.speaker_name, new ArrayList<>());
+        speakers = new ArrayList<>();
         speakerListView.setAdapter(speakerAdapter);
         speakerListView.setOnItemClickListener(speakerClickListener);
     }
@@ -77,19 +87,21 @@ public class SpeakerSearchFragment extends BaseFragment {
      */
     @DebugLog
     private void startSpeakerBleScan() {
-        speakers = new ArrayList<>();
-        showScanView();
-        //todo start ble scan
-        //todo subscribe to ble results
-        //todo on each ble result, add to adapter and speakers
-        Handler handler = new Handler();
-        Runnable runnable = () -> {
-            speakerAdapter.add("Boombot 1");
-            speakerAdapter.add("Boombot 2");
-            speakerAdapter.add("Boombot 3");
-            speakerAdapter.add("Boombot 4");
-        };
-        handler.postDelayed(runnable, 1000);
+        Set<BluetoothDevice> devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+
+        for (BluetoothDevice device : devices) {
+            Log.d(this.getClass().getName(), String.format("Name: %s, Address: %s, Type: %s, Class: %s",
+                    device.getName(), device.getAddress(), device.getType(),
+                    device.getBluetoothClass() != null ? device.getBluetoothClass().getDeviceClass() : ""));
+
+//            if (device.getName() != null &&
+//                    (device.getName().contains(BluetoothConstants.BOOMBOT_BASE_NAME) ||
+//                            device.getName().contains(BluetoothConstants.TEST_HARDWARE_BASE_NAME))) {
+
+                speakerAdapter.add(device.getName());
+                speakers.add(device);
+//            }
+        }
     }
 
     /**
@@ -122,8 +134,29 @@ public class SpeakerSearchFragment extends BaseFragment {
      */
     private AdapterView.OnItemClickListener speakerClickListener = (parent, view, position, id) -> {
         //todo stop scan
-        //BluetoothDevice selectedDevice = speakers.get(position);
-        onSpeakerSelectedListener.onSpeakerSelected(null);
+        BluetoothDevice selectedDevice = speakers.get(position);
+
+        try {
+
+            for (ParcelUuid uuid : selectedDevice.getUuids()) {
+                if (uuid.getUuid().equals(BluetoothConstants.SPP_STANDARD_UUID)) {
+                    Timber.d("Found SPP service");
+                    PreferenceManager.getDefaultSharedPreferences(ThundercloudApplication.instance())
+                            .edit().putString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, selectedDevice.getAddress())
+                            .apply();
+
+                    onSpeakerSelectedListener.onSpeakerSelected(speakers.get(position));
+                    return;
+                }
+            }
+
+            Snackbar.make(view, "Bluetooth device is not supported", Snackbar.LENGTH_LONG)
+                    .setAction("Skip", t -> onSpeakerSelectedListener.onSelectionSkipped()).show();
+
+        } catch (Throwable t) {
+            Timber.e(t.getMessage());
+            t.printStackTrace();
+        }
     };
 
     @Override

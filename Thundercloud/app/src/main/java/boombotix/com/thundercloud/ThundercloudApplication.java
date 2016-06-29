@@ -2,10 +2,12 @@ package boombotix.com.thundercloud;
 
 import android.app.Application;
 
-import net.danlew.android.joda.JodaTimeAndroid;
+import javax.inject.Inject;
 
+
+
+import boombotix.com.thundercloud.dependencyinjection.ThundercloudGraph;
 import boombotix.com.thundercloud.dependencyinjection.component.ApplicationComponent;
-import timber.log.Timber;
 
 /**
  * Application extension for Thundercloud app. Responsible for global initializations.
@@ -14,29 +16,36 @@ import timber.log.Timber;
  */
 public class ThundercloudApplication extends Application {
 
-    ApplicationComponent applicationComponent;
+    private static ThundercloudApplication application;
+    ThundercloudGraph thundercloudGraph;
+
+    @Inject
+    ApplicationInitializer applicationInitializer;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        JodaTimeAndroid.init(this);
 
-        if(BuildConfig.DEBUG){
-            Timber.plant(new Timber.DebugTree());
-//            Stetho.initializeWithDefaults(this);
-        }
+        application = this;
 
-        buildComponent();
+        buildComponentAndInject();
+
+        applicationInitializer.init(this);
     }
 
-    public ApplicationComponent getApplicationComponent() {
-        return this.applicationComponent;
+    public static ThundercloudApplication instance(){
+        return application;
+    }
+
+    public ThundercloudGraph getThundercloudGraph() {
+        return this.thundercloudGraph;
     }
 
     /**
      * Build the application level Dagger component
      */
-    private void buildComponent() {
-        this.applicationComponent = ApplicationComponent.Initializer.init(this);
+    private void buildComponentAndInject() {
+        this.thundercloudGraph = ApplicationComponent.Initializer.init(this);
+        thundercloudGraph.inject(this);
     }
 }

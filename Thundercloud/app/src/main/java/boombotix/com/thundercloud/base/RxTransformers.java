@@ -11,8 +11,9 @@ import rx.schedulers.Schedulers;
  * Created by kriedema on 6/11/16.
  */
 public class RxTransformers {
+    @SuppressWarnings("unchecked")
     static final Observable.Transformer schedulersTransformer =
-            observable -> ((Observable) observable).subscribeOn(Schedulers.io())
+            observable -> ((Observable<Object>)observable).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
     @SuppressWarnings("unchecked")

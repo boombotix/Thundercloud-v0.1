@@ -24,6 +24,8 @@ import boombotix.com.thundercloud.playback.MusicPlayerProvider;
 import boombotix.com.thundercloud.playback.PlaybackQueue;
 import boombotix.com.thundercloud.playback.SlackerPlayer;
 import boombotix.com.thundercloud.playback.SpotifyPlayer;
+import boombotix.com.thundercloud.wifi.WifiScanResultsObservable;
+import boombotix.com.thundercloud.wifi.WifiScanResultsObservableContract;
 import dagger.Module;
 import dagger.Provides;
 
@@ -101,5 +103,11 @@ public class ApplicationModule {
     @Singleton
     MockPlayer providesMockplayer(){
         return new MockPlayer();
+    }
+
+    @Provides
+    @Singleton
+    WifiScanResultsObservableContract providesWifiScanResultsObservable() {
+        return new WifiScanResultsObservable();
     }
 }

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -44,10 +45,15 @@
         <activity
             android:name=".ui.activity.MusicServiceSetupActivity"
             android:label="@string/title_activity_music_service_setup" />
-        <receiver android:name=".bluetooth.state.BluetoothBroadcastReceiver">
+        <receiver android:name=".bluetooth.state.state.BluetoothConnectivityBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
                 <action android:name="android.bluetooth.adapter.action.CONNECTION_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".wifi.WifiScanResultsBroadcastReciever">
+            <intent-filter>
+                <action android:name="android.net.wifi.SCAN_RESULTS" />
             </intent-filter>
         </receiver>
     </application>

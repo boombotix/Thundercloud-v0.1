@@ -1,9 +1,9 @@
 package boombotix.com.thundercloud.ui.fragment.wifi;
 
+import android.Manifest;
 import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,15 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.canelmas.let.AskPermission;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.model.wifi.WifiNetwork;
 import boombotix.com.thundercloud.ui.adapter.WifiListAdapter;
+import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.dialog.WifiCredentialsDialog;
+import boombotix.com.thundercloud.wifi.WifiScanResultsObservableContract;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import hugo.weaving.DebugLog;
 
 /**
  * Fragment that presents the user with a list of available wifi networks. If doing a first-time
@@ -27,7 +35,7 @@ import butterknife.OnClick;
  *
  * @author Theo Kanning
  */
-public class WifiListFragment extends Fragment implements WifiListAdapter.WifiListClickListener,
+public class WifiListFragment extends BaseFragment implements WifiListAdapter.WifiListClickListener,
         WifiCredentialsDialog.WifiCredentialsDialogListener {
 
     private static final String ARG_SPEAKER_NAME = "speakerName";
@@ -51,6 +59,9 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
 
     @Bind(R.id.instructions)
     TextView instructions;
+
+    @Inject
+    WifiScanResultsObservableContract wifiScanResultsObservable;
 
     private WifiListAdapter adapter;
 
@@ -97,6 +108,8 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
         ButterKnife.bind(this, view);
         getActivity().setResult(R.string.wifi_list_title);
 
+        getSupportActivity().getActivityComponent().inject(this);
+
         showInstructions();
         showSkipOptionIfFirstTime();
         initNetworkList();
@@ -131,6 +144,11 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
      * Shows a different instruction message based on the speaker name wand whether or not this is
      * the first-time setup.
      */
+    @AskPermission({
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    })
     private void showInstructions() {
         String message;
         if (firstTime) {
@@ -154,16 +172,26 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
      * Searches for available wifi networks
      */
     private void startSearch() {
+        WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+
+        wifiManager.startScan();
+        compositeSubscription.add(wifiScanResultsObservable.getScanResults().subscribe(this::onWifiScanResults));
+
         showSearchView();
-        Handler handler = new Handler();
-        Runnable runnable = () -> {
-            adapter.addNetwork(new WifiNetwork("Network 1", 100, ""));
-            adapter.addNetwork(new WifiNetwork("Network 2", 100, ""));
-            adapter.addNetwork(new WifiNetwork("Network 3", 100, ""));
-            adapter.addNetwork(new WifiNetwork("Network 4", 100, ""));
-            showResultsView();
-        };
-        handler.postDelayed(runnable, 1000);
+    }
+
+    @DebugLog
+    private void onWifiScanResults(List<WifiNetwork> scanResults){
+
+        if(scanResults.size() == 0) return;
+
+        adapter.clearList();
+
+        for(WifiNetwork network : scanResults){
+            adapter.addNetwork(network);
+        }
+
+        showResultsView();
     }
 
     private void showCredentialsDialog(WifiNetwork network) {
@@ -185,6 +213,7 @@ public class WifiListFragment extends Fragment implements WifiListAdapter.WifiLi
     /**
      * Shows the list of network results
      */
+    @DebugLog
     private void showResultsView() {
         searchContainer.setVisibility(View.VISIBLE);
         noResultsContainer.setVisibility(View.GONE);

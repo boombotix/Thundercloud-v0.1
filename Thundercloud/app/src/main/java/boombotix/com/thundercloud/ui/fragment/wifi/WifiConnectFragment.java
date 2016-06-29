@@ -2,34 +2,59 @@ package boombotix.com.thundercloud.ui.fragment.wifi;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.IOException;
+
+import javax.inject.Inject;
+
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.ThundercloudApplication;
+import boombotix.com.thundercloud.bluetooth.connection.BluetoothClassicConnection;
+import boombotix.com.thundercloud.bluetooth.wifi.CredentialsFormatter;
+import boombotix.com.thundercloud.model.constants.BluetoothConstants;
+import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import rx.Observable;
+import rx.exceptions.Exceptions;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
  * {@link WifiConnectFragmentCallbacks} interface to handle interaction events. Use the {@link
  * WifiConnectFragment#newInstance} factory method to create an instance of this fragment.
  */
-public class WifiConnectFragment extends Fragment {
+public class WifiConnectFragment extends BaseFragment {
 
     private static final String ARG_NETWORK_NAME = "networkName";
-
     private static final String ARG_SPEAKER_NAME = "speakerName";
+    private static final String ARG_PASSWORD = "password";
 
     @Bind(R.id.connecting_message)
     TextView message;
 
+    @Inject
+    BluetoothClassicConnection speakerConnection;
+
+    @Inject
+    CredentialsFormatter credentialsFormatter;
+
     private String networkName;
 
     private String speakerName;
+
+    private String password;
+
+    private String macAddress;
 
     private WifiConnectFragmentCallbacks listener;
 
@@ -42,12 +67,13 @@ public class WifiConnectFragment extends Fragment {
      * @param speakerName name of connected speaker, for display purposes
      * @return A new instance of fragment WifiConnectFragment.
      */
-    public static WifiConnectFragment newInstance(String networkName, String speakerName) {
+    public static WifiConnectFragment newInstance(String networkName, String speakerName, String password) {
         //todo take instance of WifiNetwork instead of name
         WifiConnectFragment fragment = new WifiConnectFragment();
         Bundle args = new Bundle();
         args.putString(ARG_NETWORK_NAME, networkName);
         args.putString(ARG_SPEAKER_NAME, speakerName);
+        args.putString(ARG_PASSWORD, password);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +84,12 @@ public class WifiConnectFragment extends Fragment {
         if (getArguments() != null) {
             networkName = getArguments().getString(ARG_NETWORK_NAME);
             speakerName = getArguments().getString(ARG_SPEAKER_NAME);
+            password = getArguments().getString(ARG_PASSWORD);
         }
+
+        this.macAddress = PreferenceManager
+                .getDefaultSharedPreferences(ThundercloudApplication.instance())
+                .getString(BluetoothConstants.BOOMBOT_SHAREDPREF_KEY, "");
     }
 
     @Override
@@ -66,6 +97,8 @@ public class WifiConnectFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wifi_connect, container, false);
         ButterKnife.bind(this, view);
+
+        getSupportActivity().getActivityComponent().inject(this);
 
         setConnectingMessage();
         setTitle();
@@ -91,16 +124,63 @@ public class WifiConnectFragment extends Fragment {
      * WifiConnectFragmentCallbacks} after completion.
      */
     private void connectSpeakerToNetwork() {
-        //todo connect speaker to wifi network
-        Handler handler = new Handler();
-        Runnable runnable = () -> {
-            if(Math.random() > 0.5) {
-                listener.onWifiConnectSuccess();
-            } else {
-                listener.onWifiConnectFailure();
-            }
-        };
-        handler.postDelayed(runnable, 1000);
+        subscribeToSpeakerResult();
+        byte[] binaryCredentials = credentialsFormatter.prepareCredentialsForSpeaker(networkName, password);
+
+        try {
+            BufferedSink bufferedSink = speakerConnection.outputBuffer(macAddress);
+            bufferedSink.write(binaryCredentials);
+            bufferedSink.flush();
+            bufferedSink.close();
+            listener.onWifiConnectSuccess();
+        } catch (IOException e) {
+            e.printStackTrace();
+            listener.onWifiConnectFailure();
+        }
+    }
+
+    private void subscribeToSpeakerResult(){
+        compositeSubscription.add(
+            Observable.just(macAddress)
+                .map(input -> {
+                    try {
+                        BufferedSource source = speakerConnection.inputBuffer(macAddress);
+                        return source.readByte();
+                    } catch (Throwable t){
+                        throw Exceptions.propagate(t);
+                    }
+                })
+                .subscribe(this::readInput, this::logError));
+    }
+
+    private void readInput(byte output){
+        switch (output){
+            case BluetoothConstants.SUCCESS:
+                communicationSuccess();
+                break;
+            case BluetoothConstants.ERROR:
+                communicationError();
+                break;
+            case BluetoothConstants.TIMEOUT:
+                communicationTimeout();
+                break;
+        }
+    }
+
+    private void communicationSuccess(){
+        Snackbar.make(message, "Connection successful", Snackbar.LENGTH_LONG).show();
+    }
+
+    private void communicationError(){
+        Snackbar.make(message, "Connection error", Snackbar.LENGTH_LONG).show();
+    }
+
+    private void communicationTimeout(){
+        Snackbar.make(message, "Connection timeout", Snackbar.LENGTH_LONG).show();
+    }
+
+    private void logError(Throwable throwable){
+        Timber.e(throwable, throwable.getMessage());
     }
 
     @Override

@@ -1,6 +1,5 @@
 package boombotix.com.thundercloud.dependencyinjection.module;
 
-import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -20,6 +19,8 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
+ * API module that doesn't add logging interceptors
+ *
  * Created by kenton on 1/24/16.
  */
 @Module
@@ -40,13 +41,7 @@ public class ApiModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient() {
-        OkHttpClient client = new OkHttpClient();
-
-        if(BuildConfig.DEBUG){
-            client.networkInterceptors().add(new StethoInterceptor());
-        }
-        
-        return client;
+        return new OkHttpClient();
     }
 
     @Provides
@@ -66,7 +61,7 @@ public class ApiModule {
     private RestAdapter restAdapterWithUrl(Client client, Gson gson, String baseUrl){
         return new RestAdapter.Builder()
                 .setEndpoint(baseUrl)
-                .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
+                .setLogLevel(RestAdapter.LogLevel.NONE)
                 .setClient(client)
                 .setConverter(new GsonConverter(gson))
                 .build();

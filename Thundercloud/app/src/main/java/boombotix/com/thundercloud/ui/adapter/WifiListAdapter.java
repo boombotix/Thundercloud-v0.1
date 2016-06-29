@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import boombotix.com.thundercloud.R;
@@ -27,6 +28,10 @@ public class WifiListAdapter extends RecyclerView.Adapter<WifiViewHolder> {
     public WifiListAdapter(List<WifiNetwork> networks, WifiListClickListener listener) {
         this.networks = networks;
         this.listener = listener;
+    }
+
+    public void clearList(){
+        this.networks = new ArrayList<WifiNetwork>();
     }
 
     public void addNetwork(WifiNetwork network){
