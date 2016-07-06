@@ -6,15 +6,12 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import boombotix.com.thundercloud.ui.model.SearchResultRowModel;
-import boombotix.com.thundercloud.ui.viewholder.SearchResultsViewHolder;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter {
     List<SearchResultRowModel> rowModels;
 
     @Override
-    public SearchResultsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
     }
 
