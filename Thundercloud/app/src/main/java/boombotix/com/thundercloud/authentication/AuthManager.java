@@ -14,12 +14,8 @@ import javax.inject.Singleton;
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
-import boombotix.com.thundercloud.base.RxTransformers;
 import boombotix.com.thundercloud.model.authentication.AuthRefreshResponse;
 import hugo.weaving.DebugLog;
-import kaaes.spotify.webapi.android.SpotifyApi;
-import rx.Observable;
-import timber.log.Timber;
 
 /**
  * Created by jsaucedo on 1/28/16.
@@ -43,9 +39,6 @@ public class AuthManager {
     private SharedPreferences sharedPreferences;
 
     private SpotifyAuthenticationEndpoint spotifyAuthenticationEndpoint;
-
-    @Inject
-    SpotifyApi spotifyApi;
 
     @Inject
     AuthManager(Application application, SharedPreferences sharedPreferences,
@@ -135,44 +128,6 @@ public class AuthManager {
     }
 
     /**
-     * This function is designed to be flatmapped into any call that requires user authentication It
-     * will check if the token is expired and renew it.
-     *
-     * @return returns observable for authtoken request
-     */
-    @DebugLog
-    public Observable<AuthRefreshResponse> getValidAccessToken() {
-
-        if (isExpired()) {
-            Observable<AuthRefreshResponse> observable = spotifyAuthenticationEndpoint
-                    .getToken("Basic " + getEncodedAuthHeader(), GRANT_TYPE, getRefreshToken(), getScopes());
-
-            observable.compose(RxTransformers.applySchedulers())
-                    .share()
-                    .subscribe(
-                            response -> {
-                                Timber.e("Token expired!");
-                                handleRefreshResponse(response);
-                            },
-                            throwable -> Timber.e(throwable.getMessage()));
-
-            return observable;
-        }
-
-        return Observable.just(new AuthRefreshResponse());
-    }
-
-    public void refreshAuthToken(AuthRefreshRespCallback authRefreshRespCallback) {
-        spotifyAuthenticationEndpoint
-                .getToken(getEncodedAuthHeader(), REFRESH_TOKEN, getRefreshToken(), getScopes())
-                .compose(RxTransformers.applySchedulers())
-                .subscribe(authRefreshResponse -> {
-                    handleRefreshResponse(authRefreshResponse);
-                    authRefreshRespCallback.onSuccess(authRefreshResponse);
-                }, authRefreshRespCallback::onError);
-    }
-
-    /**
      * returns the list of all Spotify scopes that are needed for authentication and playback
      *
      * @return
@@ -187,14 +142,6 @@ public class AuthManager {
                 "playlist-modify-public",
                 "user-library-modify",
                 "user-follow-modify");
-    }
-
-    @DebugLog
-    private void handleRefreshResponse(AuthRefreshResponse authRefreshResponse) {
-        spotifyApi.setAccessToken(authRefreshResponse.getAccessToken());
-        setAccessToken(authRefreshResponse.getAccessToken());
-        DateTime expires = new DateTime().plusSeconds(authRefreshResponse.getExpiresIn());
-        setExpires(expires);
     }
 
     private String getEncodedAuthHeader() {

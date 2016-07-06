@@ -20,19 +20,21 @@ import android.widget.FrameLayout;
 import com.canelmas.let.DeniedPermission;
 import com.canelmas.let.RuntimePermissionListener;
 import com.canelmas.let.RuntimePermissionRequest;
+import com.fernandocejas.frodo.annotation.RxLogObservable;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.api.SpotifySearchEndpoint;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.controller.VoiceSearchController;
 import boombotix.com.thundercloud.ui.filter.Captureable;
 import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
-import boombotix.com.thundercloud.ui.fragment.MusicListFragment;
-import boombotix.com.thundercloud.ui.fragment.MusicPagerFragment;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.QueueFragment;
@@ -69,11 +71,15 @@ public class TopLevelActivity extends BaseActivity
 
     @Bind(R.id.main_fragment)
     FrameLayout blur;
+
     @Bind(R.id.app_bar)
     AppBarLayout appBarLayout;
 
     @Inject
     ScreenBlurUiFilter screenBlurUiFilter;
+
+    @Inject
+    SpotifySearchEndpoint spotifySearchEndpoint;
 
     private Subject<Boolean, Boolean> screenCreatedObservable;
 
@@ -88,6 +94,9 @@ public class TopLevelActivity extends BaseActivity
         screenCreatedObservable = PublishSubject.create();
         setupDelayedToolbarBlurEffect();
         setSupportActionBar(toolbar);
+
+        compositeSubscription.add(searchTextObservable()
+                .subscribe(this::searchSpotify));
 
         fm = getSupportFragmentManager();
         Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
@@ -119,7 +128,20 @@ public class TopLevelActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         setQueueFragment();
+    }
 
+    @RxLogObservable
+    private Observable<CharSequence> searchTextObservable(){
+        return RxTextView.textChanges(searchText)
+                .skip(3).debounce(1000, TimeUnit.MILLISECONDS);
+    }
+
+    private void searchSpotify(CharSequence searchText){
+        if(searchText.length() > 2){
+            spotifySearchEndpoint
+                    .getAllResults(searchText.toString(), "artist,album,playlist,track")
+                    .subscribe(res -> { });
+        }
     }
 
     private void attachPlayerFragment() {
@@ -200,14 +222,6 @@ public class TopLevelActivity extends BaseActivity
             fm.beginTransaction()
                     .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
                     .commit();
-        } else if (id == R.id.nav_playlists) {
-            changeMusicPagerPage(MusicListFragment.PLAYLIST_SECTION);
-        } else if (id == R.id.nav_songs) {
-            changeMusicPagerPage(MusicListFragment.SONGS_SECTION);
-        } else if (id == R.id.nav_albums) {
-            changeMusicPagerPage(MusicListFragment.ALBUMS_SECTION);
-        } else if (id == R.id.nav_artists) {
-            changeMusicPagerPage(MusicListFragment.ARTISTS_SECTION);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -224,13 +238,6 @@ public class TopLevelActivity extends BaseActivity
             this.toolbarBackground.setImageBitmap(this.screenBlurUiFilter.blurView(getCaptureableView()));
             this.toolbarBackground.setOffset(0, 0);
         }
-    }
-
-    private void changeMusicPagerPage(int page){
-        Fragment musicPagerFragment =  MusicPagerFragment.newInstance(page);
-        fm.beginTransaction()
-                .replace(R.id.main_fragment, musicPagerFragment)
-                .commit();
     }
 
     private void setQueueFragment(){
@@ -364,7 +371,6 @@ public class TopLevelActivity extends BaseActivity
         }
         return null;
     }
-
 
     @Override
     public void onShowPermissionRationale(List<String> permissionList, RuntimePermissionRequest permissionRequest) {

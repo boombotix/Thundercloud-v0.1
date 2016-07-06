@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import boombotix.com.thundercloud.ApplicationInitializer;
 import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
+import boombotix.com.thundercloud.api.SpotifySearchEndpoint;
 import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.bluetooth.connection.BluetoothClassicConnection;
@@ -20,8 +21,6 @@ import boombotix.com.thundercloud.playback.PlaybackQueue;
 import boombotix.com.thundercloud.playback.SpotifyPlayer;
 import boombotix.com.thundercloud.wifi.WifiScanResultsBroadcastReciever;
 import boombotix.com.thundercloud.wifi.WifiScanResultsObservableContract;
-import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyService;
 
 /**
  * General contract for all of our application level dagger components to implement.
@@ -37,13 +36,9 @@ public interface ThundercloudGraph {
 
     Gson gson();
 
-    SpotifyApi spotifyApi();
-
     SharedPreferences sharedPreferences();
 
     AuthManager authManager();
-
-    SpotifyService spotifyService();
 
     HoundifyResponseParser houndifyHelper();
 
@@ -60,6 +55,8 @@ public interface ThundercloudGraph {
     SpotifyPlayer spotifyPlayer();
 
     SpotifyTrackEndpoint trackEndpoint();
+
+    SpotifySearchEndpoint searchEndpoint();
 
     SpotifyAuthenticationEndpoint authenticationEndpoint();
 

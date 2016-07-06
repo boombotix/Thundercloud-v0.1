@@ -20,6 +20,7 @@ import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
 import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import boombotix.com.thundercloud.base.RxTransformers;
 import boombotix.com.thundercloud.model.music.MusicListItem;
+import boombotix.com.thundercloud.model.search.spotify.Track;
 import boombotix.com.thundercloud.playback.MusicControls;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.filter.Captureable;
@@ -28,8 +29,6 @@ import boombotix.com.thundercloud.ui.view.CropImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
-import kaaes.spotify.webapi.android.models.Image;
-import kaaes.spotify.webapi.android.models.Track;
 import timber.log.Timber;
 
 public class NowPlayingFragment extends BaseFragment implements
@@ -134,17 +133,7 @@ public class NowPlayingFragment extends BaseFragment implements
 
     @DebugLog
     private void onArtworkResult(Track track){
-        String artworkUrl = null;
-        int size = 0;
-
-        for (Image image : track.album.images){
-            if(image.height > size || image.width > size){
-                size = image.height;
-                artworkUrl = image.url;
-            }
-        }
-
-        Glide.with(this).load(artworkUrl).into(albumArt);
+        Glide.with(this).load(track.getAlbum().getImages().get(0).getUrl()).into(albumArt);
     }
 
     @Override
@@ -172,8 +161,6 @@ public class NowPlayingFragment extends BaseFragment implements
 
     @Override
     public View captureView() {
-        View view = getActivity().findViewById(R.id.now_playing_layout);
-
-        return view;
+        return getActivity().findViewById(R.id.now_playing_layout);
     }
 }

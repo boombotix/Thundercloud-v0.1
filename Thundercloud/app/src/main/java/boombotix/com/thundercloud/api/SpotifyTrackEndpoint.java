@@ -2,7 +2,7 @@ package boombotix.com.thundercloud.api;
 
 import com.fernandocejas.frodo.annotation.RxLogObservable;
 
-import kaaes.spotify.webapi.android.models.Track;
+import boombotix.com.thundercloud.model.search.spotify.Track;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import rx.Observable;

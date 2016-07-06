@@ -6,16 +6,13 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.json.jackson.JacksonFactory;
-
 import com.google.gson.Gson;
-
 import com.wuman.android.auth.AuthorizationFlow;
 import com.wuman.android.auth.AuthorizationUIController;
 import com.wuman.android.auth.DialogFragmentController;
@@ -24,7 +21,6 @@ import com.wuman.android.auth.OAuthManager;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
-
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -36,12 +32,6 @@ import boombotix.com.thundercloud.model.authentication.AuthRefreshResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyService;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity implements AuthManager.AuthRefreshRespCallback {
     private final String TOKEN_URL = BuildConfig.SPOTIFY_TOKEN_URL;
@@ -50,15 +40,11 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
     private final String CLIENT_SECRET = BuildConfig.SPOTIFY_CLIENT_SECRET;
 
     @Inject
-    SpotifyApi spotifyApi;
-    @Inject
     Gson gson;
     @Inject
     AuthManager authManager;
     @Bind(R.id.btn_yourmusic)
     Button urmsc;
-    @Inject
-    SpotifyService spotify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,13 +93,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
                     authManager.setAccessToken(credential.getAccessToken());
                     authManager.setRefreshToken(credential.getRefreshToken());
                     authManager.setExpires((new DateTime()).plusSeconds(credential.getExpiresInSeconds().intValue()));
-                    spotifyApi.setAccessToken(credential.getAccessToken());
-                    runOnUiThread(() -> {
-                        getUser();
-                        ((TextView) findViewById(R.id.auth)).setText(credential.getAccessToken());
-                        ((TextView) findViewById(R.id.refresh)).setText(credential.getRefreshToken());
-                        ((TextView) findViewById(R.id.expir)).setText(String.valueOf(credential.getExpiresInSeconds()));
-                    });
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -123,12 +103,7 @@ public class LoginActivity extends BaseActivity implements AuthManager.AuthRefre
     }
 
     private void getUser() {
-        Observable.defer(() -> Observable.just(spotify.getMe()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userPrivate -> {
-                    authManager.setUserId(userPrivate.id);
-                });
+
     }
 
     @Override

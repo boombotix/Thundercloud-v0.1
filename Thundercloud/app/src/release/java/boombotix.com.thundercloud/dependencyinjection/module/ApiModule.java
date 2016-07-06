@@ -81,13 +81,7 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    SpotifyApi provideSpotifyApi() {
-        return new SpotifyApi();
-    }
-
-    @Provides
-    @Singleton
-    SpotifyService provideSpotifyService(SpotifyApi spotifyApi) {
-        return spotifyApi.getService();
+    SpotifySearchEndpoint provideSpotifySearchEndpoint(@Named("SpotifyApiRestAdapter") RestAdapter restAdapter){
+        return restAdapter.create(SpotifySearchEndpoint.class);
     }
 }

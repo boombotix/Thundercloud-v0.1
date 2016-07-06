@@ -9,11 +9,10 @@ import javax.inject.Singleton;
 
 import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
+import boombotix.com.thundercloud.api.SpotifySearchEndpoint;
 import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import dagger.Module;
 import dagger.Provides;
-import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyService;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
 import retrofit.client.OkClient;
@@ -88,13 +87,7 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    SpotifyApi provideSpotifyApi() {
-        return new SpotifyApi();
-    }
-
-    @Provides
-    @Singleton
-    SpotifyService provideSpotifyService(SpotifyApi spotifyApi) {
-        return spotifyApi.getService();
+    SpotifySearchEndpoint provideSpotifySearchEndpoint(@Named("SpotifyApiRestAdapter") RestAdapter restAdapter){
+        return restAdapter.create(SpotifySearchEndpoint.class);
     }
 }

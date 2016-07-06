@@ -89,6 +89,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="voice_search_result_waiting">Go head&#8230; I\'m listening</string>
     <string name="voice_search_result_tap_to_edit">Tap to edit</string>
+    <string name="search_row_header_playlists">Playlists</string>
+    <string name="search_row_header_tracks">Tracks</string>
+    <string name="search_row_header_artists">Artists</string>
+    <string name="search_row_header_album">Album</string>
+    <string name="row_search_track_delimiter">|</string>
 
     <string-array name="spotify_scopes">
         <item>streaming</item>
