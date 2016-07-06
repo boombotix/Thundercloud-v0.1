@@ -1,10 +1,10 @@
 package boombotix.com.thundercloud.ui.activity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.canelmas.let.DeniedPermission;
 import com.canelmas.let.RuntimePermissionListener;
@@ -39,14 +40,11 @@ import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.QueueFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
-import boombotix.com.thundercloud.ui.view.CropImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 import timber.log.Timber;
@@ -60,14 +58,11 @@ public class TopLevelActivity extends BaseActivity
     @Bind(R.id.searchText)
     EditText searchText;
 
-    @Bind(R.id.tabs)
-    TabLayout yourMusicTabs;
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.toolbar_background)
-    CropImageView toolbarBackground;
+    @Bind(R.id.player_fragment)
+    RelativeLayout playerFragmentHolder;
 
     @Bind(R.id.main_fragment)
     FrameLayout blur;
@@ -92,30 +87,15 @@ public class TopLevelActivity extends BaseActivity
         getActivityComponent().inject(this);
 
         screenCreatedObservable = PublishSubject.create();
-        setupDelayedToolbarBlurEffect();
         setSupportActionBar(toolbar);
 
         compositeSubscription.add(searchTextObservable()
                 .subscribe(this::searchSpotify));
 
         fm = getSupportFragmentManager();
-        Fragment mainFragment = fm.findFragmentById(R.id.main_fragment);
-        if (mainFragment == null) {
+        attachMainFragment();
 
-            // TODO actually have  a main fragment
-            mainFragment = NowPlayingFragment.newInstance();
-            fm.beginTransaction()
-                    .add(R.id.main_fragment, mainFragment)
-                    .commit();
-        }
-
-        Fragment playerFragment = fm.findFragmentById(R.id.player_fragment);
-        if (playerFragment == null) {
-            playerFragment = new PlayerFragment();
-            fm.beginTransaction()
-                    .add(R.id.player_fragment, playerFragment)
-                    .commit();
-        }
+        attachPlayerFragment();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -173,13 +153,6 @@ public class TopLevelActivity extends BaseActivity
         }
     }
 
-    private void setupDelayedToolbarBlurEffect() {
-        getMainViewCreatedObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aBoolean -> blurToolbar());
-    }
-
 
     @Override
     protected void onResume() {
@@ -213,7 +186,6 @@ public class TopLevelActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -232,12 +204,8 @@ public class TopLevelActivity extends BaseActivity
     /**
      * Applies blur effect to toolbar background.
      */
-    private void blurToolbar() {
-        View toBlur = getCaptureableView();
-        if (toBlur != null) {
-            this.toolbarBackground.setImageBitmap(this.screenBlurUiFilter.blurView(getCaptureableView()));
-            this.toolbarBackground.setOffset(0, 0);
-        }
+    private void updateToolbarBackground(Bitmap bitmap) {
+
     }
 
     private void setQueueFragment(){
@@ -256,6 +224,7 @@ public class TopLevelActivity extends BaseActivity
 
         // add overlay
         fm.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .add(R.id.overlay_fragment,
                         VoiceSearchResultFragment.newInstance(),
                         VoiceSearchResultFragment.TAG)
@@ -324,31 +293,18 @@ public class TopLevelActivity extends BaseActivity
      */
     public void hideSearch(){
         searchText.setVisibility(View.GONE);
-        this.toolbarBackground.getLayoutParams().height = Math.round(50 * getResources()
-                .getDisplayMetrics().density);
+//        this.toolbarBackground.getLayoutParams().height = Math.round(50 * getResources()
+//                .getDisplayMetrics().density);
     }
 
     public void showSearch(){
         searchText.setVisibility(View.VISIBLE);
-        this.toolbarBackground.getLayoutParams().height = Math.round(70 * getResources()
-                .getDisplayMetrics().density);
-    }
-
-    public TabLayout getTabs() {
-        return this.yourMusicTabs;
-    }
-
-    public void showTabs() {
-        this.yourMusicTabs.setVisibility(View.VISIBLE);
-    }
-
-    public void hideTabs() {
-        this.yourMusicTabs.setVisibility(View.GONE);
+//        this.toolbarBackground.getLayoutParams().height = Math.round(70 * getResources()
+//                .getDisplayMetrics().density);
     }
 
     @OnClick(R.id.searchText)
     protected void onClickSearch() {
-        blurToolbar();
     }
 
     public void setToolbarTitle(String title) {

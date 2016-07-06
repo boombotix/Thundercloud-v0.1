@@ -1,6 +1,5 @@
 package boombotix.com.thundercloud.ui.base;
 
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
@@ -51,30 +50,6 @@ public class BaseFragment extends Fragment {
 
     protected void setToolbarTitle(String title) {
         ((TopLevelActivity) getSupportActivity()).setToolbarTitle(title);
-    }
-
-    /**
-     * Gets the global {@link TabLayout} that lives on the activity
-     *
-     * @return
-     *          {@link TabLayout} in activity Toolbar
-     */
-    protected TabLayout getTabs() {
-        return ((TopLevelActivity) getSupportActivity()).getTabs();
-    }
-
-    /**
-     * Turns the global tabs visible
-     */
-    protected void showTabs() {
-        ((TopLevelActivity) getSupportActivity()).showTabs();
-    }
-
-    /**
-     * Hides the global tabs
-     */
-    protected void hideTabs() {
-        ((TopLevelActivity) getSupportActivity()).hideTabs();
     }
 
     /**

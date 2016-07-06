@@ -1,18 +1,17 @@
 package boombotix.com.thundercloud.ui.fragment;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hound.android.libphs.PhraseSpotterReader;
@@ -84,6 +83,9 @@ public class PlayerFragment extends BaseFragment
     @Bind(R.id.player_track_label)
     TextView trackLabel;
 
+    @Bind(R.id.player_root)
+    RelativeLayout root;
+
     String transcript;
 
     public PlayerFragment() {
@@ -131,11 +133,11 @@ public class PlayerFragment extends BaseFragment
                 .getCaptureableView();
         if (toBlur != null) {
 
-            this.blurredBackround.setImageDrawable(new BitmapDrawable(getResources(),
-                    this.screenBlurUiFilter.blurView(toBlur)).mutate());
-            this.blurredBackround.setColorFilter(ContextCompat.getColor(getActivity(), R.color.playerBarTransparent),
-                    PorterDuff.Mode.DARKEN);
-            this.blurredBackround.setOffset(0.5f, 1);
+//            this.blurredBackround.setImageDrawable(new BitmapDrawable(getResources(),
+//                    this.screenBlurUiFilter.blurView(toBlur)).mutate());
+//            this.blurredBackround.setColorFilter(ContextCompat.getColor(getActivity(), R.color.playerBarTransparent),
+//                    PorterDuff.Mode.DARKEN);
+//            this.blurredBackround.setOffset(0.5f, -1);
         }
     }
 
@@ -174,6 +176,13 @@ public class PlayerFragment extends BaseFragment
         super.onStart();
         startPhraseSpotting();
         compositeSubscription.add(musicControls.trackChangedObservable().subscribe(this::onTrackChange));
+    }
+
+    private int getScreenHeight() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        return displayMetrics.heightPixels;
     }
 
     private void onTrackChange(MusicListItem musicListItem){

@@ -25,7 +25,8 @@
             android:name=".ui.activity.LoginActivity" />
         <activity
             android:name=".ui.activity.TopLevelActivity"
-            android:label="@string/title_activity_main"/>
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
@@ -45,7 +46,7 @@
         <activity
             android:name=".ui.activity.MusicServiceSetupActivity"
             android:label="@string/title_activity_music_service_setup" />
-        <receiver android:name=".bluetooth.state.state.BluetoothConnectivityBroadcastReceiver">
+        <receiver android:name=".bluetooth.state.BluetoothConnectivityBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
                 <action android:name="android.bluetooth.adapter.action.CONNECTION_STATE_CHANGED" />

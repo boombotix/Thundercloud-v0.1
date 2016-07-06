@@ -2,6 +2,7 @@ package boombotix.com.thundercloud.ui.fragment;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 
 import javax.inject.Inject;
@@ -93,7 +96,6 @@ public class NowPlayingFragment extends BaseFragment implements
             playButton.setVisibility(View.GONE);
         });
         super.showSearch();
-        super.hideTabs();
         return view;
     }
 
@@ -132,8 +134,9 @@ public class NowPlayingFragment extends BaseFragment implements
     }
 
     @DebugLog
-    private void onArtworkResult(Track track){
+    private void onArtworkResult(Track track) {
         Glide.with(this).load(track.getAlbum().getImages().get(0).getUrl()).into(albumArt);
+
     }
 
     @Override
