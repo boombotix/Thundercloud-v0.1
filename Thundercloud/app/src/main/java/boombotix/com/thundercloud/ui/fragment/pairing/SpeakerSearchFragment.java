@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Set;
 
+import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.ThundercloudApplication;
 import boombotix.com.thundercloud.model.constants.BluetoothConstants;
@@ -90,17 +90,16 @@ public class SpeakerSearchFragment extends BaseFragment {
         Set<BluetoothDevice> devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
 
         for (BluetoothDevice device : devices) {
-            Log.d(this.getClass().getName(), String.format("Name: %s, Address: %s, Type: %s, Class: %s",
-                    device.getName(), device.getAddress(), device.getType(),
-                    device.getBluetoothClass() != null ? device.getBluetoothClass().getDeviceClass() : ""));
 
-//            if (device.getName() != null &&
-//                    (device.getName().contains(BluetoothConstants.BOOMBOT_BASE_NAME) ||
-//                            device.getName().contains(BluetoothConstants.TEST_HARDWARE_BASE_NAME))) {
+            boolean deviceCheck = device.getName() != null &&
+                    (device.getName().contains(BluetoothConstants.BOOMBOT_BASE_NAME) ||
+                            device.getName().contains(BluetoothConstants.TEST_HARDWARE_BASE_NAME));
 
+            // we should only scan for official hardware, but for debugging purposes throw in everything
+            if (deviceCheck || BuildConfig.DEBUG) {
                 speakerAdapter.add(device.getName());
                 speakers.add(device);
-//            }
+            }
         }
     }
 

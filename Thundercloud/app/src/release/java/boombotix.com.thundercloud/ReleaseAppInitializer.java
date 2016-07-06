@@ -15,6 +15,6 @@ public class ReleaseAppInitializer extends ApplicationInitializer {
 
     @Override
     void variantSpecificInitialization(Application application) {
-
+        Timber.plant(new FirebaseTree());
     }
 }

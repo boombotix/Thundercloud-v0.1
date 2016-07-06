@@ -1,6 +1,8 @@
 package boombotix.com.thundercloud;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import javax.inject.Inject;
 
@@ -31,6 +33,12 @@ public class ThundercloudApplication extends Application {
         buildComponentAndInject();
 
         applicationInitializer.init(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public static ThundercloudApplication instance(){

@@ -8,6 +8,7 @@ import com.facebook.stetho.timber.StethoTree;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import boombotix.com.thundercloud.analytics.FirebaseTree;
 import timber.log.Timber;
 
 /**
@@ -22,6 +23,7 @@ public class DebugApplicationInitializer extends ApplicationInitializer {
     void variantSpecificInitialization(Application application) {
         Timber.plant(new Timber.DebugTree());
         Timber.plant(new StethoTree());
+        Timber.plant(new FirebaseTree());
         Stetho.initializeWithDefaults(application);
     }
 }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1096551823695",
+    "firebase_url": "https://thundercloud-8ac45.firebaseio.com",
+    "project_id": "thundercloud-8ac45",
+    "storage_bucket": "thundercloud-8ac45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096551823695:android:3bb6582a659b2dfc",
+        "android_client_info": {
+          "package_name": "boombotix.com.thundercloud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096551823695-qt1cv3rdp0i7f4s8npr295p2cqi4mcsd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj42vXvSP3nDWTGEJaDt0-lJr1pV-DYRI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
