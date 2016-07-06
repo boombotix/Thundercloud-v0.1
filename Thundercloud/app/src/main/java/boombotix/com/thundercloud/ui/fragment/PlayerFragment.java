@@ -43,6 +43,7 @@ import hugo.weaving.DebugLog;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 
 public class PlayerFragment extends BaseFragment
@@ -202,7 +203,6 @@ public class PlayerFragment extends BaseFragment
         }
     }
 
-
     public void stopSearch() {
         if (voiceSearch != null) {
             voiceSearch.abort();
@@ -226,7 +226,6 @@ public class PlayerFragment extends BaseFragment
 
         voiceSearch.start();
     }
-
 
     private void updateText(String s) {
         ((TopLevelActivity) getActivity()).updateVoiceSearchResultFragmentText(s);
@@ -292,6 +291,6 @@ public class PlayerFragment extends BaseFragment
 
     @Override
     public void onError(Exception ex) {
-
+        Timber.e(ex.getMessage());
     }
 }

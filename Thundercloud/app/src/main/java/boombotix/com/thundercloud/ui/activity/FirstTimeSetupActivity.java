@@ -3,6 +3,7 @@ package boombotix.com.thundercloud.ui.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
@@ -33,6 +34,8 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
 
     private static final String TAG = "FirstTimeSetupActivity";
 
+    private static final String USER_HAS_COMPLETED_SETUP_KEY = "OnboardingCompleted";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,13 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        startSpeakerPairingActivity();
+        boolean onboardingCompleted = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(USER_HAS_COMPLETED_SETUP_KEY, false);
+
+        if (onboardingCompleted) {
+            startTopLevelActivity();
+        } else {
+            startSpeakerPairingActivity();
+        }
     }
 
     @DebugLog
@@ -62,7 +71,7 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
     }
 
     @DebugLog
-    private void startMusicServiceSetupActivity(){
+    private void startMusicServiceSetupActivity() {
         Intent intent = new Intent(this, MusicServiceSetupActivity.class);
         intent.putExtra(MusicServiceSetupActivity.FIRST_TIME_SETUP_KEY, true);
         startActivityForResult(intent, REQUEST_CODE_MUSIC_SERVICES);
@@ -123,11 +132,18 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
                 handleSpeakerWifiResult(resultCode);
                 break;
             case REQUEST_CODE_MUSIC_SERVICES:
-                Intent intent = new Intent(this, TopLevelActivity.class);
-                startActivity(intent);
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                        .putBoolean(USER_HAS_COMPLETED_SETUP_KEY, true).commit();
+
+                startTopLevelActivity();
                 break;
             default:
                 Log.e(TAG, "Unrecognized request code: " + requestCode);
         }
+    }
+
+    private void startTopLevelActivity() {
+        Intent intent = new Intent(this, TopLevelActivity.class);
+        startActivity(intent);
     }
 }
