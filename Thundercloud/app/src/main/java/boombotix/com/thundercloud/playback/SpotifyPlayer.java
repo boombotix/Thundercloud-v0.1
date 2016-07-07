@@ -1,9 +1,13 @@
 package boombotix.com.thundercloud.playback;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Connectivity;
@@ -12,7 +16,10 @@ import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 import com.spotify.sdk.android.player.Spotify;
 
+import java.lang.ref.WeakReference;
+
 import boombotix.com.thundercloud.BuildConfig;
+import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.model.music.MusicListItem;
 import hugo.weaving.DebugLog;
@@ -32,10 +39,33 @@ public class SpotifyPlayer implements MusicPlayer, Player.InitializationObserver
     Player player;
     MusicListItem item;
 
+    public static final String REDIRECT_URI = "boombotix.thundercloud://callback";
+
     public SpotifyPlayer(Context context, AuthManager authManager){
         this.context = context;
         this.authManager = authManager;
         initializePlayer();
+    }
+
+    public boolean isInitialized(){
+        if(this.player == null){
+            return false;
+        }
+
+        return this.player.isInitialized();
+    }
+
+    @DebugLog
+    public void spotifyAuthentication(WeakReference<Activity> activity, int requestCode){
+        AuthenticationRequest.Builder builder =
+                new AuthenticationRequest.Builder(BuildConfig.SPOTIFY_CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+
+        String[] scopes = activity.get().getResources().getStringArray(R.array.spotify_scopes);
+
+        builder.setScopes(scopes);
+        AuthenticationRequest request = builder.build();
+
+        AuthenticationClient.openLoginActivity(activity.get(), requestCode, request);
     }
 
     @DebugLog

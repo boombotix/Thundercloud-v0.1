@@ -2,7 +2,6 @@ package boombotix.com.thundercloud.ui.fragment;
 
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,15 +132,15 @@ public class NowPlayingFragment extends BaseFragment implements
 
     @DebugLog
     private void onArtworkResult(Track track){
-        Glide.with(this).load(track.getAlbum().getImages().get(0).getUrl()).into(albumArt);
+        Glide.with(this).load(track.getAlbum().getImages().get(0).getUrl()).centerCrop().into(albumArt);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         //TODO: this whole bit will need to be redone when we're getting actual album art
-        albumArt.setImageBitmap(this.screenBlurUiFilter.cropToScreenSize(BitmapFactory
-                .decodeResource(getResources(), R.drawable.ic_album_art_test)));
+//        albumArt.setImageBitmap(this.screenBlurUiFilter.cropToScreenSize(BitmapFactory
+//                .decodeResource(getResources(), R.drawable.ic_album_art_test)));
         super.alertActivityMainViewCreated();
     }
 

@@ -11,12 +11,20 @@ import com.canelmas.let.AskPermission;
 import com.canelmas.let.DeniedPermission;
 import com.canelmas.let.RuntimePermissionListener;
 import com.canelmas.let.RuntimePermissionRequest;
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import boombotix.com.thundercloud.R;
+import boombotix.com.thundercloud.authentication.AuthManager;
+import boombotix.com.thundercloud.playback.SpotifyPlayer;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import hugo.weaving.DebugLog;
+import timber.log.Timber;
 
 /**
  * Activity that shows all parts of the first-time setup process. Starts with speaker pairing, then
@@ -32,9 +40,17 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
 
     private static final int REQUEST_CODE_MUSIC_SERVICES = 2;
 
+    private static final int SPOTIFY_AUTH = 666;
+
     private static final String TAG = "FirstTimeSetupActivity";
 
     private static final String USER_HAS_COMPLETED_SETUP_KEY = "OnboardingCompleted";
+
+    @Inject
+    AuthManager authManager;
+
+    @Inject
+    SpotifyPlayer spotifyPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +59,14 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.getActivityComponent().inject(this);
+
         boolean onboardingCompleted = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(USER_HAS_COMPLETED_SETUP_KEY, false);
 
         if (onboardingCompleted) {
-            startTopLevelActivity();
+            if(authManager.getAccessToken() != null && !this.spotifyPlayer.isInitialized()){
+                spotifyPlayer.spotifyAuthentication(new WeakReference<>(this), SPOTIFY_AUTH);
+            }
         } else {
             startSpeakerPairingActivity();
         }
@@ -125,6 +145,9 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
+            case SPOTIFY_AUTH:
+                handleSpoifyResult(resultCode, data);
+                break;
             case REQUEST_CODE_SPEAKER_PAIRING:
                 handleSpeakerPairingResult(resultCode);
                 break;
@@ -140,6 +163,24 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
             default:
                 Log.e(TAG, "Unrecognized request code: " + requestCode);
         }
+    }
+
+    private void handleSpoifyResult(int resultCode, Intent data) {
+        AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
+        switch (response.getType()) {
+            case TOKEN:
+                Timber.d(response.getAccessToken());
+                authManager.setAccessToken(response.getAccessToken());
+                spotifyPlayer.initializePlayerWithToken(response.getAccessToken());
+                break;
+            case ERROR:
+                Timber.e(response.getError());
+                break;
+            default:
+                Timber.d("Login canceled");
+        }
+
+        startTopLevelActivity();
     }
 
     private void startTopLevelActivity() {

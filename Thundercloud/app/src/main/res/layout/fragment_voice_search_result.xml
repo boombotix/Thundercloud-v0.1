@@ -1,32 +1,36 @@
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/voice_search_result_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textColor="#f00"
         android:text="@string/voice_search_result_waiting"
-        android:id="@+id/voice_search_result_text"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        android:textColor="@color/houndify_white" />
+
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/voice_search_result_edit"
-        android:visibility="gone"
-        android:singleLine="true"
-        android:textColor="#0f0"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        android:textColor="@color/houndify_white"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/voice_search_result_tap_to_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@id/voice_search_result_text"
+        android:layout_centerHorizontal="true"
         android:text="@string/voice_search_result_tap_to_edit"
-        android:visibility="invisible"
-        android:textColor="#0f0"/>
-    </RelativeLayout>
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        android:textColor="@color/houndify_white"
+        android:visibility="invisible" />
+</RelativeLayout>

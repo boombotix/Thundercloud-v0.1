@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
+
+import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 
-import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.model.music.Service;
@@ -24,7 +24,6 @@ public class MusicServiceSetupActivity extends BaseActivity
         implements MusicServiceListFragment.OnMusicServiceSelectedListener {
 
     public static final String FIRST_TIME_SETUP_KEY = "firstTimeSetup";
-    public static final String REDIRECT_URI = "boombotix.thundercloud://callback";
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
@@ -88,15 +87,7 @@ public class MusicServiceSetupActivity extends BaseActivity
 
     @DebugLog
     private void spotifyAuthentication(){
-        AuthenticationRequest.Builder builder =
-                new AuthenticationRequest.Builder(BuildConfig.SPOTIFY_CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-
-        String[] scopes = getResources().getStringArray(R.array.spotify_scopes);
-
-        builder.setScopes(scopes);
-        AuthenticationRequest request = builder.build();
-
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+        spotifyPlayer.spotifyAuthentication(new WeakReference<>(this), REQUEST_CODE);
     }
 
     @DebugLog
