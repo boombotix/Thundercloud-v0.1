@@ -1,20 +1,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/player_root"
     android:layout_width="match_parent"
     android:layout_height="@dimen/player_bar_outer_height"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+                android:background="@null"
+    android:layout_alignParentBottom="true">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/player_bar_inner_height"
-        android:background="@android:color/black"
+        android:background="@color/queueBackgroundColor"
         android:layout_alignParentBottom="true">
 
         <boombotix.com.thundercloud.ui.view.CropImageView
             android:id="@+id/player_blurred_background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:paddingRight="@dimen/default_margin"

@@ -111,3 +111,4 @@ public class ApplicationModule {
         return new WifiScanResultsObservable();
     }
 }
+

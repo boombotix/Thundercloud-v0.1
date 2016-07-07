@@ -20,10 +20,11 @@
             android:layout_height="match_parent"
             android:id="@+id/overlay_fragment"/>
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/player_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
@@ -32,16 +33,13 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:theme="@style/AppTheme.NoActionBar"
+        android:background="@null"
         android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <boombotix.com.thundercloud.ui.view.CropImageView
-                android:id="@+id/toolbar_background"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:background="@color/queueBackgroundColor">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -69,11 +67,6 @@
             </android.support.v7.widget.Toolbar>
         </RelativeLayout>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorBackground" />
     </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>
