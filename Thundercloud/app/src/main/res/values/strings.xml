@@ -10,7 +10,7 @@
     <string name="finish">Finish</string>
 
     <!-- Main Activity -->
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Thundercloud</string>
     <string name="title_activity_drawer">DrawerActivity</string>
     <string name="title_activity_player">PlayerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -94,6 +94,15 @@
     <string name="search_row_header_artists">Artists</string>
     <string name="search_row_header_album">Album</string>
     <string name="row_search_track_delimiter">|</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="settings">Settings</string>
+    <string name="app_settings">App Settings</string>
+    <string name="about">About</string>
+    <string name="action_search">Search</string>
+    <string name="artist">Artist</string>
+    <string name="track_name">Track Name</string>
+    <string name="queue">Queue</string>
+    <string name="search">Search</string>
 
     <string-array name="spotify_scopes">
         <item>streaming</item>

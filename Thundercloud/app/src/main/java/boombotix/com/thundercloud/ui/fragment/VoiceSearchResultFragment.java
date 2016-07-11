@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fernandocejas.frodo.annotation.RxLogObservable;
@@ -58,6 +59,9 @@ public class VoiceSearchResultFragment extends BaseFragment {
 
     @Bind(R.id.voice_search_result_text)
     TextView queryText;
+
+    @Bind(R.id.voice_search_result_spinner)
+    ProgressBar voiceSearchResultsSpinner;
 
     @Bind(R.id.voice_search_result_edit)
     EditText editText;
@@ -142,7 +146,6 @@ public class VoiceSearchResultFragment extends BaseFragment {
                 .setQuery(q)
                 .build();
 
-
         Observable.defer(() -> createResultObservable(textSearch))
                 .compose(RxTransformers.applySchedulers())
                 .map(result -> houndifyResponseParser.parseMusicSearchResponse(result.getResponse()))
@@ -152,8 +155,19 @@ public class VoiceSearchResultFragment extends BaseFragment {
                         listItem -> {
                             playbackQueue.addToQueue(listItem);
                             musicControls.play();
+                            doneLoadingResults();
                         },
                         t -> Timber.e(t.getMessage()));
+    }
+
+    private void loadingResults(){
+        tapToEdit.setVisibility(View.GONE);
+        queryText.setVisibility(View.GONE);
+        voiceSearchResultsSpinner.setVisibility(View.VISIBLE);
+    }
+
+    private void doneLoadingResults(){
+        voiceSearchResultsSpinner.setVisibility(View.GONE);
     }
 
     @RxLogObservable

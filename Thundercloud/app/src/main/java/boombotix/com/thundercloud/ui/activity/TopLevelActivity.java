@@ -8,8 +8,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import com.canelmas.let.DeniedPermission;
 import com.canelmas.let.RuntimePermissionListener;
 import com.canelmas.let.RuntimePermissionRequest;
 import com.fernandocejas.frodo.annotation.RxLogObservable;
+import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.Arrays;
@@ -32,6 +35,8 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifySearchEndpoint;
+import boombotix.com.thundercloud.base.RxTransformers;
+import boombotix.com.thundercloud.model.search.spotify.SearchResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.controller.VoiceSearchController;
 import boombotix.com.thundercloud.ui.filter.Captureable;
@@ -172,18 +177,49 @@ public class TopLevelActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+
+        compositeSubscription.add(
+                RxSearchView.queryTextChanges(searchView)
+                        .skip(1)
+                        .debounce(500, TimeUnit.MILLISECONDS)
+                        .filter(s -> s.length() > 0)
+                        .subscribe(this::getSearchResults));
+
+        // todo delete this
+        searchText.setVisibility(View.GONE);
         return true;
+    }
+
+    private void getSearchResults(CharSequence searchText){
+        spotifySearchEndpoint.getAllResults(searchText.toString(), "artist,album,playlist,track")
+                .compose(RxTransformers.applySchedulers())
+                .subscribe(this::showSearchResults);
+    }
+
+    private void showSearchResults(SearchResponse searchResponse){
+        Timber.d(searchResponse.toString());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_queue) {
+            showQueue();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showQueue(){
+
+    }
+
+    private void hideQueue(){
+
     }
 
     @Override

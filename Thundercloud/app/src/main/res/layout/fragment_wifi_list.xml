@@ -76,7 +76,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/default_margin"
             android:contentDescription="@string/wifi_list_no_networks_found"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_wifi_not_found" />
 
     </RelativeLayout>
 
@@ -116,6 +116,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_margin"
         android:contentDescription="@string/description_boombotix_logo"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_wifi" />
 
 </RelativeLayout>

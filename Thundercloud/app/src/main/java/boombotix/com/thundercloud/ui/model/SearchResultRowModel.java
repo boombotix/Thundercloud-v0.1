@@ -1,5 +1,7 @@
 package boombotix.com.thundercloud.ui.model;
 
+import android.support.annotation.IntDef;
+
 import boombotix.com.thundercloud.model.search.spotify.Album;
 import boombotix.com.thundercloud.model.search.spotify.Artist;
 import boombotix.com.thundercloud.model.search.spotify.Playlist;
@@ -11,6 +13,26 @@ public class SearchResultRowModel {
     private Album album;
     private Track track;
     private Playlist playlist;
+
+    @IntDef({
+            SEARCH_RESULTS_ARTIST_HEADER,
+            SEARCH_RESULTS_ARTIST_ITEM,
+            SEARCH_RESULTS_ALBUM_HEADER,
+            SEARCH_RESULTS_ALBUM_ITEM,
+            SEARCH_RESULTS_TRACK_HEADER,
+            SEARCH_RESULTS_TRACK_ITEM,
+            SEARCH_RESULTS_PLAYLIST_HEADER,
+            SEARCH_RESULTS_PLAYLIST_ITEM
+    })
+    public @interface SearchResultView {}
+    public static final int SEARCH_RESULTS_ARTIST_HEADER = 0;
+    public static final int SEARCH_RESULTS_ARTIST_ITEM = 1;
+    public static final int SEARCH_RESULTS_ALBUM_HEADER = 2;
+    public static final int SEARCH_RESULTS_ALBUM_ITEM = 3;
+    public static final int SEARCH_RESULTS_TRACK_HEADER = 4;
+    public static final int SEARCH_RESULTS_TRACK_ITEM = 5;
+    public static final int SEARCH_RESULTS_PLAYLIST_HEADER = 6;
+    public static final int SEARCH_RESULTS_PLAYLIST_ITEM = 7;
 
     private SearchResultRowModel(String header, Artist artist, Album album, Track track, Playlist playlist) {
         this.header = header;
