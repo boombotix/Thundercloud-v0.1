@@ -18,35 +18,85 @@ import boombotix.com.thundercloud.ui.viewholder.SearchResultsTrackViewHolder;
 public class SearchResultsAdapter extends RecyclerView.Adapter {
     List<SearchResultRowModel> rowModels;
 
+    public static final String HEADER_ARTIST = "Artists";
+    public static final String HEADER_ALBUM = "Albums";
+    public static final String HEADER_TRACK = "Tracks";
+    public static final String HEADER_PLAYLIST = "Playlists";
+
+    public SearchResultsAdapter(List<SearchResultRowModel> rowModels) {
+        this.rowModels = rowModels;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, @SearchResultRowModel.SearchResultView int viewType) {
         switch (viewType){
             case SearchResultRowModel.SEARCH_RESULTS_ARTIST_HEADER:
-                View artistHeaderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_artist_header, parent);
+                View artistHeaderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_artist_header, parent, false);
                 return new SearchResultsHeaderViewHolder(artistHeaderView);
             case SearchResultRowModel.SEARCH_RESULTS_ARTIST_ITEM:
-                View artistItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_artist_item, parent);
+                View artistItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_artist_item, parent, false);
                 return new SearchResultsArtistViewHolder(artistItemView);
             case SearchResultRowModel.SEARCH_RESULTS_ALBUM_HEADER:
-                View albumHeaderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_album_header, parent);
+                View albumHeaderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_album_header, parent, false);
                 return new SearchResultsHeaderViewHolder(albumHeaderView);
             case SearchResultRowModel.SEARCH_RESULTS_ALBUM_ITEM:
-                View albumItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_album_item, parent);
+                View albumItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_album_item, parent, false);
                 return new SearchResultsAlbumViewHolder(albumItemView);
             case SearchResultRowModel.SEARCH_RESULTS_TRACK_HEADER:
-                View trackHeadeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_track_header, parent);
+                View trackHeadeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_track_header, parent, false);
                 return new SearchResultsHeaderViewHolder(trackHeadeView);
             case SearchResultRowModel.SEARCH_RESULTS_TRACK_ITEM:
-                View trackItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_track_item, parent);
+                View trackItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_track_item, parent, false);
                 return new SearchResultsTrackViewHolder(trackItemView);
             case SearchResultRowModel.SEARCH_RESULTS_PLAYLIST_HEADER:
-                View playlistHeaderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_playlist_header, parent);
+                View playlistHeaderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_playlist_header, parent, false);
                 return new SearchResultsHeaderViewHolder(playlistHeaderView);
             case SearchResultRowModel.SEARCH_RESULTS_PLAYLIST_ITEM:
-                View playlistItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_playlist_item, parent);
+                View playlistItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_playlist_item, parent, false);
                 return new SearchResultsPlaylistViewHolder(playlistItemView);
         }
         throw new RuntimeException("Search doesn't support this view type");
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        SearchResultRowModel model = this.rowModels.get(position);
+
+        if(model.getHeader() != null){
+            if(model.getHeader().equals(HEADER_ARTIST)){
+                return SearchResultRowModel.SEARCH_RESULTS_ARTIST_HEADER;
+            }
+
+            if(model.getHeader().equals(HEADER_ALBUM)){
+                return SearchResultRowModel.SEARCH_RESULTS_ALBUM_HEADER;
+            }
+
+            if(model.getHeader().equals(HEADER_TRACK)){
+                return SearchResultRowModel.SEARCH_RESULTS_TRACK_HEADER;
+            }
+
+            if(model.getHeader().equals(HEADER_PLAYLIST)){
+                return SearchResultRowModel.SEARCH_RESULTS_PLAYLIST_HEADER;
+            }
+        }
+
+        if(model.getArtist() != null){
+            return SearchResultRowModel.SEARCH_RESULTS_ARTIST_ITEM;
+        }
+
+        if(model.getAlbum() != null){
+            return SearchResultRowModel.SEARCH_RESULTS_ALBUM_ITEM;
+        }
+
+        if(model.getTrack() != null){
+            return SearchResultRowModel.SEARCH_RESULTS_TRACK_ITEM;
+        }
+
+        if(model.getPlaylist() != null){
+            return SearchResultRowModel.SEARCH_RESULTS_PLAYLIST_ITEM;
+        }
+
+        return 0;
     }
 
     @Override
@@ -81,6 +131,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return rowModels.size();
+        return rowModels == null ? 0 : rowModels.size();
     }
 }

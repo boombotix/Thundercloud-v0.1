@@ -9,6 +9,7 @@
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:buttonStyle">@style/Thundercloud.Button</item>
+        <item name="colorControlHighlight">@color/houndify_white</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowActionBarOverlay">true</item>

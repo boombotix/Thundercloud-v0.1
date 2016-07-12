@@ -44,6 +44,7 @@ import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.QueueFragment;
+import boombotix.com.thundercloud.ui.fragment.SearchResultsFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,6 +82,8 @@ public class TopLevelActivity extends BaseActivity
     @Inject
     SpotifySearchEndpoint spotifySearchEndpoint;
 
+    SearchResultsFragment searchResultsFragment;
+
     private Subject<Boolean, Boolean> screenCreatedObservable;
 
     @DebugLog
@@ -116,16 +119,17 @@ public class TopLevelActivity extends BaseActivity
     }
 
     @RxLogObservable
-    private Observable<CharSequence> searchTextObservable(){
+    private Observable<CharSequence> searchTextObservable() {
         return RxTextView.textChanges(searchText)
                 .skip(3).debounce(1000, TimeUnit.MILLISECONDS);
     }
 
-    private void searchSpotify(CharSequence searchText){
-        if(searchText.length() > 2){
+    private void searchSpotify(CharSequence searchText) {
+        if (searchText.length() > 2) {
             spotifySearchEndpoint
                     .getAllResults(searchText.toString(), "artist,album,playlist,track")
-                    .subscribe(res -> { });
+                    .subscribe(res -> {
+                    });
         }
     }
 
@@ -192,14 +196,26 @@ public class TopLevelActivity extends BaseActivity
         return true;
     }
 
-    private void getSearchResults(CharSequence searchText){
+    private void getSearchResults(CharSequence searchText) {
+        fm = getSupportFragmentManager();
+        searchResultsFragment = new SearchResultsFragment();
+
+        fm.beginTransaction()
+                .replace(R.id.main_fragment, searchResultsFragment, SearchResultsFragment.TAG)
+                .commit();
+
         spotifySearchEndpoint.getAllResults(searchText.toString(), "artist,album,playlist,track")
                 .compose(RxTransformers.applySchedulers())
-                .subscribe(this::showSearchResults);
+                .subscribe(this::showSearchResults, t -> {
+                    Timber.e(t.getMessage(), t);
+                    t.printStackTrace();
+                });
     }
 
-    private void showSearchResults(SearchResponse searchResponse){
-        Timber.d(searchResponse.toString());
+    private void showSearchResults(SearchResponse searchResponse) {
+        if(searchResponse == null) return;
+
+        searchResultsFragment.setSearchResults(searchResponse);
     }
 
     @Override
@@ -214,11 +230,11 @@ public class TopLevelActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void showQueue(){
+    private void showQueue() {
 
     }
 
-    private void hideQueue(){
+    private void hideQueue() {
 
     }
 
@@ -226,7 +242,7 @@ public class TopLevelActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.nav_nowplaying) {
+        if (id == R.id.nav_nowplaying) {
             fm.beginTransaction()
                     .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
                     .commit();
@@ -244,7 +260,7 @@ public class TopLevelActivity extends BaseActivity
 
     }
 
-    private void setQueueFragment(){
+    private void setQueueFragment() {
         Fragment queueFragment = QueueFragment.newInstance();
         fm.beginTransaction()
                 .replace(R.id.queue_container, queueFragment)
@@ -286,7 +302,7 @@ public class TopLevelActivity extends BaseActivity
      * sets voice search fragment text to the query and allows editing via input box
      */
     public void setVoiceSearchResultFragmentQuery(String s) {
-            setAndGetVoiceSearchResultFragment().setQuery(s);
+        setAndGetVoiceSearchResultFragment().setQuery(s);
     }
 
     /**
@@ -325,15 +341,14 @@ public class TopLevelActivity extends BaseActivity
 
     /**
      * Hides search input from toolbar
-     *
      */
-    public void hideSearch(){
+    public void hideSearch() {
         searchText.setVisibility(View.GONE);
 //        this.toolbarBackground.getLayoutParams().height = Math.round(50 * getResources()
 //                .getDisplayMetrics().density);
     }
 
-    public void showSearch(){
+    public void showSearch() {
         searchText.setVisibility(View.VISIBLE);
 //        this.toolbarBackground.getLayoutParams().height = Math.round(70 * getResources()
 //                .getDisplayMetrics().density);
@@ -350,13 +365,14 @@ public class TopLevelActivity extends BaseActivity
     /**
      * Callthrough to return the captureable view of the main content fragment,
      * if it implements {@link Captureable}
-     *
+     * <p>
      * May return null.
      *
-     * @return
-     *          Captureable view of content fragment, OR null.
+     * @return Captureable view of content fragment, OR null.
      */
-    public @Nullable View getCaptureableView() {
+    public
+    @Nullable
+    View getCaptureableView() {
         Fragment contentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         if (contentFragment != null && contentFragment instanceof Captureable) {
             return ((Captureable) contentFragment).captureView();

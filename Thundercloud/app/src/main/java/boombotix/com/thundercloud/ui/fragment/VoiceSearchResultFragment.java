@@ -27,8 +27,7 @@ import boombotix.com.thundercloud.houndify.model.Track;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.model.music.MusicListItem;
-import boombotix.com.thundercloud.playback.MusicControls;
-import boombotix.com.thundercloud.playback.PlaybackQueue;
+import boombotix.com.thundercloud.playback.MusicPlayer;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,10 +42,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
     private static final String QUERY_ARG = "query";
 
     @Inject
-    MusicControls musicControls;
-
-    @Inject
-    PlaybackQueue playbackQueue;
+    MusicPlayer musicPlayer;
 
     @Inject
     HoundifyRequestTransformer houndifyRequestTransformer;
@@ -153,8 +149,9 @@ public class VoiceSearchResultFragment extends BaseFragment {
                 .flatMap(listItemObservable -> listItemObservable)
                 .subscribe(
                         listItem -> {
-                            playbackQueue.addToQueue(listItem);
-                            musicControls.play();
+                            musicPlayer.clearQueue();
+                            musicPlayer.addToQueue(listItem);
+                            musicPlayer.play();
                             doneLoadingResults();
                         },
                         t -> Timber.e(t.getMessage()));

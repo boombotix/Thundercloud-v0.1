@@ -1,18 +1,36 @@
 package boombotix.com.thundercloud.playback;
 
+import java.util.List;
+
 import boombotix.com.thundercloud.model.music.MusicListItem;
+import boombotix.com.thundercloud.model.music.PlaybackState;
+import rx.Observable;
 
 /**
- * Interface defining behavior for a class to handle music playback
+ * Interface defining the actions the UI can take on a playback queue
  *
  * Created by kriedema on 6/14/16.
  */
 public interface MusicPlayer {
-    void play(MusicListItem item);
+    void play();
+
+    void next();
+
+    void previous();
 
     void pause();
 
     void stop();
 
-    void dispose();
+    boolean isPlaying();
+
+    MusicListItem getCurrentTrack();
+
+    void clearQueue();
+
+    void setQueue(List<MusicListItem> queue);
+
+    void addToQueue(MusicListItem musicListItem);
+
+    Observable<PlaybackState> stateChangedObservable();
 }

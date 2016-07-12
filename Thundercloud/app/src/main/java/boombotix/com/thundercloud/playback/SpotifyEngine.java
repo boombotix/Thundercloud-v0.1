@@ -30,7 +30,7 @@ import timber.log.Timber;
  *
  * Created by kriedema on 6/14/16.
  */
-public class SpotifyPlayer implements MusicPlayer, Player.InitializationObserver,
+public class SpotifyEngine implements AudioEngine, Player.InitializationObserver,
         ConnectionStateCallback, PlayerNotificationCallback{
 
     AuthManager authManager;
@@ -41,7 +41,7 @@ public class SpotifyPlayer implements MusicPlayer, Player.InitializationObserver
 
     public static final String REDIRECT_URI = "boombotix.thundercloud://callback";
 
-    public SpotifyPlayer(Context context, AuthManager authManager){
+    public SpotifyEngine(Context context, AuthManager authManager){
         this.context = context;
         this.authManager = authManager;
         initializePlayer();
@@ -157,7 +157,7 @@ public class SpotifyPlayer implements MusicPlayer, Player.InitializationObserver
 
     @Override
     public void onTemporaryError() {
-        Timber.e("Spotify player temporary error");
+        Timber.e("Spotify audioEngine temporary error");
     }
 
     @Override

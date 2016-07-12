@@ -4,11 +4,11 @@ import boombotix.com.thundercloud.model.music.MusicListItem;
 import timber.log.Timber;
 
 /**
- * Mock player to be used in mock and test builds
+ * Mock audioEngine to be used in mock and test builds
  *
  * Created by kriedema on 6/14/16.
  */
-public class MockPlayer implements MusicPlayer {
+public class MockEngine implements AudioEngine {
     @Override
     public void play(MusicListItem item) {
         Timber.d("Playing item " + item.getTitle());

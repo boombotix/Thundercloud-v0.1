@@ -4,7 +4,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorControlHighlight">@color/houndify_white</item>
+        <item name="android:statusBarColor">@color/queueBackgroundColor</item>
     </style>
 
     <style name="Thundercloud.Button" parent="Widget.AppCompat.Button.Colored">

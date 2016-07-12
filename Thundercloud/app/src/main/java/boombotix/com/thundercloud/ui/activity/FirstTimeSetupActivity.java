@@ -21,7 +21,7 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
-import boombotix.com.thundercloud.playback.SpotifyPlayer;
+import boombotix.com.thundercloud.playback.SpotifyEngine;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import hugo.weaving.DebugLog;
 import timber.log.Timber;
@@ -50,7 +50,7 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
     AuthManager authManager;
 
     @Inject
-    SpotifyPlayer spotifyPlayer;
+    SpotifyEngine spotifyEngine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +64,8 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
         boolean onboardingCompleted = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(USER_HAS_COMPLETED_SETUP_KEY, false);
 
         if (onboardingCompleted) {
-            if(authManager.getAccessToken() != null && !this.spotifyPlayer.isInitialized()){
-                spotifyPlayer.spotifyAuthentication(new WeakReference<>(this), SPOTIFY_AUTH);
+            if(authManager.getAccessToken() != null && !this.spotifyEngine.isInitialized()){
+                spotifyEngine.spotifyAuthentication(new WeakReference<>(this), SPOTIFY_AUTH);
             }
         } else {
             startSpeakerPairingActivity();
@@ -171,7 +171,7 @@ public class FirstTimeSetupActivity extends BaseActivity implements RuntimePermi
             case TOKEN:
                 Timber.d(response.getAccessToken());
                 authManager.setAccessToken(response.getAccessToken());
-                spotifyPlayer.initializePlayerWithToken(response.getAccessToken());
+                spotifyEngine.initializePlayerWithToken(response.getAccessToken());
                 break;
             case ERROR:
                 Timber.e(response.getError());

@@ -7,7 +7,7 @@ import boombotix.com.thundercloud.model.music.MusicListItem;
  *
  * Created by kriedema on 6/14/16.
  */
-public class SlackerPlayer implements MusicPlayer {
+public class SlackerEngine implements AudioEngine {
     @Override
     public void play(MusicListItem item) {
 

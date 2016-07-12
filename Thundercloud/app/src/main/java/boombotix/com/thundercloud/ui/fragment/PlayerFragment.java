@@ -29,8 +29,8 @@ import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
-import boombotix.com.thundercloud.model.music.MusicListItem;
-import boombotix.com.thundercloud.playback.MusicControls;
+import boombotix.com.thundercloud.model.music.PlaybackState;
+import boombotix.com.thundercloud.playback.MusicPlayer;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
@@ -57,7 +57,7 @@ public class PlayerFragment extends BaseFragment
     private VoiceSearch voiceSearch;
 
     @Inject
-    MusicControls musicControls;
+    MusicPlayer musicPlayer;
 
     @Inject
     HoundifyRequestTransformer houndifyRequestTransformer;
@@ -111,6 +111,10 @@ public class PlayerFragment extends BaseFragment
         ButterKnife.bind(this, view);
         getSupportActivity().getActivityComponent().inject(this);
 
+        compositeSubscription.add(musicPlayer.stateChangedObservable()
+                .map(track -> musicPlayer.isPlaying())
+                .subscribe(this::updatePlayButton, throwable -> Timber.e(throwable.getMessage(), throwable)));
+
         return view;
     }
 
@@ -162,12 +166,18 @@ public class PlayerFragment extends BaseFragment
     @DebugLog
     @OnClick(R.id.player_play_pause_button)
     public void playButtonOnClick(View v){
-        if(musicControls.isPlaying()){
-            musicControls.pause();
-            v.setBackground(getResources().getDrawable(android.R.drawable.ic_media_play));
+        if(musicPlayer.isPlaying()){
+            musicPlayer.pause();
         } else {
-            musicControls.play();
-            v.setBackground(getResources().getDrawable(android.R.drawable.ic_media_pause));
+            musicPlayer.play();
+        }
+    }
+
+    private void updatePlayButton(boolean isPlaying){
+        if(isPlaying){
+            playButton.setBackground(getResources().getDrawable(R.drawable.ic_pause_circle));
+        } else {
+            playButton.setBackground(getResources().getDrawable(R.drawable.ic_play_circle));
         }
     }
 
@@ -175,7 +185,7 @@ public class PlayerFragment extends BaseFragment
     public void onStart() {
         super.onStart();
         startPhraseSpotting();
-        compositeSubscription.add(musicControls.trackChangedObservable().subscribe(this::onTrackChange));
+        compositeSubscription.add(musicPlayer.stateChangedObservable().subscribe(this::onStateChange));
     }
 
     private int getScreenHeight() {
@@ -185,9 +195,9 @@ public class PlayerFragment extends BaseFragment
         return displayMetrics.heightPixels;
     }
 
-    private void onTrackChange(MusicListItem musicListItem){
-        artistLabel.setText(musicListItem.getTitle());
-        trackLabel.setText(musicListItem.getSubtitle());
+    private void onStateChange(PlaybackState playbackState){
+        artistLabel.setText(playbackState.getCurrentTrack().getTitle());
+        trackLabel.setText(playbackState.getCurrentTrack().getSubtitle());
     }
 
     private void startPhraseSpotting() {

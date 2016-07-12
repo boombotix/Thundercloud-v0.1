@@ -9,14 +9,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/player_bar_inner_height"
-        android:background="@color/queueBackgroundColor"
+        android:background="#000000"
         android:layout_alignParentBottom="true">
 
         <boombotix.com.thundercloud.ui.view.CropImageView
             android:id="@+id/player_blurred_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:tint="@color/queueBackgroundColor"
             android:visibility="gone"/>
 
         <RelativeLayout
@@ -96,6 +95,6 @@
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:id="@+id/okhound_button"
-        android:background="@drawable/ic_houndify"
+        android:background="@drawable/ic_houndify_black_background"
         android:layout_centerHorizontal="true"/>
 </RelativeLayout>
