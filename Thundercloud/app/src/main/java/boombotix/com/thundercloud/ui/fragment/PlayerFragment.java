@@ -29,7 +29,7 @@ import boombotix.com.thundercloud.BuildConfig;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
-import boombotix.com.thundercloud.model.music.PlaybackState;
+import boombotix.com.thundercloud.model.music.PlaybackStateContract;
 import boombotix.com.thundercloud.playback.MusicPlayer;
 import boombotix.com.thundercloud.ui.activity.TopLevelActivity;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
@@ -195,9 +195,9 @@ public class PlayerFragment extends BaseFragment
         return displayMetrics.heightPixels;
     }
 
-    private void onStateChange(PlaybackState playbackState){
-        artistLabel.setText(playbackState.getCurrentTrack().getTitle());
-        trackLabel.setText(playbackState.getCurrentTrack().getSubtitle());
+    private void onStateChange(PlaybackStateContract playbackStateContract){
+        artistLabel.setText(playbackStateContract.getCurrentTrack().getTitle());
+        trackLabel.setText(playbackStateContract.getCurrentTrack().getSubtitle());
     }
 
     private void startPhraseSpotting() {

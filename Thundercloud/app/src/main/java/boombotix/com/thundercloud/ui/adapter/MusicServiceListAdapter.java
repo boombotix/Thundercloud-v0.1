@@ -45,6 +45,10 @@ public class MusicServiceListAdapter extends RecyclerView.Adapter<MusicServiceVi
         MusicService service = services[position];
         holder.setLogo(service.getLogoId());
         holder.setName(service.getName());
+
+        // todo actually update this
+        holder.setConnectedStatus(false);
+
         holder.setClickListener(v -> listener.onMusicServiceSelected(service));
     }
 

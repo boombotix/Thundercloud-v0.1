@@ -9,8 +9,8 @@ import boombotix.com.thundercloud.model.music.Service;
  * @author Theo Kanning
  */
 public enum MusicService {
-    SPOTIFY(Service.Spotify, R.mipmap.ic_launcher),
-    SLACKER(Service.Slacker, R.mipmap.ic_launcher);
+    SPOTIFY(Service.Spotify, R.drawable.ic_spotify),
+    SLACKER(Service.Slacker, R.drawable.ic_play_circle_dark);
 
     private Service service;
 

@@ -69,6 +69,7 @@ public class MusicServiceListFragment extends Fragment
             speakerName = getArguments().getString(ARG_SPEAKER_NAME);
             firstTime = getArguments().getBoolean(ARG_FIRST_TIME, false);
         }
+        // todo change button to say if connected or not
     }
 
     @Override

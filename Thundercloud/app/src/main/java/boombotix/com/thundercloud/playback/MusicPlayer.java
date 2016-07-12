@@ -3,7 +3,7 @@ package boombotix.com.thundercloud.playback;
 import java.util.List;
 
 import boombotix.com.thundercloud.model.music.MusicListItem;
-import boombotix.com.thundercloud.model.music.PlaybackState;
+import boombotix.com.thundercloud.model.music.PlaybackStateContract;
 import rx.Observable;
 
 /**
@@ -32,5 +32,5 @@ public interface MusicPlayer {
 
     void addToQueue(MusicListItem musicListItem);
 
-    Observable<PlaybackState> stateChangedObservable();
+    Observable<PlaybackStateContract> stateChangedObservable();
 }

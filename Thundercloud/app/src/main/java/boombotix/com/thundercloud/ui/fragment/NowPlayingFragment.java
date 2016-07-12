@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,7 +19,7 @@ import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
 import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import boombotix.com.thundercloud.base.RxTransformers;
-import boombotix.com.thundercloud.model.music.PlaybackState;
+import boombotix.com.thundercloud.model.music.PlaybackStateContract;
 import boombotix.com.thundercloud.model.search.spotify.Track;
 import boombotix.com.thundercloud.playback.MusicPlayer;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
@@ -44,6 +45,12 @@ public class NowPlayingFragment extends BaseFragment implements
 
     @Bind(R.id.player_play_pause_button)
     ImageButton playButton;
+
+    @Bind(R.id.prev_imageview)
+    ImageView previousButton;
+
+    @Bind(R.id.next_imageview)
+    ImageView nextImageButton;
 
     @Bind(R.id.now_playing_album_art)
     CropImageView albumArt;
@@ -114,8 +121,12 @@ public class NowPlayingFragment extends BaseFragment implements
     }
 
     @DebugLog
-    private void onStateChange(PlaybackState playbackState){
-        compositeSubscription.add(spotifyTrackEndpoint.getTrack(cleanSpotifyUri(playbackState.getCurrentTrack().getUri()))
+    private void onStateChange(PlaybackStateContract playbackStateContract){
+
+        this.previousButton.setVisibility(playbackStateContract.previousTrackAvailible() ? View.VISIBLE : View.GONE);
+        this.nextImageButton.setVisibility(playbackStateContract.nextTrackAvailible() ? View.VISIBLE : View.GONE);
+
+        compositeSubscription.add(spotifyTrackEndpoint.getTrack(cleanSpotifyUri(playbackStateContract.getCurrentTrack().getUri()))
                 .compose(RxTransformers.applySchedulers())
                 .subscribe(this::onArtworkResult, this::logErrors));
     }

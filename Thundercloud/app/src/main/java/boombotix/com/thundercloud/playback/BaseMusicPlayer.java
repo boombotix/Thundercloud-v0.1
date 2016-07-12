@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import boombotix.com.thundercloud.model.music.MusicListItem;
-import boombotix.com.thundercloud.model.music.PlaybackState;
+import boombotix.com.thundercloud.model.music.BasicPlaybackState;
+import boombotix.com.thundercloud.model.music.PlaybackStateContract;
 import hugo.weaving.DebugLog;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -25,12 +26,12 @@ public class BaseMusicPlayer implements MusicPlayer {
 
     AudioEngine audioEngine;
 
-    private Subject<PlaybackState, PlaybackState> subject = PublishSubject.create();
-    private PlaybackState playbackState;
+    private Subject<PlaybackStateContract, PlaybackStateContract> subject = PublishSubject.create();
+    private PlaybackStateContract playbackStateContract;
 
     public BaseMusicPlayer(AudioEngineProvider provider) {
         this.provider = provider;
-        playbackState = new PlaybackState();
+        playbackStateContract = new BasicPlaybackState();
     }
 
     @DebugLog
@@ -38,20 +39,20 @@ public class BaseMusicPlayer implements MusicPlayer {
     public void play() {
         this.audioEngine = provider.getMusicPlayer(getCurrentTrack());
         this.audioEngine.play(getCurrentTrack());
-        this.playbackState.setPlaying(true);
+        this.playbackStateContract.setPlaying(true);
         this.publishStateChange();
     }
 
     @DebugLog
     @Override
     public void next() {
-        if(!this.playbackState.isPlaying()){
+        if(!this.playbackStateContract.isPlaying()){
             this.play();
             return;
         }
 
         this.audioEngine.play(nextTrackFromQueue());
-        this.playbackState.setPlaying(true);
+        this.playbackStateContract.setPlaying(true);
         this.publishStateChange();
     }
 
@@ -59,7 +60,7 @@ public class BaseMusicPlayer implements MusicPlayer {
     @Override
     public void previous() {
         this.audioEngine.play(previousTrackFromQueue());
-        this.playbackState.setPlaying(true);
+        this.playbackStateContract.setPlaying(true);
         this.publishStateChange();
     }
 
@@ -67,7 +68,7 @@ public class BaseMusicPlayer implements MusicPlayer {
     @Override
     public void pause() {
         this.audioEngine.pause();
-        this.playbackState.setPlaying(false);
+        this.playbackStateContract.setPlaying(false);
         this.publishStateChange();
     }
 
@@ -75,75 +76,75 @@ public class BaseMusicPlayer implements MusicPlayer {
     @Override
     public void stop() {
         this.audioEngine.stop();
-        this.playbackState.setPlaying(false);
+        this.playbackStateContract.setPlaying(false);
         this.publishStateChange();
     }
 
     @Override
     public boolean isPlaying() {
-        return this.playbackState.isPlaying();
+        return this.playbackStateContract.isPlaying();
     }
 
     @Nullable
     @Override
     public MusicListItem getCurrentTrack() {
-        return this.playbackState.getCurrentTrack();
+        return this.playbackStateContract.getCurrentTrack();
     }
 
     @Nullable
     private MusicListItem nextTrackFromQueue(){
-        if(!this.playbackState.nextTrackAvailible()){
+        if(!this.playbackStateContract.nextTrackAvailible()){
             return null;
         }
 
-        this.playbackState.nextTrackIfAvailible();
+        this.playbackStateContract.nextTrackIfAvailible();
 
-        return this.playbackState.getCurrentTrack();
+        return this.playbackStateContract.getCurrentTrack();
     }
 
     @Nullable
     private MusicListItem previousTrackFromQueue(){
-        if(!this.playbackState.previousTrackAvailible()){
+        if(!this.playbackStateContract.previousTrackAvailible()){
             return null;
         }
 
-        this.playbackState.previousTrackIfAvailible();
+        this.playbackStateContract.previousTrackIfAvailible();
 
-        return this.playbackState.getCurrentTrack();
+        return this.playbackStateContract.getCurrentTrack();
     }
 
     @Override
     public void clearQueue() {
-        this.playbackState.setCurrentTrack(null);
-        this.playbackState.setQueue(new ArrayList<>());
+        this.playbackStateContract.setCurrentTrack(null);
+        this.playbackStateContract.setQueue(new ArrayList<>());
     }
 
     @Override
     public void setQueue(List<MusicListItem> queue) {
-        this.playbackState.setCurrentTrack(null);
-        this.playbackState.setQueue(queue);
+        this.playbackStateContract.setCurrentTrack(null);
+        this.playbackStateContract.setQueue(queue);
 
         if(queue.size() != 0){
-            this.playbackState.setCurrentTrack(queue.get(0));
+            this.playbackStateContract.setCurrentTrack(queue.get(0));
         }
     }
 
     @Override
     public void addToQueue(MusicListItem musicListItem) {
-        this.playbackState.getQueue().add(musicListItem);
+        this.playbackStateContract.getQueue().add(musicListItem);
 
-        if(this.playbackState.getCurrentTrack() == null){
-            this.playbackState.setCurrentTrack(musicListItem);
+        if(this.playbackStateContract.getCurrentTrack() == null){
+            this.playbackStateContract.setCurrentTrack(musicListItem);
         }
     }
 
     @RxLogObservable
     @Override
-    public Observable<PlaybackState> stateChangedObservable(){
+    public Observable<PlaybackStateContract> stateChangedObservable(){
         return subject.asObservable();
     }
 
     private void publishStateChange(){
-        this.subject.onNext(this.playbackState);
+        this.subject.onNext(this.playbackStateContract);
     }
 }

@@ -30,7 +30,7 @@
     <boombotix.com.thundercloud.ui.view.ConnectButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/connected"
+        android:text="@string/connect"
         android:id="@+id/connect"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
