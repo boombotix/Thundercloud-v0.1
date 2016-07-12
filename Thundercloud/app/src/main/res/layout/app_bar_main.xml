@@ -62,6 +62,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:inputType="text"
+                    android:visibility="gone"
                     android:lines="1" />
 
             </android.support.v7.widget.Toolbar>

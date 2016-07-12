@@ -39,6 +39,10 @@ public class MusicServiceViewHolder extends RecyclerView.ViewHolder{
         logo.setImageResource(logoId);
     }
 
+    public void setConnectedStatus(boolean connectedStatus){
+        this.connectButton.setText(connectedStatus ? R.string.connected : R.string.connect);
+    }
+
     public void setClickListener(View.OnClickListener listener){
         connectButton.setOnClickListener(listener);
     }

@@ -16,9 +16,10 @@ import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyDeserializer;
 import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
-import boombotix.com.thundercloud.playback.MusicControls;
-import boombotix.com.thundercloud.playback.PlaybackQueue;
-import boombotix.com.thundercloud.playback.SpotifyPlayer;
+import boombotix.com.thundercloud.playback.MusicPlayer;
+import boombotix.com.thundercloud.playback.SpotifyEngine;
+import boombotix.com.thundercloud.ui.viewholder.SearchResultsPlaylistViewHolder;
+import boombotix.com.thundercloud.ui.viewholder.SearchResultsTrackViewHolder;
 import boombotix.com.thundercloud.wifi.WifiScanResultsBroadcastReciever;
 import boombotix.com.thundercloud.wifi.WifiScanResultsObservableContract;
 
@@ -31,6 +32,10 @@ public interface ThundercloudGraph {
     void inject(ThundercloudApplication thundercloudApplication);
 
     void inject(WifiScanResultsBroadcastReciever reciever);
+
+    void inject(SearchResultsTrackViewHolder searchResultsTrackViewHolder);
+
+    void inject(SearchResultsPlaylistViewHolder searchResultsPlaylistViewHolder);
 
     ApplicationInitializer applicationInitializer();
 
@@ -48,11 +53,9 @@ public interface ThundercloudGraph {
 
     HoundifyRequestTransformer houndifyRequestAdapter();
 
-    PlaybackQueue playbackQueue();
+    MusicPlayer musicControls();
 
-    MusicControls musicControls();
-
-    SpotifyPlayer spotifyPlayer();
+    SpotifyEngine spotifyPlayer();
 
     SpotifyTrackEndpoint trackEndpoint();
 

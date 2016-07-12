@@ -53,4 +53,8 @@ public class Playlist implements MusicListItem {
     public void setUri(String uri) {
         this.uri = uri;
     }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
 }

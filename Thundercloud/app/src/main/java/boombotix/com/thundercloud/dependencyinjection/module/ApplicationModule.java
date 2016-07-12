@@ -16,14 +16,12 @@ import boombotix.com.thundercloud.houndify.response.HoundifyJsonDeserializer;
 import boombotix.com.thundercloud.houndify.response.HoundifyModelExtractor;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.houndify.response.HoundifySdkModelExtractor;
-import boombotix.com.thundercloud.playback.LocalPlaybackQueue;
-import boombotix.com.thundercloud.playback.LocalQueueControls;
-import boombotix.com.thundercloud.playback.MockPlayer;
-import boombotix.com.thundercloud.playback.MusicControls;
-import boombotix.com.thundercloud.playback.MusicPlayerProvider;
-import boombotix.com.thundercloud.playback.PlaybackQueue;
-import boombotix.com.thundercloud.playback.SlackerPlayer;
-import boombotix.com.thundercloud.playback.SpotifyPlayer;
+import boombotix.com.thundercloud.playback.AudioEngineProvider;
+import boombotix.com.thundercloud.playback.BaseMusicPlayer;
+import boombotix.com.thundercloud.playback.MockEngine;
+import boombotix.com.thundercloud.playback.MusicPlayer;
+import boombotix.com.thundercloud.playback.SlackerEngine;
+import boombotix.com.thundercloud.playback.SpotifyEngine;
 import boombotix.com.thundercloud.wifi.WifiScanResultsObservable;
 import boombotix.com.thundercloud.wifi.WifiScanResultsObservableContract;
 import dagger.Module;
@@ -71,38 +69,32 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    PlaybackQueue providesPlaybackQueue(){
-        return new LocalPlaybackQueue();
+    MusicPlayer providesMusicControls(AudioEngineProvider audioEngineProvider) {
+        return new BaseMusicPlayer(audioEngineProvider);
     }
 
     @Provides
     @Singleton
-    MusicControls providesMusicControls(PlaybackQueue playbackQueue, MusicPlayerProvider musicPlayerProvider) {
-        return new LocalQueueControls(playbackQueue, musicPlayerProvider);
+    AudioEngineProvider providesMusicPlayer(SpotifyEngine spotifyEngine, SlackerEngine slackerEngine, MockEngine mockEngine){
+        return new AudioEngineProvider(spotifyEngine, slackerEngine, mockEngine);
     }
 
     @Provides
     @Singleton
-    MusicPlayerProvider providesMusicPlayer(SpotifyPlayer spotifyPlayer, SlackerPlayer slackerPlayer, MockPlayer mockPlayer){
-        return new MusicPlayerProvider(spotifyPlayer, slackerPlayer, mockPlayer);
+    SpotifyEngine providesSpotifyPlayer(Application application, AuthManager authManager){
+        return new SpotifyEngine(application, authManager);
     }
 
     @Provides
     @Singleton
-    SpotifyPlayer providesSpotifyPlayer(Application application, AuthManager authManager){
-        return new SpotifyPlayer(application, authManager);
+    SlackerEngine providesSlackerPlayer(){
+        return new SlackerEngine();
     }
 
     @Provides
     @Singleton
-    SlackerPlayer providesSlackerPlayer(){
-        return new SlackerPlayer();
-    }
-
-    @Provides
-    @Singleton
-    MockPlayer providesMockplayer(){
-        return new MockPlayer();
+    MockEngine providesMockplayer(){
+        return new MockEngine();
     }
 
     @Provides

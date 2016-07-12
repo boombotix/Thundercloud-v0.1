@@ -8,8 +8,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import com.canelmas.let.DeniedPermission;
 import com.canelmas.let.RuntimePermissionListener;
 import com.canelmas.let.RuntimePermissionRequest;
 import com.fernandocejas.frodo.annotation.RxLogObservable;
+import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.Arrays;
@@ -32,6 +35,8 @@ import javax.inject.Inject;
 
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifySearchEndpoint;
+import boombotix.com.thundercloud.base.RxTransformers;
+import boombotix.com.thundercloud.model.search.spotify.SearchResponse;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.controller.VoiceSearchController;
 import boombotix.com.thundercloud.ui.filter.Captureable;
@@ -39,6 +44,7 @@ import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
 import boombotix.com.thundercloud.ui.fragment.NowPlayingFragment;
 import boombotix.com.thundercloud.ui.fragment.PlayerFragment;
 import boombotix.com.thundercloud.ui.fragment.QueueFragment;
+import boombotix.com.thundercloud.ui.fragment.SearchResultsFragment;
 import boombotix.com.thundercloud.ui.fragment.VoiceSearchResultFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -76,6 +82,8 @@ public class TopLevelActivity extends BaseActivity
     @Inject
     SpotifySearchEndpoint spotifySearchEndpoint;
 
+    SearchResultsFragment searchResultsFragment;
+
     private Subject<Boolean, Boolean> screenCreatedObservable;
 
     @DebugLog
@@ -111,16 +119,17 @@ public class TopLevelActivity extends BaseActivity
     }
 
     @RxLogObservable
-    private Observable<CharSequence> searchTextObservable(){
+    private Observable<CharSequence> searchTextObservable() {
         return RxTextView.textChanges(searchText)
                 .skip(3).debounce(1000, TimeUnit.MILLISECONDS);
     }
 
-    private void searchSpotify(CharSequence searchText){
-        if(searchText.length() > 2){
+    private void searchSpotify(CharSequence searchText) {
+        if (searchText.length() > 2) {
             spotifySearchEndpoint
                     .getAllResults(searchText.toString(), "artist,album,playlist,track")
-                    .subscribe(res -> { });
+                    .subscribe(res -> {
+                    });
         }
     }
 
@@ -172,25 +181,68 @@ public class TopLevelActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+
+        compositeSubscription.add(
+                RxSearchView.queryTextChanges(searchView)
+                        .skip(1)
+                        .debounce(500, TimeUnit.MILLISECONDS)
+                        .filter(s -> s.length() > 0)
+                        .subscribe(this::getSearchResults));
+
+        // todo delete this
+        searchText.setVisibility(View.GONE);
         return true;
+    }
+
+    private void getSearchResults(CharSequence searchText) {
+        fm = getSupportFragmentManager();
+        searchResultsFragment = new SearchResultsFragment();
+
+        fm.beginTransaction()
+                .replace(R.id.main_fragment, searchResultsFragment, SearchResultsFragment.TAG)
+                .commit();
+
+        spotifySearchEndpoint.getAllResults(searchText.toString(), "artist,album,playlist,track")
+                .compose(RxTransformers.applySchedulers())
+                .subscribe(this::showSearchResults, t -> {
+                    Timber.e(t.getMessage(), t);
+                    t.printStackTrace();
+                });
+    }
+
+    private void showSearchResults(SearchResponse searchResponse) {
+        if(searchResponse == null) return;
+
+        searchResultsFragment.setSearchResults(searchResponse);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_queue) {
+            showQueue();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void showQueue() {
+
+    }
+
+    private void hideQueue() {
+
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.nav_nowplaying) {
+        if (id == R.id.nav_nowplaying) {
             fm.beginTransaction()
                     .replace(R.id.main_fragment, NowPlayingFragment.newInstance())
                     .commit();
@@ -208,7 +260,7 @@ public class TopLevelActivity extends BaseActivity
 
     }
 
-    private void setQueueFragment(){
+    private void setQueueFragment() {
         Fragment queueFragment = QueueFragment.newInstance();
         fm.beginTransaction()
                 .replace(R.id.queue_container, queueFragment)
@@ -250,7 +302,7 @@ public class TopLevelActivity extends BaseActivity
      * sets voice search fragment text to the query and allows editing via input box
      */
     public void setVoiceSearchResultFragmentQuery(String s) {
-            setAndGetVoiceSearchResultFragment().setQuery(s);
+        setAndGetVoiceSearchResultFragment().setQuery(s);
     }
 
     /**
@@ -289,15 +341,14 @@ public class TopLevelActivity extends BaseActivity
 
     /**
      * Hides search input from toolbar
-     *
      */
-    public void hideSearch(){
+    public void hideSearch() {
         searchText.setVisibility(View.GONE);
 //        this.toolbarBackground.getLayoutParams().height = Math.round(50 * getResources()
 //                .getDisplayMetrics().density);
     }
 
-    public void showSearch(){
+    public void showSearch() {
         searchText.setVisibility(View.VISIBLE);
 //        this.toolbarBackground.getLayoutParams().height = Math.round(70 * getResources()
 //                .getDisplayMetrics().density);
@@ -314,13 +365,14 @@ public class TopLevelActivity extends BaseActivity
     /**
      * Callthrough to return the captureable view of the main content fragment,
      * if it implements {@link Captureable}
-     *
+     * <p>
      * May return null.
      *
-     * @return
-     *          Captureable view of content fragment, OR null.
+     * @return Captureable view of content fragment, OR null.
      */
-    public @Nullable View getCaptureableView() {
+    public
+    @Nullable
+    View getCaptureableView() {
         Fragment contentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         if (contentFragment != null && contentFragment instanceof Captureable) {
             return ((Captureable) contentFragment).captureView();

@@ -33,4 +33,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
         android:textColor="@color/houndify_white"
         android:visibility="invisible" />
+
+    <include layout="@layout/view_progressbar" />
 </RelativeLayout>

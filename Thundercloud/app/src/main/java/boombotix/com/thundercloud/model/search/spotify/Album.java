@@ -1,5 +1,7 @@
 package boombotix.com.thundercloud.model.search.spotify;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -80,5 +82,21 @@ public class Album {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    @Nullable
+    public String getLargestImageUrl(){
+        int size = 0;
+        int position = -1;
+
+        for(int i = 0; i < this.images.size() - 1; i++){
+            Image image = this.images.get(i);
+
+            if(image.getHeight() > size || image.getWidth() > size){
+                position = i;
+            }
+        }
+
+        return position == -1 ? null : this.images.get(position).getUrl();
     }
 }

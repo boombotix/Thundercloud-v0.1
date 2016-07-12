@@ -2,18 +2,15 @@ package boombotix.com.thundercloud.ui.fragment;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 
 import javax.inject.Inject;
@@ -22,9 +19,9 @@ import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.api.SpotifyAuthenticationEndpoint;
 import boombotix.com.thundercloud.api.SpotifyTrackEndpoint;
 import boombotix.com.thundercloud.base.RxTransformers;
-import boombotix.com.thundercloud.model.music.MusicListItem;
+import boombotix.com.thundercloud.model.music.PlaybackStateContract;
 import boombotix.com.thundercloud.model.search.spotify.Track;
-import boombotix.com.thundercloud.playback.MusicControls;
+import boombotix.com.thundercloud.playback.MusicPlayer;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import boombotix.com.thundercloud.ui.filter.Captureable;
 import boombotix.com.thundercloud.ui.filter.ScreenBlurUiFilter;
@@ -49,6 +46,12 @@ public class NowPlayingFragment extends BaseFragment implements
     @Bind(R.id.player_play_pause_button)
     ImageButton playButton;
 
+    @Bind(R.id.prev_imageview)
+    ImageView previousButton;
+
+    @Bind(R.id.next_imageview)
+    ImageView nextImageButton;
+
     @Bind(R.id.now_playing_album_art)
     CropImageView albumArt;
 
@@ -62,7 +65,7 @@ public class NowPlayingFragment extends BaseFragment implements
     ScreenBlurUiFilter screenBlurUiFilter;
 
     @Inject
-    MusicControls musicControls;
+    MusicPlayer musicPlayer;
 
     public NowPlayingFragment() {
         // Required empty public constructor
@@ -114,12 +117,16 @@ public class NowPlayingFragment extends BaseFragment implements
     @Override
     public void onStart() {
         super.onStart();
-        compositeSubscription.add(musicControls.trackChangedObservable().subscribe(this::onTrackChanged, this::logErrors));
+        compositeSubscription.add(musicPlayer.stateChangedObservable().subscribe(this::onStateChange, this::logErrors));
     }
 
     @DebugLog
-    private void onTrackChanged(MusicListItem musicListItem){
-        compositeSubscription.add(spotifyTrackEndpoint.getTrack(cleanSpotifyUri(musicListItem.getUri()))
+    private void onStateChange(PlaybackStateContract playbackStateContract){
+
+        this.previousButton.setVisibility(playbackStateContract.previousTrackAvailible() ? View.VISIBLE : View.GONE);
+        this.nextImageButton.setVisibility(playbackStateContract.nextTrackAvailible() ? View.VISIBLE : View.GONE);
+
+        compositeSubscription.add(spotifyTrackEndpoint.getTrack(cleanSpotifyUri(playbackStateContract.getCurrentTrack().getUri()))
                 .compose(RxTransformers.applySchedulers())
                 .subscribe(this::onArtworkResult, this::logErrors));
     }

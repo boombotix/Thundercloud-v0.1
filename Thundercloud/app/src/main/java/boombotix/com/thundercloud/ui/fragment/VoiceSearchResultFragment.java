@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fernandocejas.frodo.annotation.RxLogObservable;
@@ -26,8 +27,7 @@ import boombotix.com.thundercloud.houndify.model.Track;
 import boombotix.com.thundercloud.houndify.request.HoundifyRequestTransformer;
 import boombotix.com.thundercloud.houndify.response.HoundifyResponseParser;
 import boombotix.com.thundercloud.model.music.MusicListItem;
-import boombotix.com.thundercloud.playback.MusicControls;
-import boombotix.com.thundercloud.playback.PlaybackQueue;
+import boombotix.com.thundercloud.playback.MusicPlayer;
 import boombotix.com.thundercloud.ui.base.BaseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,10 +42,7 @@ public class VoiceSearchResultFragment extends BaseFragment {
     private static final String QUERY_ARG = "query";
 
     @Inject
-    MusicControls musicControls;
-
-    @Inject
-    PlaybackQueue playbackQueue;
+    MusicPlayer musicPlayer;
 
     @Inject
     HoundifyRequestTransformer houndifyRequestTransformer;
@@ -58,6 +55,9 @@ public class VoiceSearchResultFragment extends BaseFragment {
 
     @Bind(R.id.voice_search_result_text)
     TextView queryText;
+
+    @Bind(R.id.voice_search_result_spinner)
+    ProgressBar voiceSearchResultsSpinner;
 
     @Bind(R.id.voice_search_result_edit)
     EditText editText;
@@ -142,7 +142,6 @@ public class VoiceSearchResultFragment extends BaseFragment {
                 .setQuery(q)
                 .build();
 
-
         Observable.defer(() -> createResultObservable(textSearch))
                 .compose(RxTransformers.applySchedulers())
                 .map(result -> houndifyResponseParser.parseMusicSearchResponse(result.getResponse()))
@@ -150,10 +149,22 @@ public class VoiceSearchResultFragment extends BaseFragment {
                 .flatMap(listItemObservable -> listItemObservable)
                 .subscribe(
                         listItem -> {
-                            playbackQueue.addToQueue(listItem);
-                            musicControls.play();
+                            musicPlayer.clearQueue();
+                            musicPlayer.addToQueue(listItem);
+                            musicPlayer.play();
+                            doneLoadingResults();
                         },
                         t -> Timber.e(t.getMessage()));
+    }
+
+    private void loadingResults(){
+        tapToEdit.setVisibility(View.GONE);
+        queryText.setVisibility(View.GONE);
+        voiceSearchResultsSpinner.setVisibility(View.VISIBLE);
+    }
+
+    private void doneLoadingResults(){
+        voiceSearchResultsSpinner.setVisibility(View.GONE);
     }
 
     @RxLogObservable

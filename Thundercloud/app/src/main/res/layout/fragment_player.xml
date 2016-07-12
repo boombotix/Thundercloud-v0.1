@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/player_bar_inner_height"
-        android:background="@color/queueBackgroundColor"
+        android:background="#000000"
         android:layout_alignParentBottom="true">
 
         <boombotix.com.thundercloud.ui.view.CropImageView
@@ -22,6 +22,7 @@
             android:paddingRight="@dimen/default_margin"
             android:paddingLeft="@dimen/default_margin"
             android:paddingTop="@dimen/default_margin"
+            android:paddingBottom="@dimen/default_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -36,23 +37,24 @@
                     style="@style/TextAppearance.Thundercloud.Small"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Sleeping Fox" />
+                    android:text="@string/artist" />
 
                 <TextView
                     android:id="@+id/player_track_label"
                     style="@style/TextAppearance.Thundercloud.Small"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Pyramid" />
+                    android:text="@string/track_name" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/player_play_pause_button"
-                android:layout_width="@dimen/default_margin_2x"
-                android:layout_height="@dimen/default_margin_2x"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/houndify_white"
                 android:layout_alignParentRight="true"
-                android:background="@android:drawable/ic_media_play"
+                android:background="@drawable/ic_play_circle"
                 android:contentDescription="expand" />
 
             <LinearLayout
@@ -62,10 +64,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@android:drawable/ic_lock_silent_mode"
+                    android:background="@drawable/ic_sound_off"
+                    android:backgroundTint="@color/houndify_white"
                     android:contentDescription="@string/description_now_playing_mute" />
 
                 <SeekBar
@@ -78,19 +81,20 @@
                     android:progress="50" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@android:drawable/ic_lock_silent_mode_off"
+                    android:backgroundTint="@color/houndify_white"
+                    android:background="@drawable/ic_sound_up"
                     android:contentDescription="@string/description_now_playing_full_volume" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 
     <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:id="@+id/okhound_button"
-        android:background="@mipmap/ic_launcher"
+        android:background="@drawable/ic_houndify_black_background"
         android:layout_centerHorizontal="true"/>
 </RelativeLayout>

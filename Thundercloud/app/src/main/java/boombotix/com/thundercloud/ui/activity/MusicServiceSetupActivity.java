@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import boombotix.com.thundercloud.R;
 import boombotix.com.thundercloud.authentication.AuthManager;
 import boombotix.com.thundercloud.model.music.Service;
-import boombotix.com.thundercloud.playback.SpotifyPlayer;
+import boombotix.com.thundercloud.playback.SpotifyEngine;
 import boombotix.com.thundercloud.ui.base.BaseActivity;
 import boombotix.com.thundercloud.ui.fragment.musicservice.MusicServiceListFragment;
 import hugo.weaving.DebugLog;
@@ -33,7 +33,7 @@ public class MusicServiceSetupActivity extends BaseActivity
     AuthManager authManager;
 
     @Inject
-    SpotifyPlayer spotifyPlayer;
+    SpotifyEngine spotifyEngine;
 
     private boolean firstTime;
 
@@ -87,7 +87,7 @@ public class MusicServiceSetupActivity extends BaseActivity
 
     @DebugLog
     private void spotifyAuthentication(){
-        spotifyPlayer.spotifyAuthentication(new WeakReference<>(this), REQUEST_CODE);
+        spotifyEngine.spotifyAuthentication(new WeakReference<>(this), REQUEST_CODE);
     }
 
     @DebugLog
@@ -101,7 +101,7 @@ public class MusicServiceSetupActivity extends BaseActivity
                 case TOKEN:
                     Timber.d(response.getAccessToken());
                     authManager.setAccessToken(response.getAccessToken());
-                    spotifyPlayer.initializePlayerWithToken(response.getAccessToken());
+                    spotifyEngine.initializePlayerWithToken(response.getAccessToken());
                     break;
                 case ERROR:
                     Timber.e(response.getError());
